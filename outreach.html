@@ -205,6 +205,68 @@
     .crm-notes-input { width: 100%; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-size: 13px; font-family: var(--font-body); padding: 9px 12px; outline: none; resize: vertical; line-height: 1.5; }
     .crm-notes-input:focus { border-color: var(--accent); }
 
+    /* ── WEB SEARCH TOGGLE ── */
+    .ws-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 0.5px solid var(--border2); }
+    .ws-toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .ws-toggle-label { font-size: 13px; font-weight: 500; color: var(--text); }
+    .toggle-track { position: relative; width: 36px; height: 20px; background: var(--surface3); border: 0.5px solid var(--border2); border-radius: 999px; cursor: pointer; transition: background 0.2s, border-color 0.2s; flex-shrink: 0; }
+    .toggle-track.on { background: rgba(255,69,0,0.3); border-color: var(--accent); }
+    .toggle-track input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; margin: 0; }
+    .toggle-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: var(--muted2); border-radius: 50%; transition: transform 0.2s, background 0.2s; pointer-events: none; }
+    .toggle-track.on .toggle-thumb { transform: translateX(16px); background: var(--accent2); }
+    .ws-badge { font-size: 11px; font-family: var(--font-mono); color: var(--muted); }
+    .ws-badge.on { color: var(--green); }
+    .ws-note { width: 100%; font-size: 11px; font-family: var(--font-mono); color: var(--muted); line-height: 1.5; }
+    .ws-note a { color: var(--accent2); text-decoration: none; }
+    .ws-note a:hover { text-decoration: underline; }
+
+    /* ── SOCIAL LINKS ── */
+    .venue-social { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; margin-bottom: 6px; }
+    .social-link { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--font-mono); color: var(--muted2); background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 999px; padding: 3px 10px; text-decoration: none; transition: all 0.15s; }
+    .social-link:hover { color: var(--accent2); border-color: var(--accent); }
+    .social-link i { font-size: 12px; }
+
+    /* ── AGENT BUTTON ── */
+    .btn-agent { background: rgba(167,139,250,0.15); color: var(--purple); border: 0.5px solid rgba(167,139,250,0.4); }
+    .btn-agent:hover { background: rgba(167,139,250,0.25); border-color: var(--purple); }
+    .btn-agent:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── REVIEW BADGE (sidebar) ── */
+    .review-badge { display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:10px;font-family:var(--font-mono);border-radius:999px;min-width:18px;height:18px;padding:0 5px;margin-left:auto; }
+
+    /* ── REVIEW QUEUE CARDS ── */
+    .review-card { background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius-xl);margin-bottom:1.25rem;overflow:hidden;animation:fadeUp 0.3s ease forwards;opacity:0; }
+    .review-card.approved { border-color:var(--green); }
+    .review-card.discarded { opacity:0.35;border-color:var(--border); }
+
+    .review-card-header { display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem 1rem;gap:1rem;flex-wrap:wrap; }
+    .review-venue-name { font-family:var(--font-display);font-size:22px;letter-spacing:0.04em;color:var(--accent2); }
+    .review-venue-meta { font-size:11px;font-family:var(--font-mono);color:var(--muted2);margin-top:2px; }
+
+    .review-status-badge { font-size:11px;font-family:var(--font-mono);padding:3px 12px;border-radius:999px;white-space:nowrap; }
+    .rsb-pending { background:var(--surface2);color:var(--muted2);border:0.5px solid var(--border2); }
+    .rsb-approved { background:var(--green-dim);color:var(--green);border:0.5px solid var(--green); }
+    .rsb-discarded { background:var(--red-dim);color:var(--red);border:0.5px solid var(--red); }
+
+    .review-email-section { padding:0 1.5rem 1rem; }
+    .review-email-label { font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px; }
+    .review-subject { font-family:var(--font-mono);font-size:12px;color:var(--muted2);margin-bottom:8px; }
+    .review-subject span { color:var(--text); }
+    .review-body-edit { width:100%;background:var(--surface2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);color:var(--text);font-size:13px;font-family:var(--font-body);padding:1rem;outline:none;resize:vertical;line-height:1.7;min-height:180px; }
+    .review-body-edit:focus { border-color:var(--accent); }
+
+    .review-actions { display:flex;gap:8px;padding:1rem 1.5rem 1.25rem;border-top:0.5px solid var(--border);flex-wrap:wrap; }
+    .btn-approve { background:var(--green);color:#000;font-weight:600; }
+    .btn-approve:hover { opacity:0.9; }
+    .btn-discard { background:transparent;color:var(--muted2);border:0.5px solid var(--border2); }
+    .btn-discard:hover { color:var(--red);border-color:var(--red); }
+    .btn-mailto { background:transparent;color:var(--accent2);border:0.5px solid rgba(255,119,51,0.35); }
+    .btn-mailto:hover { background:rgba(255,119,51,0.08);border-color:var(--accent2); }
+
+    /* ── REVIEW CARD GENERATING STATE ── */
+    .review-generating { padding:1.25rem 1.5rem;font-size:12px;font-family:var(--font-mono);color:var(--muted2);display:flex;align-items:center;gap:8px; }
+    .review-generating i { font-size:16px;color:var(--purple);animation:spin 1s linear infinite; }
+
     /* ── RESPONSIVE ── */
     @media(max-width:700px){
       .app{grid-template-columns:1fr;}
@@ -227,6 +289,7 @@
 
     <div class="nav-section">Tools</div>
     <button class="nav-btn active" onclick="goPage('search')" id="nav-search"><i class="ti ti-search"></i> Find Venues</button>
+    <button class="nav-btn" onclick="goPage('review')" id="nav-review"><i class="ti ti-check"></i> Review Queue <span class="review-badge" id="nav-review-badge" style="display:none;"></span></button>
     <button class="nav-btn" onclick="goPage('crm')" id="nav-crm"><i class="ti ti-layout-list"></i> Outreach Tracker</button>
 
     <div class="nav-section">Settings</div>
@@ -297,6 +360,35 @@
           <button class="btn btn-primary" id="search-btn" onclick="searchVenues()">
             <i class="ti ti-search"></i> Research Venues
           </button>
+          <button class="btn btn-agent" id="agent-btn" onclick="runAgent()">
+            <i class="ti ti-robot"></i> Run Agent
+          </button>
+        </div>
+
+        <!-- Agent progress bar (hidden until agent runs) -->
+        <div id="agent-progress" style="display:none;margin-top:1rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="agent-status-label">Starting...</span>
+            <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="agent-progress-count"></span>
+          </div>
+          <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+            <div id="agent-progress-bar" style="height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Web Search Toggle -->
+        <div class="ws-row">
+          <div class="ws-toggle-wrap">
+            <label class="toggle-track" id="ws-track">
+              <input type="checkbox" id="ws-toggle" onchange="toggleWebSearch(this.checked); document.getElementById('ws-track').classList.toggle('on', this.checked);" />
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="ws-toggle-label">Real-time web search</span>
+          </div>
+          <span class="ws-badge" id="ws-badge">Web search off — AI knowledge only</span>
+          <div class="ws-note">
+            When on, Claude searches the web for real venues with verified contacts and social handles. Requires web search to be enabled in your <a href="https://console.anthropic.com" target="_blank">Anthropic Console</a>. Adds ~$0.01 per search.
+          </div>
         </div>
       </div>
 
@@ -306,6 +398,30 @@
       </div>
 
       <div class="venue-results" id="venue-results"></div>
+    </div>
+
+    <!-- ══ PAGE: REVIEW QUEUE ══ -->
+    <div class="page" id="page-review">
+      <div class="page-header">
+        <div class="page-title">Review <span>Queue</span></div>
+        <div class="page-sub">Approve, edit, or discard each draft — nothing sends until you say so</div>
+      </div>
+
+      <div id="review-empty" style="text-align:center;padding:4rem 2rem;color:var(--muted);font-family:var(--font-mono);font-size:13px;">
+        <i class="ti ti-robot" style="display:block;font-size:36px;margin-bottom:12px;color:var(--muted);"></i>
+        No drafts yet. Use <strong style="color:var(--text);">Run Agent</strong> on the Find Venues page to generate a full batch.
+      </div>
+
+      <div id="review-summary" style="display:none;margin-bottom:1.25rem;">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);letter-spacing:0.06em;" id="review-count-label"></span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="clearReviewQueue()">
+            <i class="ti ti-trash"></i> Clear queue
+          </button>
+        </div>
+      </div>
+
+      <div id="review-list"></div>
     </div>
 
     <!-- ══ PAGE: CRM ══ -->
@@ -398,9 +514,11 @@
       <div class="card">
         <div class="card-title">How this tool uses the API</div>
         <div style="font-size:13px;color:var(--muted2);line-height:1.7;">
-          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research</strong> — Claude searches for real nightclubs, bars, and lounges in your target city and returns venue details, vibe descriptions, and likely music formats.</p>
-          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Outreach Email</strong> — Claude generates a personalized pitch for each venue, matching your DJ profile to their specific vibe and format — hip-hop heavy venues get a different pitch than EDM clubs.</p>
-          <p>• <strong style="color:var(--text);">Cost</strong> — Each venue search + email generation uses roughly 2,000–3,000 tokens (~$0.01–0.02 at current Claude Sonnet pricing). Very affordable.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search off)</strong> — Claude uses its training knowledge to suggest nightclubs, bars, and lounges in your target city. Fast and free beyond standard token cost, but venues may not be current.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search on)</strong> — Claude searches the live web via Brave Search to find real, currently operating venues with verified websites, Instagram handles, Facebook pages, and booking contacts. Requires web search to be enabled in your <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2);">Anthropic Console</a>. Costs $0.01 per search on top of token usage.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Outreach Email</strong> — Claude generates a personalized pitch for each venue, matching your DJ profile to their specific vibe and format.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Model</strong> — Currently using <span style="font-family:var(--font-mono);color:var(--accent2);">claude-sonnet-4-6</span>. To update the model, change the <span style="font-family:var(--font-mono);color:var(--accent2);">CLAUDE_MODEL</span> constant at the top of this file's script.</p>
+          <p>• <strong style="color:var(--text);">Cost</strong> — Each venue search uses roughly 2,000–4,000 tokens (~$0.01–0.02 at current Claude Sonnet pricing). Very affordable.</p>
         </div>
       </div>
     </div>
@@ -453,20 +571,27 @@
 </div>
 
 <script>
+// ══ CONFIG ══
+const CLAUDE_MODEL = 'claude-sonnet-4-6';   // ← update this one line when Anthropic releases a new model
+
 // ══ STORAGE KEYS ══
-const KEY_API  = 'dj_ike_api_key';
-const KEY_CRM  = 'dj_ike_crm';
-const KEY_PROF = 'dj_ike_profile';
+const KEY_API       = 'dj_ike_api_key';
+const KEY_CRM       = 'dj_ike_crm';
+const KEY_PROF      = 'dj_ike_profile';
+const KEY_WEB_SEARCH = 'dj_ike_web_search';
 
 // ══ STATE ══
 let crmData = [];
 let editingId = null;
+let webSearchEnabled = false;
+let reviewQueue = [];   // [{ venue, subject, body, status: 'pending'|'approved'|'discarded' }]
 
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded', () => {
   loadKey();
   loadCRM();
   loadProfile();
+  loadWebSearchPref();
   renderCRM();
   updateStats();
 });
@@ -478,6 +603,7 @@ function goPage(id) {
   document.getElementById('page-' + id).classList.add('active');
   document.getElementById('nav-' + id).classList.add('active');
   if (id === 'crm') { renderCRM(); updateStats(); }
+  if (id === 'review') { renderReviewQueue(); }
 }
 
 // ══ API KEY ══
@@ -508,6 +634,32 @@ function clearKey() {
   document.getElementById('clear-btn').style.display = 'none';
 }
 function getKey() { return localStorage.getItem(KEY_API); }
+
+// ══ WEB SEARCH PREFERENCE ══
+function loadWebSearchPref() {
+  webSearchEnabled = localStorage.getItem(KEY_WEB_SEARCH) === 'true';
+  const toggle = document.getElementById('ws-toggle');
+  const track  = document.getElementById('ws-track');
+  if (toggle) toggle.checked = webSearchEnabled;
+  if (track)  track.classList.toggle('on', webSearchEnabled);
+  updateWebSearchBadge();
+}
+function toggleWebSearch(checked) {
+  webSearchEnabled = checked;
+  localStorage.setItem(KEY_WEB_SEARCH, String(checked));
+  updateWebSearchBadge();
+}
+function updateWebSearchBadge() {
+  const badge = document.getElementById('ws-badge');
+  if (!badge) return;
+  if (webSearchEnabled) {
+    badge.textContent = 'Web search on — real venues';
+    badge.className = 'ws-badge on';
+  } else {
+    badge.textContent = 'Web search off — AI knowledge only';
+    badge.className = 'ws-badge';
+  }
+}
 
 // ══ PROFILE ══
 function loadProfile() {
@@ -541,11 +693,11 @@ async function searchVenues() {
   const key = getKey();
   if (!key) { alert('Please add your Anthropic API key first (Settings → API Key).'); return; }
 
-  const city    = document.getElementById('search-city').value.trim();
-  const state   = document.getElementById('search-state').value.trim();
-  const type    = document.getElementById('search-type').value;
-  const genre   = document.getElementById('search-genre').value;
-  const count   = document.getElementById('search-count').value;
+  const city  = document.getElementById('search-city').value.trim();
+  const state = document.getElementById('search-state').value.trim();
+  const type  = document.getElementById('search-type').value;
+  const genre = document.getElementById('search-genre').value;
+  const count = document.getElementById('search-count').value;
 
   if (!city) { alert('Please enter a city.'); return; }
 
@@ -553,11 +705,48 @@ async function searchVenues() {
   document.getElementById('venue-results').innerHTML = '';
   document.getElementById('search-btn').disabled = true;
 
-  const prompt = `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+  const genreClause = genre !== 'any' ? ` that book ${genre} DJs` : '';
+  const socialNote  = webSearchEnabled
+    ? ' For each venue, search for their website AND social media presence (Instagram handle, Facebook page, TikTok) — many venues primarily maintain Instagram rather than a traditional website. Return real, verified contact info where available.'
+    : '';
 
-Research and list ${count} real ${type} venues in ${city}, ${state} that feature DJ performances${genre !== 'any' ? ` and focus on ${genre} music` : ''}.
+  const prompt = webSearchEnabled
+    ? `You are a music industry researcher helping DJ Ike Dillman find real nightclub and bar booking opportunities.
 
-For each venue, provide realistic details based on your knowledge of the local scene. If you know real venues in this area, use them. If not, create plausible venues typical for that city.
+Use web search to find ${count} real, currently operating ${type} venues in ${city}, ${state}${genreClause}.${socialNote}
+
+Search for each venue to confirm it is real and operating. Prioritize venues with active DJ programming. Look specifically for:
+- Their website (if any)
+- Instagram handle (search "[venue name] ${city} instagram")
+- Facebook page
+- Booking contact email or process
+
+After researching, respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "venues": [
+    {
+      "name": "Venue Name",
+      "address": "Street address or neighborhood",
+      "city": "${city}, ${state}",
+      "type": "nightclub|bar|lounge|etc",
+      "vibe": "One sentence describing the venue atmosphere",
+      "musicFormats": ["hip-hop", "top40"],
+      "capacity": "estimated capacity e.g. ~300",
+      "bookingContact": "booking@venue.com or 'DM on Instagram' or 'Contact via website'",
+      "website": "https://... or null",
+      "instagram": "@handle or null",
+      "facebook": "https://facebook.com/... or null",
+      "tiktok": "@handle or null",
+      "tags": ["hip-hop", "bottle service", "18+"],
+      "djNightInfo": "Brief description of their DJ nights, residency opportunities, or event formats",
+      "pitchAngle": "One sentence on why DJ Ike Dillman would be a great fit for THIS specific venue",
+      "verified": true
+    }
+  ]
+}`
+    : `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+
+List ${count} ${type} venues in ${city}, ${state}${genreClause} that feature DJ performances. Use your knowledge of the local scene — real venues where you know them, typical venues for the area otherwise.
 
 Respond ONLY with valid JSON, no markdown, no backticks:
 {
@@ -572,12 +761,26 @@ Respond ONLY with valid JSON, no markdown, no backticks:
       "capacity": "estimated capacity e.g. ~300",
       "bookingContact": "booking@venue.com or 'Contact via website' or 'Call venue directly'",
       "website": "https://... or null",
+      "instagram": "@handle or null",
+      "facebook": null,
+      "tiktok": null,
       "tags": ["hip-hop", "bottle service", "18+"],
       "djNightInfo": "Brief description of their DJ nights, residency opportunities, or event formats",
-      "pitchAngle": "One sentence on why DJ Ike Dillman would be a great fit for THIS specific venue"
+      "pitchAngle": "One sentence on why DJ Ike Dillman would be a great fit for THIS specific venue",
+      "verified": false
     }
   ]
 }`;
+
+  const requestBody = {
+    model: CLAUDE_MODEL,
+    max_tokens: 4000,
+    messages: [{ role: 'user', content: prompt }]
+  };
+
+  if (webSearchEnabled) {
+    requestBody.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+  }
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -588,24 +791,44 @@ Respond ONLY with valid JSON, no markdown, no backticks:
         'anthropic-version': '2023-06-01',
         'anthropic-dangerous-direct-browser-access': 'true'
       },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 2500,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      body: JSON.stringify(requestBody)
     });
 
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
-      throw new Error(e.error?.message || `API error ${res.status}`);
+      const msg = e.error?.message || `API error ${res.status}`;
+      // Surface a friendly message if web search isn't enabled on the account
+      if (webSearchEnabled && (msg.includes('web_search') || msg.includes('tool') || res.status === 400)) {
+        throw new Error('web_search_disabled');
+      }
+      throw new Error(msg);
     }
 
     const data = await res.json();
-    const text = data.content.map(i => i.text || '').join('');
+    // Extract text blocks only (skip tool_use / tool_result blocks)
+    const text = (data.content || [])
+      .filter(b => b.type === 'text')
+      .map(b => b.text || '')
+      .join('');
+
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
-    renderVenues(parsed.venues);
+    renderVenues(parsed.venues || []);
   } catch (err) {
-    document.getElementById('venue-results').innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Error: ${err.message}</div>`;
+    if (err.message === 'web_search_disabled') {
+      document.getElementById('venue-results').innerHTML = `
+        <div style="background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.35);border-radius:14px;padding:1.25rem 1.5rem;font-size:13px;line-height:1.7;">
+          <div style="font-family:var(--font-display);font-size:18px;letter-spacing:0.04em;color:#f59e0b;margin-bottom:8px;">Web Search Not Enabled</div>
+          <p style="color:var(--muted2);margin-bottom:10px;">Your Anthropic account doesn't have web search activated yet. To use real-time venue research:</p>
+          <ol style="color:var(--muted2);padding-left:1.2rem;margin-bottom:12px;">
+            <li style="margin-bottom:4px;">Go to <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2);">console.anthropic.com</a></li>
+            <li style="margin-bottom:4px;">Navigate to <strong style="color:var(--text);">Settings → Capabilities</strong></li>
+            <li>Enable <strong style="color:var(--text);">Web Search</strong> for your account</li>
+          </ol>
+          <p style="color:var(--muted);font-size:12px;font-family:var(--font-mono);">In the meantime, turn off the web search toggle above to search using AI knowledge only.</p>
+        </div>`;
+    } else {
+      document.getElementById('venue-results').innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Error: ${err.message}</div>`;
+    }
   }
 
   document.getElementById('search-loading').style.display = 'none';
@@ -614,7 +837,11 @@ Respond ONLY with valid JSON, no markdown, no backticks:
 
 function renderVenues(venues) {
   const container = document.getElementById('venue-results');
-  container.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);margin-bottom:1rem;letter-spacing:0.06em;">${venues.length} VENUES FOUND</div>`;
+  const verifiedNote = webSearchEnabled
+    ? `<span style="color:var(--green);font-size:11px;font-family:var(--font-mono);"><i class="ti ti-world-search" style="font-size:12px;vertical-align:-2px;"></i> Live web results</span>`
+    : `<span style="color:var(--muted);font-size:11px;font-family:var(--font-mono);">AI knowledge — enable web search for verified venues</span>`;
+  container.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;"><span style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);letter-spacing:0.06em;">${venues.length} VENUES FOUND</span>${verifiedNote}</div>`;
+
   venues.forEach((v, i) => {
     const card = document.createElement('div');
     card.className = 'venue-card';
@@ -630,9 +857,24 @@ function renderVenues(venues) {
       return `<span class="tag ${cls}">${esc(t)}</span>`;
     }).join('');
 
+    // Social links row
+    const socialLinks = [];
+    if (v.website) socialLinks.push(`<a href="${esc(v.website)}" target="_blank" class="social-link"><i class="ti ti-world"></i> Website</a>`);
+    if (v.instagram) socialLinks.push(`<a href="https://instagram.com/${v.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(v.instagram)}</a>`);
+    if (v.facebook) socialLinks.push(`<a href="${esc(v.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+    if (v.tiktok) socialLinks.push(`<a href="https://tiktok.com/@${v.tiktok.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-tiktok"></i> ${esc(v.tiktok)}</a>`);
+    const socialHTML = socialLinks.length ? `<div class="venue-social">${socialLinks.join('')}</div>` : '';
+
+    const verifiedBadge = v.verified
+      ? `<span style="font-size:10px;font-family:var(--font-mono);color:var(--green);border:0.5px solid var(--green);border-radius:999px;padding:2px 8px;"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px;"></i> Verified</span>`
+      : '';
+
     card.innerHTML = `
       <div>
-        <div class="venue-name">${esc(v.name)}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="venue-name">${esc(v.name)}</div>
+          ${verifiedBadge}
+        </div>
         <div class="venue-meta">
           <span><i class="ti ti-map-pin"></i>${esc(v.city)}</span>
           ${v.capacity ? `<span><i class="ti ti-users"></i>${esc(v.capacity)}</span>` : ''}
@@ -642,6 +884,7 @@ function renderVenues(venues) {
         ${v.djNightInfo ? `<div class="venue-desc" style="color:var(--muted2);font-style:italic;">${esc(v.djNightInfo)}</div>` : ''}
         ${v.pitchAngle ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);margin-bottom:8px;">💡 ${esc(v.pitchAngle)}</div>` : ''}
         <div class="venue-tags">${tagHTML}</div>
+        ${socialHTML}
         ${v.bookingContact ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-top:8px;"><i class="ti ti-mail" style="vertical-align:-2px;"></i> ${esc(v.bookingContact)}</div>` : ''}
       </div>
       <div class="venue-actions">
@@ -720,7 +963,7 @@ Respond ONLY with valid JSON:
         'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: CLAUDE_MODEL,
         max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }]
       })
@@ -761,6 +1004,369 @@ function copyEmail(text) {
     const btns = document.querySelectorAll('#email-modal-body .btn');
     if (btns[0]) { btns[0].innerHTML = '<i class="ti ti-check"></i> Copied!'; setTimeout(() => btns[0].innerHTML = '<i class="ti ti-copy"></i> Copy Full Email', 2000); }
   });
+}
+
+// ══ AGENT LOOP ══
+async function runAgent() {
+  const key = getKey();
+  if (!key) { alert('Please add your Anthropic API key first (Settings → API Key).'); return; }
+
+  const city  = document.getElementById('search-city').value.trim();
+  const state = document.getElementById('search-state').value.trim();
+  if (!city) { alert('Please enter a city first.'); return; }
+
+  // Lock UI
+  document.getElementById('agent-btn').disabled = true;
+  document.getElementById('search-btn').disabled = true;
+  document.getElementById('agent-progress').style.display = 'block';
+  setAgentProgress(0, 'Searching for venues...', '');
+
+  // Clear previous queue
+  reviewQueue = [];
+  updateReviewBadge();
+
+  try {
+    // ── STEP 1: find venues (reuses existing search logic) ──
+    const venues = await fetchVenues(city, state);
+    if (!venues || !venues.length) throw new Error('No venues returned. Try again.');
+
+    const total = venues.length;
+    setAgentProgress(10, `Found ${total} venues — drafting emails...`, `0 / ${total}`);
+
+    // ── STEP 2: for each venue, generate a draft email ──
+    for (let i = 0; i < venues.length; i++) {
+      const venue = venues[i];
+      const pct = 10 + Math.round((i / total) * 85);
+      setAgentProgress(pct, `Drafting pitch for ${venue.name}...`, `${i + 1} / ${total}`);
+
+      // Add a placeholder card to the queue immediately so user sees progress
+      reviewQueue.push({ venue, subject: null, body: null, status: 'pending', id: `rq-${Date.now()}-${i}` });
+      updateReviewBadge();
+
+      try {
+        const draft = await fetchEmailDraft(venue, key);
+        reviewQueue[reviewQueue.length - 1].subject = draft.subject;
+        reviewQueue[reviewQueue.length - 1].body    = draft.body;
+      } catch (emailErr) {
+        reviewQueue[reviewQueue.length - 1].subject = 'Error generating draft';
+        reviewQueue[reviewQueue.length - 1].body    = `Could not generate email: ${emailErr.message}`;
+      }
+    }
+
+    setAgentProgress(100, 'All drafts ready — review your queue', `${total} / ${total}`);
+
+    // Auto-navigate to review queue
+    setTimeout(() => {
+      goPage('review');
+      document.getElementById('agent-progress').style.display = 'none';
+    }, 800);
+
+  } catch (err) {
+    setAgentProgress(0, '', '');
+    document.getElementById('agent-progress').style.display = 'none';
+    document.getElementById('venue-results').innerHTML =
+      `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Agent error: ${esc(err.message)}</div>`;
+  }
+
+  document.getElementById('agent-btn').disabled = false;
+  document.getElementById('search-btn').disabled = false;
+}
+
+function setAgentProgress(pct, label, count) {
+  document.getElementById('agent-progress-bar').style.width = pct + '%';
+  document.getElementById('agent-status-label').textContent = label;
+  document.getElementById('agent-progress-count').textContent = count;
+}
+
+// Shared venue fetcher — same logic as searchVenues but returns the array instead of rendering
+async function fetchVenues(city, state) {
+  const key   = getKey();
+  const type  = document.getElementById('search-type').value;
+  const genre = document.getElementById('search-genre').value;
+  const count = document.getElementById('search-count').value;
+
+  const genreClause = genre !== 'any' ? ` that book ${genre} DJs` : '';
+  const socialNote  = webSearchEnabled
+    ? ' For each venue, search for their website AND social media presence (Instagram handle, Facebook page, TikTok). Return real, verified contact info where available.'
+    : '';
+
+  const prompt = webSearchEnabled
+    ? `You are a music industry researcher helping DJ Ike Dillman find real nightclub and bar booking opportunities.
+Use web search to find ${count} real, currently operating ${type} venues in ${city}, ${state}${genreClause}.${socialNote}
+Confirm each is real and operating. Prioritize venues with active DJ programming.
+Respond ONLY with valid JSON, no markdown, no backticks:
+{"venues":[{"name":"Venue Name","address":"Street or neighborhood","city":"${city}, ${state}","type":"nightclub|bar|lounge|etc","vibe":"One sentence atmosphere","musicFormats":["hip-hop"],"capacity":"~300","bookingContact":"email or DM on Instagram","website":"https://... or null","instagram":"@handle or null","facebook":"https://... or null","tiktok":"@handle or null","tags":["hip-hop"],"djNightInfo":"Brief DJ night description","pitchAngle":"Why Ike is a fit","verified":true}]}`
+    : `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+List ${count} ${type} venues in ${city}, ${state}${genreClause} that feature DJ performances.
+Respond ONLY with valid JSON, no markdown, no backticks:
+{"venues":[{"name":"Venue Name","address":"Street or neighborhood","city":"${city}, ${state}","type":"nightclub|bar|lounge|etc","vibe":"One sentence atmosphere","musicFormats":["hip-hop"],"capacity":"~300","bookingContact":"email or contact via website","website":"https://... or null","instagram":null,"facebook":null,"tiktok":null,"tags":["hip-hop"],"djNightInfo":"Brief DJ night description","pitchAngle":"Why Ike is a fit","verified":false}]}`;
+
+  const requestBody = {
+    model: CLAUDE_MODEL,
+    max_tokens: 4000,
+    messages: [{ role: 'user', content: prompt }]
+  };
+  if (webSearchEnabled) {
+    requestBody.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+  }
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(requestBody)
+  });
+
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    const msg = e.error?.message || `API error ${res.status}`;
+    if (webSearchEnabled && (msg.includes('web_search') || msg.includes('tool') || res.status === 400)) {
+      throw new Error('Web search is not enabled on your account. Turn off the web search toggle or enable it at console.anthropic.com.');
+    }
+    throw new Error(msg);
+  }
+
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text || '').join('');
+  const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+  return parsed.venues || [];
+}
+
+// Shared email drafter — same logic as generateEmail but returns {subject, body} instead of rendering
+async function fetchEmailDraft(venue, key) {
+  const profile    = getProfile();
+  const highlights = profile.highlights
+    ? profile.highlights.split('\n').filter(Boolean).map(h => `• ${h}`).join('\n')
+    : '• Available for nightclub residencies and events';
+
+  const prompt = `You are helping DJ Ike Dillman write a personalized booking outreach email to a nightclub/venue.
+
+VENUE INFO:
+Name: ${venue.name}
+Location: ${venue.city}
+Vibe: ${venue.vibe}
+Music Format: ${(venue.musicFormats || []).join(', ')}
+DJ Night Info: ${venue.djNightInfo || 'Regular DJ events'}
+Pitch Angle: ${venue.pitchAngle || 'Great fit for open format DJ'}
+
+DJ PROFILE:
+Name: ${profile.name || 'DJ Ike Dillman'}
+Location: ${profile.location || 'Raleigh, NC'}
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+Website: ${profile.website || ''}
+Instagram: ${profile.instagram || ''}
+Email: ${profile.email || ''}
+Phone: ${profile.phone || ''}
+Bio: ${profile.bio || 'Raleigh-based open format DJ with years of experience.'}
+Highlights:
+${highlights}
+Rate Info: ${profile.rate || ''}
+
+Write a professional, personalized booking outreach email. It should:
+- Have a compelling subject line
+- Open with something specific about THIS venue
+- Briefly introduce DJ Ike Dillman and why he fits THEIR vibe
+- Mention the SoundCloud link naturally
+- Include 2-3 performance highlights
+- End with a clear call to action
+- Tone: professional but with personality, not stiff
+- Length: 200-280 words
+
+Respond ONLY with valid JSON:
+{"subject":"Email subject line","body":"Full email body starting with Dear/Hi [Booking Manager]"}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+  });
+
+  const data = await res.json();
+  const text = (data.content || []).map(b => b.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+// ══ REVIEW QUEUE ══
+function updateReviewBadge() {
+  const pending = reviewQueue.filter(r => r.status === 'pending').length;
+  const badge   = document.getElementById('nav-review-badge');
+  if (!badge) return;
+  if (pending > 0) {
+    badge.textContent = pending;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function renderReviewQueue() {
+  const list    = document.getElementById('review-list');
+  const empty   = document.getElementById('review-empty');
+  const summary = document.getElementById('review-summary');
+
+  if (!reviewQueue.length) {
+    empty.style.display = 'block';
+    summary.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+
+  empty.style.display = 'none';
+  summary.style.display = 'block';
+
+  const total    = reviewQueue.length;
+  const approved = reviewQueue.filter(r => r.status === 'approved').length;
+  const pending  = reviewQueue.filter(r => r.status === 'pending').length;
+  document.getElementById('review-count-label').textContent =
+    `${total} drafts — ${approved} approved · ${pending} pending`;
+
+  list.innerHTML = '';
+  reviewQueue.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'review-card' + (item.status === 'approved' ? ' approved' : item.status === 'discarded' ? ' discarded' : '');
+    card.id = `review-card-${idx}`;
+    card.style.animationDelay = (idx * 0.04) + 's';
+
+    const statusCls   = { pending: 'rsb-pending', approved: 'rsb-approved', discarded: 'rsb-discarded' }[item.status];
+    const statusLabel = { pending: 'Pending review', approved: 'Approved', discarded: 'Discarded' }[item.status];
+
+    const socialLinks = [];
+    const v = item.venue;
+    if (v.website)   socialLinks.push(`<a href="${esc(v.website)}" target="_blank" class="social-link"><i class="ti ti-world"></i> Website</a>`);
+    if (v.instagram) socialLinks.push(`<a href="https://instagram.com/${v.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(v.instagram)}</a>`);
+    if (v.facebook)  socialLinks.push(`<a href="${esc(v.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+    const socialHTML = socialLinks.length ? `<div class="venue-social" style="margin-top:6px;">${socialLinks.join('')}</div>` : '';
+
+    const isGenerating = item.subject === null;
+    const emailSection = isGenerating
+      ? `<div class="review-generating"><i class="ti ti-loader-2"></i> Drafting email...</div>`
+      : `<div class="review-email-section">
+          <div class="review-email-label">Drafted email</div>
+          <div class="review-subject">Subject: <span id="subj-${idx}">${esc(item.subject || '')}</span></div>
+          <textarea class="review-body-edit" id="body-${idx}" rows="8">${esc(item.body || '')}</textarea>
+        </div>`;
+
+    const actionButtons = isGenerating ? '' : item.status === 'approved'
+      ? `<div class="review-actions">
+          <button class="btn btn-ghost" style="font-size:12px;" onclick="copyReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy email</button>
+          ${buildMailtoBtn(idx, item)}
+          <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+        </div>`
+      : item.status === 'discarded'
+      ? `<div class="review-actions">
+          <button class="btn btn-ghost" style="font-size:12px;" onclick="restoreReviewItem(${idx})"><i class="ti ti-arrow-back-up"></i> Restore</button>
+        </div>`
+      : `<div class="review-actions">
+          <button class="btn btn-approve" style="font-size:12px;" onclick="approveReviewItem(${idx})"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
+          <button class="btn btn-ghost btn-mailto" style="font-size:12px;" onclick="approveAndMailto(${idx})"><i class="ti ti-send"></i> Approve &amp; open email</button>
+          <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+        </div>`;
+
+    card.innerHTML = `
+      <div class="review-card-header">
+        <div>
+          <div class="review-venue-name">${esc(v.name)}</div>
+          <div class="review-venue-meta">${esc(v.city)} · ${esc(v.type || '')} ${v.capacity ? '· ' + esc(v.capacity) : ''}</div>
+          ${socialHTML}
+        </div>
+        <span class="review-status-badge ${statusCls}">${statusLabel}</span>
+      </div>
+      ${emailSection}
+      ${actionButtons}
+    `;
+    list.appendChild(card);
+  });
+}
+
+function buildMailtoBtn(idx, item) {
+  const contact = item.venue?.bookingContact || '';
+  const emailMatch = contact.match(/[^\s@]+@[^\s@]+\.[^\s@]+/);
+  if (!emailMatch) return '';
+  const to      = encodeURIComponent(emailMatch[0]);
+  const subject = encodeURIComponent(item.subject || '');
+  const body    = encodeURIComponent(item.body || '');
+  return `<a href="mailto:${to}?subject=${subject}&body=${body}" class="btn btn-mailto" style="font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;"><i class="ti ti-mail"></i> Open in email client</a>`;
+}
+
+function approveReviewItem(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  // Capture any edits the user made to the body textarea
+  const bodyEl = document.getElementById(`body-${idx}`);
+  if (bodyEl) item.body = bodyEl.value;
+  item.status = 'approved';
+  // Commit to CRM
+  const existing = crmData.find(e => e.name.toLowerCase() === item.venue.name.toLowerCase());
+  if (!existing) {
+    crmData.push({
+      id: Date.now().toString() + idx,
+      name: item.venue.name,
+      city: item.venue.city || '',
+      contact: item.venue.bookingContact || '',
+      genre: (item.venue.musicFormats || []).join(', '),
+      status: 'new',
+      followUpDate: '',
+      notes: `[Agent draft] ${item.venue.pitchAngle || ''}`,
+      addedAt: new Date().toISOString()
+    });
+    saveCRM();
+    updateStats();
+  }
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+function approveAndMailto(idx) {
+  approveReviewItem(idx);
+  // Small delay so the card re-renders with the mailto button before we auto-click it
+  setTimeout(() => {
+    const mailBtn = document.querySelector(`#review-card-${idx} a[href^="mailto:"]`);
+    if (mailBtn) mailBtn.click();
+  }, 120);
+}
+
+function discardReviewItem(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  item.status = 'discarded';
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+function restoreReviewItem(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  item.status = 'pending';
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+function copyReviewEmail(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  const bodyEl = document.getElementById(`body-${idx}`);
+  const body   = bodyEl ? bodyEl.value : (item.body || '');
+  const full   = `Subject: ${item.subject}\n\n${body}`;
+  navigator.clipboard.writeText(full).then(() => {
+    const btn = document.querySelector(`#review-card-${idx} .btn-ghost`);
+    if (btn) { btn.innerHTML = '<i class="ti ti-check"></i> Copied!'; setTimeout(() => btn.innerHTML = '<i class="ti ti-copy"></i> Copy email', 2000); }
+  });
+}
+
+function clearReviewQueue() {
+  if (!confirm('Clear all drafts from the review queue?')) return;
+  reviewQueue = [];
+  updateReviewBadge();
+  renderReviewQueue();
 }
 
 // ══ CRM ══
