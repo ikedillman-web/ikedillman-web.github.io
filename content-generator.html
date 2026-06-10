@@ -86,13 +86,6 @@
     .plat-pill.on { border-color:var(--accent); background:rgba(255,69,0,0.1); color:var(--accent2); }
     .plat-pill i { font-size:15px; }
 
-    /* GENERATE BTN */
-    .gen-btn { width:100%; padding:14px; background:var(--accent); color:#fff; border:none; border-radius:var(--radius-lg); font-family:var(--font-display); font-size:22px; letter-spacing:0.08em; cursor:pointer; transition:all 0.2s; margin-top:1.25rem; position:relative; overflow:hidden; }
-    .gen-btn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 60%); }
-    .gen-btn:hover { background:var(--accent2); box-shadow:0 0 30px var(--accent-glow); }
-    .gen-btn:active { transform:scale(0.99); }
-    .gen-btn:disabled { opacity:0.4; cursor:not-allowed; box-shadow:none; }
-
     /* LOADING */
     .loading { display:none; text-align:center; padding:3rem; color:var(--muted2); font-size:13px; font-family:var(--font-mono); }
     .loading i { display:block; font-size:30px; margin-bottom:12px; color:var(--accent); animation:spin 1s linear infinite; }
@@ -115,6 +108,26 @@
     .hashtags { font-size:13px; color:var(--accent2); opacity:0.8; margin-bottom:10px; line-height:1.6; font-family:var(--font-mono); }
     .tip { display:flex; align-items:flex-start; gap:7px; font-size:12px; font-family:var(--font-mono); background:var(--surface2); border-radius:var(--radius); padding:9px 12px; color:var(--muted2); line-height:1.5; }
     .tip i { font-size:13px; flex-shrink:0; margin-top:1px; color:var(--accent2); }
+
+    /* PER-PLATFORM CARDS */
+    .plat-gen-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
+    @media(max-width:540px){ .plat-gen-grid { grid-template-columns:1fr; } }
+    .plat-gen-card { background:var(--surface); border:0.5px solid var(--border2); border-radius:var(--radius-xl); overflow:hidden; transition:border-color 0.2s; }
+    .plat-gen-card.done { border-color:rgba(255,119,51,0.4); }
+    .plat-gen-header { display:flex; align-items:center; justify-content:space-between; padding:1rem 1.25rem; border-bottom:0.5px solid var(--border2); }
+    .plat-gen-name { display:flex; align-items:center; gap:8px; font-family:var(--font-display); font-size:18px; letter-spacing:0.05em; color:var(--accent2); }
+    .plat-gen-name i { font-size:20px; }
+    .plat-gen-actions { display:flex; gap:6px; align-items:center; }
+    .plat-gen-btn { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-family:var(--font-mono); padding:5px 14px; background:var(--accent); color:#fff; border:none; border-radius:999px; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+    .plat-gen-btn:hover { background:var(--accent2); }
+    .plat-gen-btn:disabled { opacity:0.4; cursor:not-allowed; }
+    .plat-gen-btn.regenerate { background:var(--surface2); color:var(--muted2); border:0.5px solid var(--border2); }
+    .plat-gen-btn.regenerate:hover { color:var(--text); border-color:var(--muted2); }
+    .plat-gen-body { padding:1.25rem; display:none; }
+    .plat-gen-body.show { display:block; }
+    .plat-gen-loading { padding:1.25rem; text-align:center; font-size:12px; font-family:var(--font-mono); color:var(--muted2); display:none; }
+    .plat-gen-loading i { font-size:20px; color:var(--accent); display:block; margin-bottom:6px; animation:spin 1s linear infinite; }
+    .plat-gen-loading.show { display:block; }
 
     /* SHARED MEDIA PANEL STYLES */
     .drop-zone { border:1.5px dashed var(--border2); border-radius:var(--radius-xl); padding:3rem 1.5rem; text-align:center; cursor:pointer; transition:all 0.2s; background:var(--surface2); margin-bottom:1rem; }
@@ -262,17 +275,63 @@
     </div>
     <div class="card">
       <div class="card-title">Platforms</div>
-      <div class="platforms">
-        <label class="plat-pill on" id="lbl-instagram"><input type="checkbox" id="p-instagram" checked onchange="togglePlat('instagram')" /><i class="ti ti-brand-instagram"></i> Instagram</label>
-        <label class="plat-pill on" id="lbl-tiktok"><input type="checkbox" id="p-tiktok" checked onchange="togglePlat('tiktok')" /><i class="ti ti-brand-tiktok"></i> TikTok</label>
-        <label class="plat-pill on" id="lbl-facebook"><input type="checkbox" id="p-facebook" checked onchange="togglePlat('facebook')" /><i class="ti ti-brand-facebook"></i> Facebook</label>
-        <label class="plat-pill on" id="lbl-snapchat"><input type="checkbox" id="p-snapchat" checked onchange="togglePlat('snapchat')" /><i class="ti ti-brand-snapchat"></i> Snapchat</label>
-      </div>
+      <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:0;">Each platform generates independently — click Generate on any card when ready.</p>
     </div>
-    <button class="gen-btn" id="gen-btn" onclick="generate()">✦ Generate Social Content</button>
+
     <div class="error-msg" id="error-msg"></div>
-    <div class="loading" id="loading"><i class="ti ti-loader-2"></i>Generating your posts...</div>
-    <div id="results"></div>
+
+    <!-- Per-platform generate cards -->
+    <div class="plat-gen-grid" id="plat-gen-grid">
+
+      <div class="plat-gen-card" id="pgc-instagram">
+        <div class="plat-gen-header">
+          <div class="plat-gen-name"><i class="ti ti-brand-instagram"></i> Instagram</div>
+          <div class="plat-gen-actions">
+            <span class="copy-btn" id="copy-instagram" style="display:none;" onclick="copyPlatform('instagram')"><i class="ti ti-copy"></i> Copy</span>
+            <button class="plat-gen-btn" id="btn-instagram" onclick="generatePlatform('instagram')"><i class="ti ti-sparkles"></i> Generate</button>
+          </div>
+        </div>
+        <div class="plat-gen-loading" id="loading-instagram"><i class="ti ti-loader-2"></i>Writing your caption...</div>
+        <div class="plat-gen-body" id="body-instagram"></div>
+      </div>
+
+      <div class="plat-gen-card" id="pgc-tiktok">
+        <div class="plat-gen-header">
+          <div class="plat-gen-name"><i class="ti ti-brand-tiktok"></i> TikTok</div>
+          <div class="plat-gen-actions">
+            <span class="copy-btn" id="copy-tiktok" style="display:none;" onclick="copyPlatform('tiktok')"><i class="ti ti-copy"></i> Copy</span>
+            <button class="plat-gen-btn" id="btn-tiktok" onclick="generatePlatform('tiktok')"><i class="ti ti-sparkles"></i> Generate</button>
+          </div>
+        </div>
+        <div class="plat-gen-loading" id="loading-tiktok"><i class="ti ti-loader-2"></i>Writing your caption...</div>
+        <div class="plat-gen-body" id="body-tiktok"></div>
+      </div>
+
+      <div class="plat-gen-card" id="pgc-facebook">
+        <div class="plat-gen-header">
+          <div class="plat-gen-name"><i class="ti ti-brand-facebook"></i> Facebook</div>
+          <div class="plat-gen-actions">
+            <span class="copy-btn" id="copy-facebook" style="display:none;" onclick="copyPlatform('facebook')"><i class="ti ti-copy"></i> Copy</span>
+            <button class="plat-gen-btn" id="btn-facebook" onclick="generatePlatform('facebook')"><i class="ti ti-sparkles"></i> Generate</button>
+          </div>
+        </div>
+        <div class="plat-gen-loading" id="loading-facebook"><i class="ti ti-loader-2"></i>Writing your caption...</div>
+        <div class="plat-gen-body" id="body-facebook"></div>
+      </div>
+
+      <div class="plat-gen-card" id="pgc-snapchat">
+        <div class="plat-gen-header">
+          <div class="plat-gen-name"><i class="ti ti-brand-snapchat"></i> Snapchat</div>
+          <div class="plat-gen-actions">
+            <span class="copy-btn" id="copy-snapchat" style="display:none;" onclick="copyPlatform('snapchat')"><i class="ti ti-copy"></i> Copy</span>
+            <button class="plat-gen-btn" id="btn-snapchat" onclick="generatePlatform('snapchat')"><i class="ti ti-sparkles"></i> Generate</button>
+          </div>
+        </div>
+        <div class="plat-gen-loading" id="loading-snapchat"><i class="ti ti-loader-2"></i>Writing your caption...</div>
+        <div class="plat-gen-body" id="body-snapchat"></div>
+      </div>
+
+    </div>
   </div>
 
   <!-- ══ TAB: AUDIO ══ -->
@@ -441,82 +500,134 @@ function switchTab(t) {
   });
 }
 
-// ══ PLATFORM PILLS ══
-function togglePlat(id) {
-  document.getElementById('lbl-'+id).classList.toggle('on', document.getElementById('p-'+id).checked);
-}
-
-// ══ ERROR ══
+// ══ UTILS ══
 function showError(msg) { const e=document.getElementById('error-msg'); e.textContent=msg; e.style.display='block'; }
 function hideError() { document.getElementById('error-msg').style.display='none'; }
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function copyText(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.innerHTML='<i class="ti ti-check"></i> Copied!';setTimeout(()=>btn.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
 
-// ══ GENERATE POSTS ══
+// ══ PLATFORM TONE GUIDE ══
 const platMeta = {
-  instagram:{icon:'ti-brand-instagram',label:'Instagram'},
-  tiktok:{icon:'ti-brand-tiktok',label:'TikTok'},
-  facebook:{icon:'ti-brand-facebook',label:'Facebook'},
-  snapchat:{icon:'ti-brand-snapchat',label:'Snapchat'}
+  instagram: { icon:'ti-brand-instagram', label:'Instagram', tone:'visual and aesthetic — vivid, mood-driven language, 150 words max' },
+  tiktok:    { icon:'ti-brand-tiktok',    label:'TikTok',    tone:'energetic hook-first — first line must grab immediately, punchy, 80 words max' },
+  facebook:  { icon:'ti-brand-facebook',  label:'Facebook',  tone:'conversational and warm — like telling a friend about it, 120 words max' },
+  snapchat:  { icon:'ti-brand-snapchat',  label:'Snapchat',  tone:'ultra-short overlay text only — max 20 words, no hashtags' }
 };
 
-async function generate() {
+// ══ GENERATE SINGLE PLATFORM ══
+async function generatePlatform(platform) {
   hideError();
   const apiKey = getKey();
   if (!apiKey) { showError('Please save your Anthropic API key first.'); return; }
-  const url=document.getElementById('sc-url').value.trim();
-  const title=document.getElementById('mix-title').value.trim();
-  const tracklist=document.getElementById('tracklist').value.trim();
-  const audience=document.getElementById('audience').value;
-  const genre=document.getElementById('genre').value;
-  const platforms=['instagram','tiktok','facebook','snapchat'].filter(p=>document.getElementById('p-'+p).checked);
-  if (!title&&!url){showError('Enter a mix title or SoundCloud URL.');return;}
-  if (!platforms.length){showError('Select at least one platform.');return;}
-  document.getElementById('loading').style.display='block';
-  document.getElementById('results').innerHTML='';
-  document.getElementById('results').style.display='none';
-  document.getElementById('gen-btn').disabled=true;
-  const scLink=url||'https://soundcloud.com/ike_dillman';
-  const platList=platforms.map(p=>platMeta[p].label).join(', ');
-  const prompt=`You are a social media content creator specializing in DJ and nightlife promotion. Generate social media posts for DJ Ike Dillman (ike_dillman on SoundCloud, Raleigh NC).
-Mix/Track: ${title||'New Mix'}
+
+  const url       = document.getElementById('sc-url').value.trim();
+  const title     = document.getElementById('mix-title').value.trim();
+  const tracklist = document.getElementById('tracklist').value.trim();
+  const audience  = document.getElementById('audience').value;
+  const genre     = document.getElementById('genre').value;
+
+  if (!title && !url) { showError('Enter a mix title or SoundCloud URL first.'); return; }
+
+  const scLink = url || 'https://soundcloud.com/ike_dillman';
+  const meta   = platMeta[platform];
+
+  // Show loading state
+  document.getElementById(`btn-${platform}`).disabled = true;
+  document.getElementById(`loading-${platform}`).classList.add('show');
+  document.getElementById(`body-${platform}`).classList.remove('show');
+  document.getElementById(`copy-${platform}`).style.display = 'none';
+
+  const prompt = `You are a social media content creator for DJ Ike Dillman (ike_dillman on SoundCloud, Raleigh NC).
+
+Mix/Track: ${title || 'New Mix'}
 SoundCloud Link: ${scLink}
-Tracklist/Description: ${tracklist||'Not provided'}
-Target Audience: ${audience}
-Genre/Style: ${genre}
-Generate a post for each platform: ${platList}
-Each post: match platform tone (Instagram: visual/aesthetic, TikTok: energetic hook, Facebook: conversational, Snapchat: max 120 chars overlay text). Include emojis, SoundCloud link where natural, hashtags, authentic DJ brand feel.
+${tracklist ? 'Tracklist: ' + tracklist : ''}
+Audience: ${audience}
+Genre: ${genre}
+Platform: ${meta.label}
+Tone: ${meta.tone}
+
+Write one post for ${meta.label}. Include emojis, the SoundCloud link naturally${platform !== 'snapchat' ? ', and relevant hashtags' : ''}.
+
 Respond ONLY with valid JSON, no markdown, no backticks:
-{"posts":[{"platform":"Instagram","caption":"...","hashtags":"...","tip":"one short posting tip"}]}`;
+{"caption":"...","hashtags":"..."}${platform === 'snapchat' ? '\nNote: hashtags field should be empty string for Snapchat.' : ''}`;
+
   try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:CLAUDE_MODEL,max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-    if(!res.ok){const e=await res.json().catch(()=>({}));if(res.status===401)throw new Error('Invalid API key.');if(res.status===429)throw new Error('Rate limit — try again shortly.');throw new Error(e.error?.message||`API error ${res.status}`);}
-    const data=await res.json();
-    const text=data.content.map(i=>i.text||'').join('');
-    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
-    renderResults(parsed.posts);
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: CLAUDE_MODEL,
+        max_tokens: 500,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      if (res.status === 401) throw new Error('Invalid API key.');
+      if (res.status === 429) throw new Error('Rate limit — try again shortly.');
+      throw new Error(e.error?.message || `API error ${res.status}`);
+    }
+
+    const data = await res.json();
+    const text = (data.content || []).map(i => i.text || '').join('');
+    let parsed;
+    try {
+      parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+    } catch(parseErr) {
+      throw new Error('Could not parse response — try again.');
+    }
+
+    renderPlatform(platform, parsed);
+
   } catch(err) {
-    document.getElementById('loading').style.display='none';
-    document.getElementById('gen-btn').disabled=false;
-    showError(err.message||'Something went wrong. Try again.');
+    document.getElementById(`loading-${platform}`).classList.remove('show');
+    document.getElementById(`btn-${platform}`).disabled = false;
+    showError(`${meta.label}: ${err.message}`);
   }
 }
 
-function renderResults(posts) {
-  const c=document.getElementById('results'); c.innerHTML='';
-  posts.forEach((post,i)=>{
-    const pKey=post.platform.toLowerCase();
-    const meta=platMeta[pKey]||{icon:'ti-music',label:post.platform};
-    const full=post.caption+(post.hashtags?'\n\n'+post.hashtags:'');
-    const card=document.createElement('div'); card.className='result-card'; card.style.animationDelay=(i*0.08)+'s';
-    card.innerHTML=`<div class="result-header"><div class="result-plat"><i class="ti ${meta.icon}"></i> ${meta.label}</div><button class="copy-btn" onclick="copyText(this,${JSON.stringify(full)})"><i class="ti ti-copy"></i> Copy</button></div><div class="caption">${esc(post.caption)}</div>${post.hashtags?`<div class="hashtags">${esc(post.hashtags)}</div>`:''} ${post.tip?`<div class="tip"><i class="ti ti-bulb"></i>${esc(post.tip)}</div>`:''}`;
-    c.appendChild(card);
-  });
-  document.getElementById('loading').style.display='none';
-  document.getElementById('results').style.display='block';
-  document.getElementById('gen-btn').disabled=false;
+function renderPlatform(platform, post) {
+  const body = document.getElementById(`body-${platform}`);
+  const full = post.caption + (post.hashtags ? '\n\n' + post.hashtags : '');
+
+  body.innerHTML = `
+    <div class="caption">${esc(post.caption)}</div>
+    ${post.hashtags ? `<div class="hashtags">${esc(post.hashtags)}</div>` : ''}
+  `;
+
+  // Store full text for copy
+  body.dataset.full = full;
+
+  body.classList.add('show');
+  document.getElementById(`loading-${platform}`).classList.remove('show');
+  document.getElementById(`pgc-${platform}`).classList.add('done');
+
+  // Swap Generate → Regenerate
+  const btn = document.getElementById(`btn-${platform}`);
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-refresh"></i> Regenerate';
+  btn.classList.add('regenerate');
+
+  // Show copy button
+  document.getElementById(`copy-${platform}`).style.display = 'inline-flex';
 }
 
-function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function copyText(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.innerHTML='<i class="ti ti-check"></i> Copied!';setTimeout(()=>btn.innerHTML='<i class="ti ti-copy"></i> Copy',2000);});}
+function copyPlatform(platform) {
+  const body = document.getElementById(`body-${platform}`);
+  const text = body.dataset.full || '';
+  const btn  = document.getElementById(`copy-${platform}`);
+  navigator.clipboard.writeText(text).then(() => {
+    btn.innerHTML = '<i class="ti ti-check"></i> Copied!';
+    setTimeout(() => btn.innerHTML = '<i class="ti ti-copy"></i> Copy', 2000);
+  });
+}
 
 // ══ DRAG & DROP ══
 function dzOver(e,id){e.preventDefault();document.getElementById(id).classList.add('drag-over');}
