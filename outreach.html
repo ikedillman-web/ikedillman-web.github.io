@@ -267,6 +267,13 @@
     .review-generating { padding:1.25rem 1.5rem;font-size:12px;font-family:var(--font-mono);color:var(--muted2);display:flex;align-items:center;gap:8px; }
     .review-generating i { font-size:16px;color:var(--purple);animation:spin 1s linear infinite; }
 
+    .ab-verify { background: var(--surface2); color: var(--blue); border: 0.5px solid rgba(56,189,248,0.3); }
+    .ab-verify:hover { border-color: var(--blue); background: var(--blue-dim); }
+    .ab-verify:disabled { opacity: 0.5; cursor: not-allowed; }
+    .verify-result { font-size:11px;font-family:var(--font-mono);color:var(--muted2);margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--radius);border:0.5px solid var(--border2);line-height:1.6; }
+    .verify-result.success { border-color:rgba(56,189,248,0.3);color:var(--blue); }
+    .verify-result.error { border-color:rgba(239,68,68,0.3);color:var(--red); }
+
     /* ── RESPONSIVE ── */
     @media(max-width:700px){
       .app{grid-template-columns:1fr;}
@@ -338,7 +345,7 @@
         <div class="grid-2" style="margin-top:12px;">
           <div class="field">
             <label class="field-label">Music Genre Focus</label>
-            <select id="search-genre">
+            <select id="search-genre" onchange="handleGenreChange(this.value)">
               <option value="any">Any / Open Format</option>
               <option value="hip-hop and r&b">Hip-Hop & R&B</option>
               <option value="top 40">Top 40</option>
@@ -346,6 +353,35 @@
               <option value="Latin">Latin</option>
               <option value="throwbacks and old school">Throwbacks</option>
             </select>
+            <!-- EDM sub-genre — shown only when EDM is selected -->
+            <div id="edm-subgenre-wrap" style="display:none;margin-top:8px;">
+              <label class="field-label" style="margin-bottom:5px;">EDM Sub-Genre <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+              <select id="search-subgenre">
+                <option value="">— All Electronic / No preference —</option>
+                <optgroup label="Dance Floor / Club">
+                  <option value="Drum &amp; Bass / DnB">Drum &amp; Bass / DnB</option>
+                  <option value="Breaks / Breakbeat">Breaks / Breakbeat</option>
+                  <option value="Jungle">Jungle</option>
+                  <option value="Tech House">Tech House</option>
+                  <option value="Deep House">Deep House</option>
+                  <option value="Progressive House">Progressive House</option>
+                  <option value="Trance / Psytrance">Trance / Psytrance</option>
+                  <option value="Techno">Techno</option>
+                  <option value="Hardstyle / Hard Dance">Hardstyle / Hard Dance</option>
+                </optgroup>
+                <optgroup label="Festival / Rave">
+                  <option value="Dubstep / Bass Music">Dubstep / Bass Music</option>
+                  <option value="Riddim">Riddim</option>
+                  <option value="Trap (Electronic)">Trap (Electronic)</option>
+                  <option value="Future Bass">Future Bass</option>
+                  <option value="Liquid DnB">Liquid DnB</option>
+                </optgroup>
+                <optgroup label="Crossover / Hybrid">
+                  <option value="Open Format Electronic">Open Format Electronic</option>
+                  <option value="Electro / Big Room">Electro / Big Room</option>
+                </optgroup>
+              </select>
+            </div>
           </div>
           <div class="field">
             <label class="field-label">Number of Venues to Find</label>
@@ -463,7 +499,20 @@
           <div class="field"><label class="field-label">Location</label><input type="text" id="p-location" value="Raleigh, NC" /></div>
         </div>
         <div class="field" style="margin-top:12px;"><label class="field-label">SoundCloud URL</label><input type="url" id="p-soundcloud" value="https://soundcloud.com/ike_dillman" /></div>
-        <div class="field"><label class="field-label">Website / Booking Page (optional)</label><input type="url" id="p-website" placeholder="https://..." /></div>
+        <div class="field"><label class="field-label">Website (optional)</label><input type="url" id="p-website" placeholder="https://..." /></div>
+        <div class="field">
+          <label class="field-label">Booking Page URL</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="url" id="p-booking" placeholder="https://ikedillman-web.github.io/booking.html" />
+            <a id="p-booking-preview" href="#" target="_blank" title="Preview booking page"
+               style="display:none;color:var(--accent2);font-size:18px;flex-shrink:0;">
+              <i class="ti ti-external-link"></i>
+            </a>
+          </div>
+          <div style="font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-top:4px;">
+            Included in outreach emails so venues can learn more and enquire directly.
+          </div>
+        </div>
         <div class="field"><label class="field-label">Instagram Handle</label><input type="text" id="p-instagram" placeholder="@ikeDillman" /></div>
       </div>
       <div class="card">
@@ -515,7 +564,7 @@
         <div class="card-title">How this tool uses the API</div>
         <div style="font-size:13px;color:var(--muted2);line-height:1.7;">
           <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search off)</strong> — Claude uses its training knowledge to suggest nightclubs, bars, and lounges in your target city. Fast and free beyond standard token cost, but venues may not be current.</p>
-          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search on)</strong> — Claude searches the live web via Brave Search to find real, currently operating venues with verified websites, Instagram handles, Facebook pages, and booking contacts. Requires web search to be enabled in your <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2);">Anthropic Console</a>. Costs $0.01 per search on top of token usage.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search on)</strong> — Claude performs at most 2 web searches to find a full batch of real venues. Costs ~$0.02–0.05 per batch search. For deeper contact details on a specific venue, use the <strong style="color:var(--text);">Verify</strong> button on any card — that fires one targeted search for that venue only (~$0.01).</p>
           <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Outreach Email</strong> — Claude generates a personalized pitch for each venue, matching your DJ profile to their specific vibe and format.</p>
           <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Model</strong> — Currently using <span style="font-family:var(--font-mono);color:var(--accent2);">claude-sonnet-4-6</span>. To update the model, change the <span style="font-family:var(--font-mono);color:var(--accent2);">CLAUDE_MODEL</span> constant at the top of this file's script.</p>
           <p>• <strong style="color:var(--text);">Cost</strong> — Each venue search uses roughly 2,000–4,000 tokens (~$0.01–0.02 at current Claude Sonnet pricing). Very affordable.</p>
@@ -661,21 +710,55 @@ function updateWebSearchBadge() {
   }
 }
 
-// ══ PROFILE ══
+// ══ GENRE / SUB-GENRE ══
+function handleGenreChange(val) {
+  const wrap = document.getElementById('edm-subgenre-wrap');
+  if (val === 'EDM and electronic') {
+    wrap.style.display = 'block';
+  } else {
+    wrap.style.display = 'none';
+    document.getElementById('search-subgenre').value = '';
+  }
+}
+
+function getGenreClause() {
+  const genre    = document.getElementById('search-genre').value;
+  const subgenre = document.getElementById('search-subgenre')?.value || '';
+  if (genre === 'any') return '';
+  if (genre === 'EDM and electronic' && subgenre) {
+    return ` that book ${subgenre} DJs`;
+  }
+  return ` that book ${genre} DJs`;
+}
+
+
 function loadProfile() {
   const p = JSON.parse(localStorage.getItem(KEY_PROF) || '{}');
-  ['name','email','phone','location','soundcloud','website','instagram','bio','highlights','rate'].forEach(f => {
+  ['name','email','phone','location','soundcloud','website','booking','instagram','bio','highlights','rate'].forEach(f => {
     const el = document.getElementById('p-' + f);
     if (el && p[f]) el.value = p[f];
   });
+  // Show preview link if booking URL is saved
+  const bookingEl = document.getElementById('p-booking');
+  const previewLink = document.getElementById('p-booking-preview');
+  if (bookingEl && previewLink && p.booking) {
+    previewLink.href = p.booking;
+    previewLink.style.display = 'inline';
+  }
 }
 function saveProfile() {
   const p = {};
-  ['name','email','phone','location','soundcloud','website','instagram','bio','highlights','rate'].forEach(f => {
+  ['name','email','phone','location','soundcloud','website','booking','instagram','bio','highlights','rate'].forEach(f => {
     const el = document.getElementById('p-' + f);
     if (el) p[f] = el.value;
   });
   localStorage.setItem(KEY_PROF, JSON.stringify(p));
+  // Update preview link
+  const previewLink = document.getElementById('p-booking-preview');
+  if (previewLink && p.booking) {
+    previewLink.href = p.booking;
+    previewLink.style.display = 'inline';
+  }
   alert('Profile saved!');
 }
 function getProfile() {
@@ -685,7 +768,7 @@ function previewProfile() {
   const p = getProfile();
   const prev = document.getElementById('profile-preview');
   prev.style.display = 'block';
-  prev.textContent = `Name: ${p.name || '—'}\nEmail: ${p.email || '—'}\nPhone: ${p.phone || '—'}\nLocation: ${p.location || '—'}\nSoundCloud: ${p.soundcloud || '—'}\nWebsite: ${p.website || '—'}\nInstagram: ${p.instagram || '—'}\n\nBio:\n${p.bio || '—'}\n\nHighlights:\n${p.highlights || '—'}`;
+  prev.textContent = `Name: ${p.name || '—'}\nEmail: ${p.email || '—'}\nPhone: ${p.phone || '—'}\nLocation: ${p.location || '—'}\nSoundCloud: ${p.soundcloud || '—'}\nWebsite: ${p.website || '—'}\nBooking Page: ${p.booking || '—'}\nInstagram: ${p.instagram || '—'}\n\nBio:\n${p.bio || '—'}\n\nHighlights:\n${p.highlights || '—'}`;
 }
 
 // ══ VENUE SEARCH ══
@@ -705,23 +788,19 @@ async function searchVenues() {
   document.getElementById('venue-results').innerHTML = '';
   document.getElementById('search-btn').disabled = true;
 
-  const genreClause = genre !== 'any' ? ` that book ${genre} DJs` : '';
-  const socialNote  = webSearchEnabled
-    ? ' For each venue, search for their website AND social media presence (Instagram handle, Facebook page, TikTok) — many venues primarily maintain Instagram rather than a traditional website. Return real, verified contact info where available.'
-    : '';
+  const genreClause = getGenreClause();
 
   const prompt = webSearchEnabled
-    ? `You are a music industry researcher helping DJ Ike Dillman find real nightclub and bar booking opportunities.
+    ? `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
 
-Use web search to find ${count} real, currently operating ${type} venues in ${city}, ${state}${genreClause}.${socialNote}
+IMPORTANT — search budget: you may use web search AT MOST 2 times total. Do not search venue by venue.
 
-Search for each venue to confirm it is real and operating. Prioritize venues with active DJ programming. Look specifically for:
-- Their website (if any)
-- Instagram handle (search "[venue name] ${city} instagram")
-- Facebook page
-- Booking contact email or process
+Step 1 — Do ONE broad search: "${count} ${type} venues ${city} ${state}${genreClause} DJ nights"
+Step 2 — Do ONE follow-up search if needed: "${city} ${state} nightclub DJ booking contact instagram"
 
-After researching, respond ONLY with valid JSON, no markdown, no backticks:
+From those results, compile a list of ${count} real, currently operating venues. Extract whatever website, Instagram handle, Facebook page, and booking contact you can find from the search results. Leave fields null if not found — do not search again per venue.
+
+Respond ONLY with valid JSON, no markdown, no backticks:
 {
   "venues": [
     {
@@ -894,7 +973,11 @@ function renderVenues(venues) {
         <button class="action-btn ab-crm" onclick="addToCRM(${JSON.stringify(JSON.stringify(v))})">
           <i class="ti ti-plus"></i> Add to CRM
         </button>
+        <button class="action-btn ab-verify" id="verify-btn-${i}" onclick="verifyVenue(${JSON.stringify(JSON.stringify(v))}, ${i}, 'card')">
+          <i class="ti ti-world-search"></i> Verify
+        </button>
       </div>
+      <div class="verify-result" id="verify-result-${i}" style="display:none;"></div>
     `;
     container.appendChild(card);
   });
@@ -928,6 +1011,7 @@ Name: ${profile.name || 'DJ Ike Dillman'}
 Location: ${profile.location || 'Raleigh, NC'}
 SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
 Website: ${profile.website || ''}
+Booking Page: ${profile.booking || ''}
 Instagram: ${profile.instagram || ''}
 Email: ${profile.email || ''}
 Phone: ${profile.phone || ''}
@@ -1085,15 +1169,18 @@ async function fetchVenues(city, state) {
   const genre = document.getElementById('search-genre').value;
   const count = document.getElementById('search-count').value;
 
-  const genreClause = genre !== 'any' ? ` that book ${genre} DJs` : '';
-  const socialNote  = webSearchEnabled
-    ? ' For each venue, search for their website AND social media presence (Instagram handle, Facebook page, TikTok). Return real, verified contact info where available.'
-    : '';
+  const genreClause = getGenreClause();
 
   const prompt = webSearchEnabled
-    ? `You are a music industry researcher helping DJ Ike Dillman find real nightclub and bar booking opportunities.
-Use web search to find ${count} real, currently operating ${type} venues in ${city}, ${state}${genreClause}.${socialNote}
-Confirm each is real and operating. Prioritize venues with active DJ programming.
+    ? `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+
+IMPORTANT — search budget: you may use web search AT MOST 2 times total. Do not search venue by venue.
+
+Step 1 — Do ONE broad search: "${count} ${type} venues ${city} ${state}${genreClause} DJ nights"
+Step 2 — Do ONE follow-up search if needed: "${city} ${state} nightclub DJ booking contact instagram"
+
+From those results, compile a list of ${count} real, currently operating venues. Extract website, Instagram handle, Facebook page, and booking contact from search results. Leave fields null if not found.
+
 Respond ONLY with valid JSON, no markdown, no backticks:
 {"venues":[{"name":"Venue Name","address":"Street or neighborhood","city":"${city}, ${state}","type":"nightclub|bar|lounge|etc","vibe":"One sentence atmosphere","musicFormats":["hip-hop"],"capacity":"~300","bookingContact":"email or DM on Instagram","website":"https://... or null","instagram":"@handle or null","facebook":"https://... or null","tiktok":"@handle or null","tags":["hip-hop"],"djNightInfo":"Brief DJ night description","pitchAngle":"Why Ike is a fit","verified":true}]}`
     : `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
@@ -1158,6 +1245,7 @@ Name: ${profile.name || 'DJ Ike Dillman'}
 Location: ${profile.location || 'Raleigh, NC'}
 SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
 Website: ${profile.website || ''}
+Booking Page: ${profile.booking || ''}
 Instagram: ${profile.instagram || ''}
 Email: ${profile.email || ''}
 Phone: ${profile.phone || ''}
@@ -1268,8 +1356,10 @@ function renderReviewQueue() {
       : `<div class="review-actions">
           <button class="btn btn-approve" style="font-size:12px;" onclick="approveReviewItem(${idx})"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
           <button class="btn btn-ghost btn-mailto" style="font-size:12px;" onclick="approveAndMailto(${idx})"><i class="ti ti-send"></i> Approve &amp; open email</button>
+          <button class="action-btn ab-verify" id="verify-btn-rq-${idx}" style="font-size:12px;" onclick="verifyVenue(${JSON.stringify(JSON.stringify(item.venue))}, ${idx}, 'queue')"><i class="ti ti-world-search"></i> Verify venue</button>
           <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
-        </div>`;
+        </div>
+        <div class="verify-result" id="verify-result-rq-${idx}" style="display:none;margin:0 1.5rem 1rem;"></div>`;
 
     card.innerHTML = `
       <div class="review-card-header">
@@ -1367,6 +1457,101 @@ function clearReviewQueue() {
   reviewQueue = [];
   updateReviewBadge();
   renderReviewQueue();
+}
+
+// ══ VERIFY VENUE (single targeted web search) ══
+async function verifyVenue(venueJson, idx, context) {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  const venue   = JSON.parse(venueJson);
+  const btnId   = context === 'queue' ? `verify-btn-rq-${idx}` : `verify-btn-${idx}`;
+  const resultId = context === 'queue' ? `verify-result-rq-${idx}` : `verify-result-${idx}`;
+  const btn     = document.getElementById(btnId);
+  const result  = document.getElementById(resultId);
+
+  if (!btn || !result) return;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite;"></i> Verifying...';
+  result.style.display = 'none';
+  result.className = 'verify-result';
+
+  const prompt = `You are verifying a specific nightclub/venue for DJ booking research. Use ONE web search only.
+
+Search for: "${venue.name} ${venue.city} booking contact instagram"
+
+From the results, extract:
+- Is the venue currently operating? (yes/no/unknown)
+- Website URL (if found)
+- Instagram handle (if found)
+- Facebook page (if found)
+- Booking contact email or process (if found)
+- Any other relevant booking info
+
+Respond ONLY with valid JSON, no markdown:
+{"operating":"yes|no|unknown","website":"https://... or null","instagram":"@handle or null","facebook":"https://... or null","bookingContact":"contact info or null","notes":"Any useful booking detail in one sentence or null"}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: CLAUDE_MODEL,
+        max_tokens: 500,
+        tools: [{ type: 'web_search_20260209', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || `API error ${res.status}`;
+      if (msg.includes('web_search') || msg.includes('tool') || res.status === 400) {
+        throw new Error('Web search not enabled on your account. Enable it at console.anthropic.com.');
+      }
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text || '').join('');
+    const info = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+    // Build a readable summary of what was found
+    const found = [];
+    if (info.operating === 'no')       found.push('⚠ May not be operating');
+    if (info.website)                  found.push(`Website: ${info.website}`);
+    if (info.instagram)                found.push(`Instagram: ${info.instagram}`);
+    if (info.facebook)                 found.push(`Facebook: found`);
+    if (info.bookingContact)           found.push(`Contact: ${info.bookingContact}`);
+    if (info.notes)                    found.push(info.notes);
+
+    result.innerHTML = found.length
+      ? found.map(f => `<div>${esc(f)}</div>`).join('')
+      : 'No additional info found.';
+    result.className = 'verify-result success';
+    result.style.display = 'block';
+
+    // If in review queue, patch the venue data in the queue so Approve captures updated info
+    if (context === 'queue' && reviewQueue[idx]) {
+      if (info.website)        reviewQueue[idx].venue.website        = info.website;
+      if (info.instagram)      reviewQueue[idx].venue.instagram      = info.instagram;
+      if (info.facebook)       reviewQueue[idx].venue.facebook       = info.facebook;
+      if (info.bookingContact) reviewQueue[idx].venue.bookingContact = info.bookingContact;
+    }
+
+  } catch (err) {
+    result.innerHTML = `Error: ${esc(err.message)}`;
+    result.className = 'verify-result error';
+    result.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-world-search"></i> Verify';
 }
 
 // ══ CRM ══
