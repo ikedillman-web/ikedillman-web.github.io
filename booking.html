@@ -412,21 +412,6 @@
     }
     .lead-banner.show { display: flex; align-items: center; gap: 10px; }
 
-    /* ── API KEY NOTICE ── */
-    .api-notice {
-      background: var(--surface2);
-      border: 0.5px solid var(--border2);
-      border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem;
-      font-size: 12px;
-      font-family: var(--font-mono);
-      color: var(--muted2);
-      margin-bottom: 1rem;
-      display: none;
-    }
-    .api-notice.show { display: block; }
-    .api-notice a { color: var(--accent2); }
-
     /* ── FOOTER ── */
     .footer {
       border-top: 0.5px solid var(--border2);
@@ -563,13 +548,6 @@
       Fill in the form and the booking agent will respond immediately with availability and next steps. Serious enquiries only — tell us about the venue and the night.
     </p>
 
-    <div class="api-notice" id="api-notice">
-      <i class="ti ti-info-circle" style="vertical-align:-2px;"></i>
-      The booking agent requires an Anthropic API key saved in this browser.
-      This page shares the key saved in the <a href="outreach.html">Venue Outreach tool</a>.
-      Add your key there first, then return here.
-    </div>
-
     <div class="inquiry-form-card" id="inquiry-form-card">
       <div class="grid-2">
         <div class="field">
@@ -659,7 +637,7 @@
 <script>
 // ══ CONFIG ══
 const CLAUDE_MODEL  = 'claude-sonnet-4-6';
-const KEY_API       = 'dj_ike_api_key';
+const ANTHROPIC_KEY = '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';  // ← paste your sk-ant-... key before uploading to GitHub
 const KEY_PROF      = 'dj_ike_profile';
 const KEY_LEADS     = 'dj_ike_leads';
 
@@ -671,7 +649,6 @@ let leadLogged          = false;
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded', () => {
   loadProfile();
-  checkApiKey();
   initScrollReveal();
 });
 
@@ -716,12 +693,6 @@ function loadProfile() {
   // Footer
   document.getElementById('footer-sc').innerHTML =
     `<a href="${esc(sc)}" target="_blank">${esc(sc.replace('https://',''))}</a>`;
-}
-
-function checkApiKey() {
-  if (!localStorage.getItem(KEY_API)) {
-    document.getElementById('api-notice').classList.add('show');
-  }
 }
 
 // ══ INQUIRY SUBMIT ══
@@ -790,27 +761,18 @@ YOUR ROLE:
 }
 
 async function runAgentTurn(userMessage) {
-  const key = localStorage.getItem(KEY_API);
-
   showTyping(true);
   document.getElementById('agent-send').disabled = true;
 
   // Add to conversation history
   conversationHistory.push({ role: 'user', content: userMessage });
 
-  if (!key) {
-    showTyping(false);
-    addMessage('agent', "I'm not able to respond right now — no API key is configured for this booking page. Please have the site owner add an Anthropic API key.");
-    document.getElementById('agent-send').disabled = false;
-    return;
-  }
-
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': key,
+        'x-api-key': ANTHROPIC_KEY,
         'anthropic-version': '2023-06-01',
         'anthropic-dangerous-direct-browser-access': 'true'
       },
