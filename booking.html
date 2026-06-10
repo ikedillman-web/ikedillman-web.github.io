@@ -636,10 +636,10 @@
 
 <script>
 // ══ CONFIG ══
-const CLAUDE_MODEL  = 'claude-sonnet-4-6';
-const ANTHROPIC_KEY = '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';  // ← paste your sk-ant-... key before uploading to GitHub
-const KEY_PROF      = 'dj_ike_profile';
-const KEY_LEADS     = 'dj_ike_leads';
+const CLAUDE_MODEL = 'claude-sonnet-4-6';
+const PROXY_URL    = 'https://ike-booking-proxy.ikedillman.workers.dev';
+const KEY_PROF     = 'dj_ike_profile';
+const KEY_LEADS    = 'dj_ike_leads';
 
 // ══ AGENT STATE ══
 let conversationHistory = [];
@@ -768,13 +768,11 @@ async function runAgentTurn(userMessage) {
   conversationHistory.push({ role: 'user', content: userMessage });
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(PROXY_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
+        'Content-Type':      'application/json',
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
         model: CLAUDE_MODEL,
