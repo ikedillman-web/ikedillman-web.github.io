@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DJ Ike Dillman — Venue Outreach CRM</title>
+  <title>DJ Ike Dillman — Outreach CRM</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
@@ -274,6 +274,44 @@
     .verify-result.success { border-color:rgba(56,189,248,0.3);color:var(--blue); }
     .verify-result.error { border-color:rgba(239,68,68,0.3);color:var(--red); }
 
+    /* ── PROMOTER MODE TABS ── */
+    .promo-mode-tabs { display:flex; gap:6px; margin-bottom:1.25rem; flex-wrap:wrap; }
+    .promo-tab { display:inline-flex; align-items:center; gap:7px; padding:8px 18px; border-radius:999px; font-size:13px; font-weight:500; font-family:var(--font-body); cursor:pointer; border:0.5px solid var(--border2); background:var(--surface); color:var(--muted2); transition:all 0.15s; }
+    .promo-tab i { font-size:15px; }
+    .promo-tab:hover { color:var(--text); border-color:var(--muted2); }
+    .promo-tab.active { background:rgba(167,139,250,0.15); color:var(--purple); border-color:rgba(167,139,250,0.4); }
+
+    /* ── PROMOTER RESULT CARDS ── */
+    .promoter-card {
+      background:var(--surface); border:0.5px solid var(--border2); border-radius:var(--radius-xl);
+      padding:1.25rem 1.5rem; margin-bottom:0.75rem;
+      display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start;
+      animation:fadeUp 0.3s ease forwards; opacity:0;
+    }
+    .promoter-card:hover { border-color:rgba(167,139,250,0.3); }
+    .promoter-name { font-family:var(--font-display); font-size:20px; letter-spacing:0.04em; color:var(--purple); margin-bottom:4px; }
+    .promoter-meta { font-size:12px; font-family:var(--font-mono); color:var(--muted2); margin-bottom:8px; display:flex; gap:12px; flex-wrap:wrap; }
+    .promoter-meta span { display:flex; align-items:center; gap:4px; }
+    .promoter-desc { font-size:13px; color:var(--muted2); line-height:1.6; margin-bottom:8px; }
+    .promoter-fit { font-size:12px; font-family:var(--font-mono); color:var(--purple); margin-bottom:8px; }
+
+    /* Tour card accent */
+    .promoter-card.tour { border-color:rgba(245,158,11,0.2); }
+    .promoter-card.tour:hover { border-color:rgba(245,158,11,0.4); }
+    .promoter-card.tour .promoter-name { color:var(--yellow); }
+    .promoter-card.tour .promoter-fit { color:var(--yellow); }
+
+    /* ── ENGAGEMENT BADGES ── */
+    .eng-cold     { background:var(--surface2);color:var(--muted2);border:0.5px solid var(--border2); }
+    .eng-warm     { background:var(--yellow-dim);color:var(--yellow);border:0.5px solid var(--yellow); }
+    .eng-active   { background:var(--blue-dim);color:var(--blue);border:0.5px solid var(--blue); }
+    .eng-priority { background:rgba(167,139,250,0.15);color:var(--purple);border:0.5px solid var(--purple); }
+
+    /* Promoter type badge */
+    .ptype-local    { background:var(--green-dim);color:var(--green);border:0.5px solid var(--green); }
+    .ptype-regional { background:var(--blue-dim);color:var(--blue);border:0.5px solid var(--blue); }
+    .ptype-tour     { background:var(--yellow-dim);color:var(--yellow);border:0.5px solid var(--yellow); }
+
     /* ── RESPONSIVE ── */
     @media(max-width:700px){
       .app{grid-template-columns:1fr;}
@@ -291,13 +329,19 @@
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-name">DJ <span>IKE</span><br>DILLMAN</div>
-      <div class="logo-sub">Venue Outreach CRM</div>
+      <div class="logo-sub">Outreach CRM</div>
     </div>
 
-    <div class="nav-section">Tools</div>
-    <button class="nav-btn active" onclick="goPage('search')" id="nav-search"><i class="ti ti-search"></i> Find Venues</button>
+    <div class="nav-section">Review</div>
     <button class="nav-btn" onclick="goPage('review')" id="nav-review"><i class="ti ti-check"></i> Review Queue <span class="review-badge" id="nav-review-badge" style="display:none;"></span></button>
-    <button class="nav-btn" onclick="goPage('crm')" id="nav-crm"><i class="ti ti-layout-list"></i> Outreach Tracker</button>
+
+    <div class="nav-section">Venues</div>
+    <button class="nav-btn active" onclick="goPage('search')" id="nav-search"><i class="ti ti-search"></i> Find Venues</button>
+    <button class="nav-btn" onclick="goPage('crm')" id="nav-crm"><i class="ti ti-layout-list"></i> Venue CRM</button>
+
+    <div class="nav-section">Promoters</div>
+    <button class="nav-btn" onclick="goPage('promoter-search')" id="nav-promoter-search"><i class="ti ti-speakerphone"></i> Find Promoters</button>
+    <button class="nav-btn" onclick="goPage('promoter-crm')" id="nav-promoter-crm"><i class="ti ti-address-book"></i> Promoter CRM</button>
 
     <div class="nav-section">Settings</div>
     <button class="nav-btn" onclick="goPage('profile')" id="nav-profile"><i class="ti ti-user"></i> DJ Profile</button>
@@ -440,7 +484,7 @@
     <div class="page" id="page-review">
       <div class="page-header">
         <div class="page-title">Review <span>Queue</span></div>
-        <div class="page-sub">Approve, edit, or discard each draft — nothing sends until you say so</div>
+        <div class="page-sub">Venue and promoter drafts — approve, edit, or discard before anything goes out</div>
       </div>
 
       <div id="review-empty" style="text-align:center;padding:4rem 2rem;color:var(--muted);font-family:var(--font-mono);font-size:13px;">
@@ -572,6 +616,227 @@
       </div>
     </div>
 
+    <!-- ══ PAGE: PROMOTER SEARCH ══ -->
+    <div class="page" id="page-promoter-search">
+      <div class="page-header">
+        <div class="page-title">Find <span>Promoters</span></div>
+        <div class="page-sub">Discover active promoters, local nights, and tour opportunities that match your sound</div>
+      </div>
+
+      <!-- Mode selector -->
+      <div class="promo-mode-tabs">
+        <button class="promo-tab active" id="ptab-local" onclick="switchPromoMode('local')">
+          <i class="ti ti-map-pin"></i> Local Nights
+        </button>
+        <button class="promo-tab" id="ptab-active" onclick="switchPromoMode('active')">
+          <i class="ti ti-speakerphone"></i> Active Promoters
+        </button>
+        <button class="promo-tab" id="ptab-tour" onclick="switchPromoMode('tour')">
+          <i class="ti ti-route"></i> Tour Support
+        </button>
+      </div>
+
+      <!-- LOCAL NIGHTS mode -->
+      <div class="promo-mode" id="mode-local">
+        <div class="card">
+          <div class="card-title">Local Nights Search</div>
+          <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:1rem;">Find active DJ nights in a city — then surface the promoter behind each one.</p>
+          <div class="grid-3">
+            <div class="field"><label class="field-label">City *</label><input type="text" id="ln-city" placeholder="e.g. Charlotte" /></div>
+            <div class="field"><label class="field-label">State</label><input type="text" id="ln-state" placeholder="e.g. NC" /></div>
+            <div class="field"><label class="field-label">Number of Nights</label>
+              <select id="ln-count"><option value="5">5</option><option value="8" selected>8</option><option value="10">10</option></select>
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Music Style / Genre *</label>
+            <input type="text" id="ln-genre" placeholder="e.g. Breaks, UK Garage, Funky House, DnB..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="ln-btn" onclick="searchLocalNights()"><i class="ti ti-search"></i> Find Nights</button>
+            <button class="btn btn-agent" id="ln-agent-btn" onclick="runPromoterAgent('local')"><i class="ti ti-robot"></i> Run Agent</button>
+          </div>
+          <!-- Agent progress -->
+          <div id="ln-agent-progress" style="display:none;margin-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="ln-status-label">Starting...</span>
+              <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="ln-progress-count"></span>
+            </div>
+            <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+              <div id="ln-progress-bar" style="height:100%;background:var(--purple);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search-loading" id="ln-loading"><i class="ti ti-loader-2"></i>Searching for nights...</div>
+        <div id="ln-results"></div>
+      </div>
+
+      <!-- ACTIVE PROMOTERS mode -->
+      <div class="promo-mode" id="mode-active" style="display:none;">
+        <div class="card">
+          <div class="card-title">Active Promoters Search</div>
+          <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:1rem;">Find people actively throwing events — via Resident Advisor, Eventbrite, Facebook Events, and social media.</p>
+          <div class="grid-3">
+            <div class="field"><label class="field-label">City *</label><input type="text" id="ap-city" placeholder="e.g. Raleigh" /></div>
+            <div class="field"><label class="field-label">State</label><input type="text" id="ap-state" placeholder="e.g. NC" /></div>
+            <div class="field"><label class="field-label">Number of Promoters</label>
+              <select id="ap-count"><option value="5">5</option><option value="8" selected>8</option><option value="10">10</option></select>
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Music Style / Genre *</label>
+            <input type="text" id="ap-genre" placeholder="e.g. Breaks, UK Garage, Funky House..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="ap-btn" onclick="searchActivePromoters()"><i class="ti ti-search"></i> Find Promoters</button>
+            <button class="btn btn-agent" id="ap-agent-btn" onclick="runPromoterAgent('active')"><i class="ti ti-robot"></i> Run Agent</button>
+          </div>
+          <div id="ap-agent-progress" style="display:none;margin-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="ap-status-label">Starting...</span>
+              <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="ap-progress-count"></span>
+            </div>
+            <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+              <div id="ap-progress-bar" style="height:100%;background:var(--purple);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search-loading" id="ap-loading"><i class="ti ti-loader-2"></i>Searching for promoters...</div>
+        <div id="ap-results"></div>
+      </div>
+
+      <!-- TOUR SUPPORT mode -->
+      <div class="promo-mode" id="mode-tour" style="display:none;">
+        <div class="card">
+          <div class="card-title">Tour Support Search</div>
+          <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:1rem;">Find touring acts with a compatible sound — then identify their regional promoter for your target market to pitch yourself as a local opening act.</p>
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label">Your Performance Style *</label>
+              <input type="text" id="ts-style" placeholder="e.g. Funky House, UK Garage, Breaks — peak hour" />
+            </div>
+            <div class="field">
+              <label class="field-label">Target Market / City *</label>
+              <input type="text" id="ts-market" placeholder="e.g. Charlotte NC, Raleigh NC" />
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Specific Touring Artist <span style="color:var(--muted);font-weight:400;">(optional — for targeted search)</span></label>
+            <input type="text" id="ts-artist" placeholder="e.g. DJ Zinc, Goldie, Shy FX, Kenny Dope..." />
+            <div style="font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-top:4px;">If you know a specific touring act, enter them here for a direct promoter lookup. Otherwise leave blank and we'll find compatible acts currently on tour.</div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Number of Results</label>
+            <select id="ts-count"><option value="3">3 acts</option><option value="5" selected>5 acts</option><option value="8">8 acts</option></select>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="ts-btn" onclick="searchTourSupport()"><i class="ti ti-search"></i> Find Tour Opportunities</button>
+            <button class="btn btn-agent" id="ts-agent-btn" onclick="runPromoterAgent('tour')"><i class="ti ti-robot"></i> Run Agent</button>
+          </div>
+          <div id="ts-agent-progress" style="display:none;margin-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="ts-status-label">Starting...</span>
+              <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="ts-progress-count"></span>
+            </div>
+            <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+              <div id="ts-progress-bar" style="height:100%;background:var(--purple);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search-loading" id="ts-loading"><i class="ti ti-loader-2"></i>Searching for tour opportunities...</div>
+        <div id="ts-results"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PROMOTER CRM ══ -->
+    <div class="page" id="page-promoter-crm">
+      <div class="page-header">
+        <div class="page-title">Promoter <span>CRM</span></div>
+        <div class="page-sub">Track relationships with promoters — local nights, regional bookers, and tour contacts</div>
+      </div>
+
+      <!-- Promoter Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
+        <div class="stat-card"><div class="stat-num" id="pstat-total">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-contacted">0</div><div class="stat-label">Contacted</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-responded">0</div><div class="stat-label">Responded</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-booked">0</div><div class="stat-label">Booked</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-priority">0</div><div class="stat-label">Priority</div></div>
+      </div>
+
+      <div class="crm-toolbar">
+        <input class="crm-search" id="pcrm-search" placeholder="Search promoters..." oninput="renderPromoterCRM()" />
+        <select id="pcrm-type-filter" onchange="renderPromoterCRM()" style="width:auto;min-width:160px;">
+          <option value="">All Types</option>
+          <option value="local">Local Night</option>
+          <option value="regional">Regional Promoter</option>
+          <option value="tour">Tour Promoter</option>
+        </select>
+        <select id="pcrm-engagement-filter" onchange="renderPromoterCRM()" style="width:auto;min-width:160px;">
+          <option value="">All Engagement</option>
+          <option value="cold">Cold</option>
+          <option value="warm">Warm</option>
+          <option value="active">Active</option>
+          <option value="priority">Priority</option>
+        </select>
+        <button class="btn btn-ghost" onclick="openAddPromoterModal()"><i class="ti ti-plus"></i> Add</button>
+        <button class="btn btn-ghost" onclick="exportPromoterCSV()"><i class="ti ti-download"></i> CSV</button>
+      </div>
+
+      <div id="pcrm-body"></div>
+    </div>
+
+    <!-- Promoter CRM Edit Modal -->
+    <div class="modal-overlay" id="pcrm-modal">
+      <div class="modal" style="max-width:640px;">
+        <button class="modal-close" onclick="closeModal('pcrm-modal')"><i class="ti ti-x"></i></button>
+        <div class="modal-title" id="pcrm-modal-title">Add Promoter</div>
+        <input type="hidden" id="pcrm-edit-id" />
+        <div class="grid-2">
+          <div class="field"><label class="field-label">Name / Handle *</label><input type="text" id="pc-name" placeholder="Promoter name or @handle" /></div>
+          <div class="field"><label class="field-label">City / Markets</label><input type="text" id="pc-city" placeholder="Charlotte NC, Raleigh NC" /></div>
+          <div class="field"><label class="field-label">Type</label>
+            <select id="pc-type">
+              <option value="local">Local Night</option>
+              <option value="regional">Regional Promoter</option>
+              <option value="tour">Tour Promoter</option>
+            </select>
+          </div>
+          <div class="field"><label class="field-label">Relationship Stage</label>
+            <select id="pc-status">
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="responded">Responded</option>
+              <option value="met">Met</option>
+              <option value="booked">Booked</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="passed">Passed</option>
+            </select>
+          </div>
+          <div class="field"><label class="field-label">Instagram / Social</label><input type="text" id="pc-instagram" placeholder="@handle" /></div>
+          <div class="field"><label class="field-label">Contact Email</label><input type="email" id="pc-contact" placeholder="email or DM" /></div>
+          <div class="field"><label class="field-label">Active Events / Nights</label><input type="text" id="pc-events" placeholder="e.g. Fabric Room 2 resident, monthly at Club X" /></div>
+          <div class="field"><label class="field-label">Associated Acts / DJs</label><input type="text" id="pc-acts" placeholder="e.g. DJ Zinc, Goldie (for tour contacts)" /></div>
+          <div class="field"><label class="field-label">Engagement Score</label>
+            <select id="pc-engagement">
+              <option value="cold">Cold</option>
+              <option value="warm">Warm</option>
+              <option value="active">Active</option>
+              <option value="priority">Priority — long-term relationship</option>
+            </select>
+          </div>
+          <div class="field"><label class="field-label">Follow-Up Date</label><input type="date" id="pc-followup" /></div>
+        </div>
+        <div class="field" style="margin-top:4px;"><label class="field-label">Notes</label>
+          <textarea class="crm-notes-input" id="pc-notes" rows="3" placeholder="Context, conversation history, gig details..."></textarea>
+        </div>
+        <div class="btn-row" style="margin-top:1.25rem;">
+          <button class="btn btn-primary" onclick="savePromoterEntry()"><i class="ti ti-check"></i> Save</button>
+          <button class="btn btn-ghost" onclick="closeModal('pcrm-modal')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -630,19 +895,25 @@ const KEY_PROF      = 'dj_ike_profile';
 const KEY_WEB_SEARCH = 'dj_ike_web_search';
 
 // ══ STATE ══
-let crmData = [];
-let editingId = null;
+let crmData        = [];
+let promoterData   = [];   // Promoter CRM — separate from venue CRM
+let editingId      = null;
+let editingPromId  = null;
 let webSearchEnabled = false;
-let reviewQueue = [];   // [{ venue, subject, body, status: 'pending'|'approved'|'discarded' }]
+let reviewQueue    = [];
+let promoReviewQueue = [];  // Separate review queue for promoter agent drafts
 
 // ══ INIT ══
 document.addEventListener('DOMContentLoaded', () => {
   loadKey();
   loadCRM();
+  loadPromoterCRM();
   loadProfile();
   loadWebSearchPref();
   renderCRM();
+  renderPromoterCRM();
   updateStats();
+  updatePromoterStats();
 });
 
 // ══ NAVIGATION ══
@@ -651,8 +922,9 @@ function goPage(id) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   document.getElementById('nav-' + id).classList.add('active');
-  if (id === 'crm') { renderCRM(); updateStats(); }
-  if (id === 'review') { renderReviewQueue(); }
+  if (id === 'crm')          { renderCRM(); updateStats(); }
+  if (id === 'review')       { renderReviewQueue(); }
+  if (id === 'promoter-crm') { renderPromoterCRM(); updatePromoterStats(); }
 }
 
 // ══ API KEY ══
@@ -1285,11 +1557,13 @@ Respond ONLY with valid JSON:
 
 // ══ REVIEW QUEUE ══
 function updateReviewBadge() {
-  const pending = reviewQueue.filter(r => r.status === 'pending').length;
-  const badge   = document.getElementById('nav-review-badge');
+  const venuePending    = reviewQueue.filter(r => r.status === 'pending').length;
+  const promoterPending = promoReviewQueue.filter(r => r.status === 'pending').length;
+  const total = venuePending + promoterPending;
+  const badge = document.getElementById('nav-review-badge');
   if (!badge) return;
-  if (pending > 0) {
-    badge.textContent = pending;
+  if (total > 0) {
+    badge.textContent = total;
     badge.style.display = 'inline-flex';
   } else {
     badge.style.display = 'none';
@@ -1301,80 +1575,152 @@ function renderReviewQueue() {
   const empty   = document.getElementById('review-empty');
   const summary = document.getElementById('review-summary');
 
-  if (!reviewQueue.length) {
-    empty.style.display = 'block';
+  const totalVenue    = reviewQueue.length;
+  const totalPromoter = promoReviewQueue.length;
+  const total         = totalVenue + totalPromoter;
+
+  if (!total) {
+    empty.style.display   = 'block';
     summary.style.display = 'none';
     list.innerHTML = '';
     return;
   }
 
-  empty.style.display = 'none';
+  empty.style.display   = 'none';
   summary.style.display = 'block';
 
-  const total    = reviewQueue.length;
-  const approved = reviewQueue.filter(r => r.status === 'approved').length;
-  const pending  = reviewQueue.filter(r => r.status === 'pending').length;
+  const approvedV   = reviewQueue.filter(r => r.status === 'approved').length;
+  const approvedP   = promoReviewQueue.filter(r => r.status === 'approved').length;
+  const pendingV    = reviewQueue.filter(r => r.status === 'pending').length;
+  const pendingP    = promoReviewQueue.filter(r => r.status === 'pending').length;
+
   document.getElementById('review-count-label').textContent =
-    `${total} drafts — ${approved} approved · ${pending} pending`;
+    `${total} drafts — ${approvedV + approvedP} approved · ${pendingV + pendingP} pending`;
 
   list.innerHTML = '';
-  reviewQueue.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'review-card' + (item.status === 'approved' ? ' approved' : item.status === 'discarded' ? ' discarded' : '');
-    card.id = `review-card-${idx}`;
-    card.style.animationDelay = (idx * 0.04) + 's';
 
-    const statusCls   = { pending: 'rsb-pending', approved: 'rsb-approved', discarded: 'rsb-discarded' }[item.status];
-    const statusLabel = { pending: 'Pending review', approved: 'Approved', discarded: 'Discarded' }[item.status];
+  // ── VENUE DRAFTS ──
+  if (totalVenue) {
+    const vLabel = document.createElement('div');
+    vLabel.style.cssText = 'font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--border2);display:flex;align-items:center;gap:8px;';
+    vLabel.innerHTML = `<i class="ti ti-building-store" style="font-size:13px;"></i> Venue Drafts <span style="color:var(--muted2);font-size:10px;">${totalVenue} total</span>`;
+    list.appendChild(vLabel);
 
-    const socialLinks = [];
-    const v = item.venue;
-    if (v.website)   socialLinks.push(`<a href="${esc(v.website)}" target="_blank" class="social-link"><i class="ti ti-world"></i> Website</a>`);
-    if (v.instagram) socialLinks.push(`<a href="https://instagram.com/${v.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(v.instagram)}</a>`);
-    if (v.facebook)  socialLinks.push(`<a href="${esc(v.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
-    const socialHTML = socialLinks.length ? `<div class="venue-social" style="margin-top:6px;">${socialLinks.join('')}</div>` : '';
+    reviewQueue.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'review-card' + (item.status === 'approved' ? ' approved' : item.status === 'discarded' ? ' discarded' : '');
+      card.id = `review-card-${idx}`;
+      card.style.animationDelay = (idx * 0.04) + 's';
 
-    const isGenerating = item.subject === null;
-    const emailSection = isGenerating
-      ? `<div class="review-generating"><i class="ti ti-loader-2"></i> Drafting email...</div>`
-      : `<div class="review-email-section">
-          <div class="review-email-label">Drafted email</div>
-          <div class="review-subject">Subject: <span id="subj-${idx}">${esc(item.subject || '')}</span></div>
-          <textarea class="review-body-edit" id="body-${idx}" rows="8">${esc(item.body || '')}</textarea>
-        </div>`;
+      const statusCls   = { pending: 'rsb-pending', approved: 'rsb-approved', discarded: 'rsb-discarded' }[item.status];
+      const statusLabel = { pending: 'Pending review', approved: 'Approved', discarded: 'Discarded' }[item.status];
 
-    const actionButtons = isGenerating ? '' : item.status === 'approved'
-      ? `<div class="review-actions">
-          <button class="btn btn-ghost" style="font-size:12px;" onclick="copyReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy email</button>
-          ${buildMailtoBtn(idx, item)}
-          <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
-        </div>`
-      : item.status === 'discarded'
-      ? `<div class="review-actions">
-          <button class="btn btn-ghost" style="font-size:12px;" onclick="restoreReviewItem(${idx})"><i class="ti ti-arrow-back-up"></i> Restore</button>
-        </div>`
-      : `<div class="review-actions">
-          <button class="btn btn-approve" style="font-size:12px;" onclick="approveReviewItem(${idx})"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
-          <button class="btn btn-ghost btn-mailto" style="font-size:12px;" onclick="approveAndMailto(${idx})"><i class="ti ti-send"></i> Approve &amp; open email</button>
-          <button class="action-btn ab-verify" id="verify-btn-rq-${idx}" style="font-size:12px;" onclick="verifyVenue(${JSON.stringify(JSON.stringify(item.venue))}, ${idx}, 'queue')"><i class="ti ti-world-search"></i> Verify venue</button>
-          <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+      const v = item.venue;
+      const socialLinks = [];
+      if (v.website)   socialLinks.push(`<a href="${esc(v.website)}" target="_blank" class="social-link"><i class="ti ti-world"></i> Website</a>`);
+      if (v.instagram) socialLinks.push(`<a href="https://instagram.com/${v.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(v.instagram)}</a>`);
+      if (v.facebook)  socialLinks.push(`<a href="${esc(v.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+      const socialHTML = socialLinks.length ? `<div class="venue-social" style="margin-top:6px;">${socialLinks.join('')}</div>` : '';
+
+      const isGenerating = item.subject === null;
+      const emailSection = isGenerating
+        ? `<div class="review-generating"><i class="ti ti-loader-2"></i> Drafting email...</div>`
+        : `<div class="review-email-section">
+            <div class="review-email-label">Drafted email</div>
+            <div class="review-subject">Subject: <span id="subj-${idx}">${esc(item.subject || '')}</span></div>
+            <textarea class="review-body-edit" id="body-${idx}" rows="8">${esc(item.body || '')}</textarea>
+          </div>`;
+
+      const actionButtons = isGenerating ? '' : item.status === 'approved'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="copyReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy email</button>
+            ${buildMailtoBtn(idx, item)}
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+          </div>`
+        : item.status === 'discarded'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="restoreReviewItem(${idx})"><i class="ti ti-arrow-back-up"></i> Restore</button>
+          </div>`
+        : `<div class="review-actions">
+            <button class="btn btn-approve" style="font-size:12px;" onclick="approveReviewItem(${idx})"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
+            <button class="btn btn-ghost btn-mailto" style="font-size:12px;" onclick="approveAndMailto(${idx})"><i class="ti ti-send"></i> Approve &amp; open email</button>
+            <button class="action-btn ab-verify" id="verify-btn-rq-${idx}" style="font-size:12px;" onclick="verifyVenue(${JSON.stringify(JSON.stringify(item.venue))}, ${idx}, 'queue')"><i class="ti ti-world-search"></i> Verify venue</button>
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+          </div>
+          <div class="verify-result" id="verify-result-rq-${idx}" style="display:none;margin:0 1.5rem 1rem;"></div>`;
+
+      card.innerHTML = `
+        <div class="review-card-header">
+          <div>
+            <div class="review-venue-name">${esc(v.name)}</div>
+            <div class="review-venue-meta">${esc(v.city)} · ${esc(v.type || '')} ${v.capacity ? '· ' + esc(v.capacity) : ''}</div>
+            ${socialHTML}
+          </div>
+          <span class="review-status-badge ${statusCls}">${statusLabel}</span>
         </div>
-        <div class="verify-result" id="verify-result-rq-${idx}" style="display:none;margin:0 1.5rem 1rem;"></div>`;
+        ${emailSection}
+        ${actionButtons}
+      `;
+      list.appendChild(card);
+    });
+  }
 
-    card.innerHTML = `
-      <div class="review-card-header">
-        <div>
-          <div class="review-venue-name">${esc(v.name)}</div>
-          <div class="review-venue-meta">${esc(v.city)} · ${esc(v.type || '')} ${v.capacity ? '· ' + esc(v.capacity) : ''}</div>
-          ${socialHTML}
+  // ── PROMOTER DRAFTS ──
+  if (totalPromoter) {
+    const pLabel = document.createElement('div');
+    pLabel.style.cssText = 'font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:var(--purple);margin-top:1.5rem;margin-bottom:0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--border2);display:flex;align-items:center;gap:8px;';
+    pLabel.innerHTML = `<i class="ti ti-speakerphone" style="font-size:13px;"></i> Promoter Drafts <span style="color:var(--muted2);font-size:10px;">${totalPromoter} total</span>`;
+    list.appendChild(pLabel);
+
+    promoReviewQueue.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'review-card' + (item.status === 'approved' ? ' approved' : item.status === 'discarded' ? ' discarded' : '');
+      card.id = `prq-card-${idx}`;
+      card.style.cssText += 'border-color:rgba(167,139,250,0.2);';
+      card.style.animationDelay = (idx * 0.04) + 's';
+
+      const statusCls   = { pending: 'rsb-pending', approved: 'rsb-approved', discarded: 'rsb-discarded' }[item.status];
+      const statusLabel = { pending: 'Pending review', approved: 'Approved', discarded: 'Discarded' }[item.status];
+      const name = item.item.promoterName || item.item.name || item.item.artistName || 'Promoter';
+      const isLoading = item.subject === null;
+
+      const emailSection = isLoading
+        ? `<div class="review-generating"><i class="ti ti-loader-2"></i> Drafting outreach...</div>`
+        : `<div class="review-email-section">
+            <div class="review-email-label">Drafted outreach</div>
+            <div class="review-subject">Subject: <span>${esc(item.subject || '')}</span></div>
+            <textarea class="review-body-edit" id="prq-body-${idx}" rows="7">${esc(item.body || '')}</textarea>
+          </div>`;
+
+      const actionButtons = isLoading ? '' : item.status === 'approved'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="copyPromoReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy</button>
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardPromoItem(${idx}); renderReviewQueue()"><i class="ti ti-x"></i> Discard</button>
+          </div>`
+        : item.status === 'discarded'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="promoReviewQueue[${idx}].status='pending'; renderReviewQueue(); updateReviewBadge();"><i class="ti ti-arrow-back-up"></i> Restore</button>
+          </div>`
+        : `<div class="review-actions">
+            <button class="btn btn-approve" style="font-size:12px;" onclick="approvePromoItem(${idx}); renderReviewQueue();"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="copyPromoReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy</button>
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardPromoItem(${idx}); renderReviewQueue();"><i class="ti ti-x"></i> Discard</button>
+          </div>`;
+
+      card.innerHTML = `
+        <div class="review-card-header">
+          <div>
+            <div class="review-venue-name" style="color:var(--purple);">${esc(name)}</div>
+            <div class="review-venue-meta">${esc(item.item.city || '')} · ${esc(item.item._mode || '')} promoter</div>
+          </div>
+          <span class="review-status-badge ${statusCls}">${statusLabel}</span>
         </div>
-        <span class="review-status-badge ${statusCls}">${statusLabel}</span>
-      </div>
-      ${emailSection}
-      ${actionButtons}
-    `;
-    list.appendChild(card);
-  });
+        ${emailSection}
+        ${actionButtons}
+      `;
+      list.appendChild(card);
+    });
+  }
 }
 
 function buildMailtoBtn(idx, item) {
@@ -1552,6 +1898,746 @@ Respond ONLY with valid JSON, no markdown:
 
   btn.disabled = false;
   btn.innerHTML = '<i class="ti ti-world-search"></i> Verify';
+}
+
+// ══ PROMOTER SEARCH — MODE SWITCHER ══
+function switchPromoMode(mode) {
+  ['local','active','tour'].forEach(m => {
+    document.getElementById('mode-' + m).style.display  = m === mode ? 'block' : 'none';
+    document.getElementById('ptab-' + m).classList.toggle('active', m === mode);
+  });
+}
+
+// ══ PROMOTER SEARCH — SHARED API CALL ══
+async function callPromoterAPI(prompt, useWebSearch) {
+  const key = getKey();
+  const body = {
+    model: CLAUDE_MODEL,
+    max_tokens: 4000,
+    messages: [{ role: 'user', content: prompt }]
+  };
+  if (useWebSearch) body.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    const msg = e.error?.message || `API error ${res.status}`;
+    if (useWebSearch && (msg.includes('web_search') || res.status === 400)) throw new Error('web_search_disabled');
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+// ── LOCAL NIGHTS ──
+async function searchLocalNights() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const city  = document.getElementById('ln-city').value.trim();
+  const state = document.getElementById('ln-state').value.trim();
+  const genre = document.getElementById('ln-genre').value.trim();
+  const count = document.getElementById('ln-count').value;
+  if (!city || !genre) { alert('City and music style are required.'); return; }
+
+  document.getElementById('ln-loading').style.display = 'block';
+  document.getElementById('ln-results').innerHTML = '';
+  document.getElementById('ln-btn').disabled = true;
+
+  try {
+    const parsed = await callPromoterAPI(buildLocalNightsPrompt(city, state, genre, count), webSearchEnabled);
+    renderPromoterResults(parsed.nights || [], 'ln-results', 'local');
+  } catch(err) { showPromoterError('ln-results', err); }
+
+  document.getElementById('ln-loading').style.display = 'none';
+  document.getElementById('ln-btn').disabled = false;
+}
+
+function buildLocalNightsPrompt(city, state, genre, count) {
+  const search = webSearchEnabled
+    ? `SEARCH BUDGET: AT MOST 2 web searches.
+Search 1: "${genre} night ${city} ${state} promoter DJ event"
+Search 2 (if needed): "${city} ${state} ${genre} club night instagram promoter"
+From results, find ${count} active DJ nights. For each, identify the promoter behind it.`
+    : `Using your knowledge of the local scene,`;
+
+  return `You are a music industry researcher helping DJ Ike Dillman find booking opportunities.
+
+${search} find ${count} active ${genre} DJ nights in ${city}${state ? ', ' + state : ''}.
+
+For each night, identify the PROMOTER behind it — not the venue, the person or collective running the event.
+
+Respond ONLY with valid JSON, no markdown:
+{"nights":[{
+  "nightName":"The night/event name",
+  "promoterName":"Person or collective name",
+  "venue":"Where it's held",
+  "city":"${city}${state ? ', ' + state : ''}",
+  "frequency":"Weekly / Monthly / etc",
+  "genre":"${genre}",
+  "description":"One sentence about the night's vibe and crowd",
+  "instagram":"@handle or null",
+  "facebook":"URL or null",
+  "residentAdvisor":"RA URL or null",
+  "contactMethod":"How to reach them — DM on Instagram, email, etc",
+  "pitchAngle":"One sentence on why Ike is a fit for this night",
+  "verified":${webSearchEnabled}
+}]}`;
+}
+
+// ── ACTIVE PROMOTERS ──
+async function searchActivePromoters() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const city  = document.getElementById('ap-city').value.trim();
+  const state = document.getElementById('ap-state').value.trim();
+  const genre = document.getElementById('ap-genre').value.trim();
+  const count = document.getElementById('ap-count').value;
+  if (!city || !genre) { alert('City and music style are required.'); return; }
+
+  document.getElementById('ap-loading').style.display = 'block';
+  document.getElementById('ap-results').innerHTML = '';
+  document.getElementById('ap-btn').disabled = true;
+
+  try {
+    const parsed = await callPromoterAPI(buildActivePromotersPrompt(city, state, genre, count), webSearchEnabled);
+    renderPromoterResults(parsed.promoters || [], 'ap-results', 'active');
+  } catch(err) { showPromoterError('ap-results', err); }
+
+  document.getElementById('ap-loading').style.display = 'none';
+  document.getElementById('ap-btn').disabled = false;
+}
+
+function buildActivePromotersPrompt(city, state, genre, count) {
+  const search = webSearchEnabled
+    ? `SEARCH BUDGET: AT MOST 2 web searches.
+Search 1: "${genre} promoter ${city} ${state} events 2025 instagram"
+Search 2 (if needed): "site:ra.co ${genre} ${city} OR site:eventbrite.com ${genre} ${city} promoter"
+Surface real, currently active promoters.`
+    : `Using your knowledge,`;
+
+  return `You are a music industry researcher helping DJ Ike Dillman find promoters actively booking DJs.
+
+${search} find ${count} people or collectives actively promoting ${genre} events in ${city}${state ? ', ' + state : ''}.
+
+Focus on promoters who regularly throw hosted events and book DJs — not venue staff.
+
+Respond ONLY with valid JSON, no markdown:
+{"promoters":[{
+  "name":"Promoter or collective name",
+  "city":"${city}${state ? ', ' + state : ''}",
+  "type":"individual or collective",
+  "activeEvents":"Their current or recurring events",
+  "genre":"${genre}",
+  "description":"One sentence on their reputation and style in the scene",
+  "instagram":"@handle or null",
+  "facebook":"URL or null",
+  "residentAdvisor":"RA profile URL or null",
+  "email":"if publicly available or null",
+  "contactMethod":"Best way to reach them",
+  "pitchAngle":"One sentence on why Ike is a fit for their events",
+  "verified":${webSearchEnabled}
+}]}`;
+}
+
+// ── TOUR SUPPORT ──
+async function searchTourSupport() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const style  = document.getElementById('ts-style').value.trim();
+  const market = document.getElementById('ts-market').value.trim();
+  const artist = document.getElementById('ts-artist').value.trim();
+  const count  = document.getElementById('ts-count').value;
+  if (!style || !market) { alert('Performance style and target market are required.'); return; }
+
+  document.getElementById('ts-loading').style.display = 'block';
+  document.getElementById('ts-results').innerHTML = '';
+  document.getElementById('ts-btn').disabled = true;
+
+  try {
+    const parsed = await callPromoterAPI(buildTourSupportPrompt(style, market, artist, count), true); // always web search for tour
+    renderPromoterResults(parsed.opportunities || [], 'ts-results', 'tour');
+  } catch(err) { showPromoterError('ts-results', err); }
+
+  document.getElementById('ts-loading').style.display = 'none';
+  document.getElementById('ts-btn').disabled = false;
+}
+
+function buildTourSupportPrompt(style, market, artist, count) {
+  const artistClause = artist
+    ? `PRIORITY: The user has specified "${artist}" as a known touring act. Search specifically for their current or upcoming tour dates near ${market} and identify the regional promoter or booking agent handling their shows in that area.`
+    : `Find ${count} DJs or acts currently touring whose sound is compatible with: ${style}`;
+
+  return `You are a music industry researcher helping DJ Ike Dillman find tour support opportunities as an opening act.
+
+DJ IKE DILLMAN plays: ${style}
+Target market: ${market}
+
+${artistClause}
+
+SEARCH BUDGET: AT MOST 2 web searches.
+Search 1: "${artist || style + ' DJ'} tour 2025 ${market} ${artist ? 'promoter booking' : 'opening act'}"
+Search 2 (if needed): "${artist || style} ${market} concert event promoter instagram"
+
+For each opportunity found, identify:
+1. The touring act and their sound
+2. Whether their sound is genuinely compatible with ${style}
+3. The PROMOTER or BOOKING AGENT handling their regional dates near ${market}
+4. How to reach that promoter to pitch Ike as a local support act
+
+Respond ONLY with valid JSON, no markdown:
+{"opportunities":[{
+  "artistName":"Touring DJ / act name",
+  "artistGenre":"Their sound / genre",
+  "compatibility":"Why their sound and Ike's ${style} are a good fit on the same bill",
+  "tourInfo":"Current tour name or dates if known",
+  "marketDate":"Any known date near ${market} or 'TBC'",
+  "promoterName":"Regional promoter or booking agent name",
+  "promoterInstagram":"@handle or null",
+  "promoterContact":"Email, DM, or agency contact if found",
+  "contactMethod":"Best approach to pitch Ike as support",
+  "pitchAngle":"One sentence pitch — why Ike as opener makes sense for this act's crowd",
+  "verified":true
+}]}`;
+}
+
+// ── RENDER PROMOTER RESULTS ──
+function renderPromoterResults(items, containerId, mode) {
+  const container = document.getElementById(containerId);
+  if (!items.length) {
+    container.innerHTML = `<div style="font-family:var(--font-mono);font-size:12px;color:var(--muted2);padding:1rem;">No results found — try adjusting your search or enabling web search.</div>`;
+    return;
+  }
+
+  const verifiedNote = webSearchEnabled || mode === 'tour'
+    ? `<span style="color:var(--green);font-size:11px;font-family:var(--font-mono);"><i class="ti ti-world-search" style="font-size:12px;vertical-align:-2px;"></i> Live web results</span>`
+    : `<span style="color:var(--muted);font-size:11px;font-family:var(--font-mono);">AI knowledge — enable web search for verified results</span>`;
+
+  container.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;"><span style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);letter-spacing:0.06em;">${items.length} RESULTS</span>${verifiedNote}</div>`;
+
+  items.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = `promoter-card${mode === 'tour' ? ' tour' : ''}`;
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    // Build name and meta depending on mode
+    const name = item.promoterName || item.name || item.artistName || '—';
+    const metaParts = [item.city, item.frequency, item.type, item.tourInfo].filter(Boolean);
+    const desc = item.description || item.compatibility || item.activeEvents || '';
+    const pitch = item.pitchAngle || '';
+    const nightLabel = item.nightName ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:6px;">Night: <span style="color:var(--text);">${esc(item.nightName)}</span></div>` : '';
+    const artistLabel = item.artistName && mode === 'tour' ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:6px;">Act: <span style="color:var(--text);">${esc(item.artistName)}</span> · ${esc(item.artistGenre || '')}</div>` : '';
+    const marketDate = item.marketDate ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--yellow);margin-bottom:6px;"><i class="ti ti-calendar" style="vertical-align:-2px;"></i> ${esc(item.marketDate)}</div>` : '';
+
+    // Social links
+    const socialLinks = [];
+    if (item.instagram) socialLinks.push(`<a href="https://instagram.com/${item.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(item.instagram)}</a>`);
+    if (item.promoterInstagram) socialLinks.push(`<a href="https://instagram.com/${item.promoterInstagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(item.promoterInstagram)}</a>`);
+    if (item.facebook) socialLinks.push(`<a href="${esc(item.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+    if (item.residentAdvisor) socialLinks.push(`<a href="${esc(item.residentAdvisor)}" target="_blank" class="social-link"><i class="ti ti-vinyl"></i> RA</a>`);
+    const socialHTML = socialLinks.length ? `<div class="venue-social">${socialLinks.join('')}</div>` : '';
+
+    const contact = item.contactMethod || item.promoterContact || item.email || '';
+    const verifiedBadge = item.verified ? `<span style="font-size:10px;font-family:var(--font-mono);color:var(--green);border:0.5px solid var(--green);border-radius:999px;padding:2px 8px;"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px;"></i> Verified</span>` : '';
+
+    const itemJson = JSON.stringify(JSON.stringify({ ...item, _mode: mode }));
+
+    card.innerHTML = `
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="promoter-name">${esc(name)}</div>
+          ${verifiedBadge}
+        </div>
+        <div class="promoter-meta">
+          ${metaParts.map(p => `<span>${esc(p)}</span>`).join('')}
+        </div>
+        ${nightLabel}${artistLabel}${marketDate}
+        <div class="promoter-desc">${esc(desc)}</div>
+        ${pitch ? `<div class="promoter-fit">💡 ${esc(pitch)}</div>` : ''}
+        ${socialHTML}
+        ${contact ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-top:6px;"><i class="ti ti-send" style="vertical-align:-2px;"></i> ${esc(contact)}</div>` : ''}
+      </div>
+      <div class="venue-actions">
+        <button class="action-btn" style="background:var(--purple);color:#fff;" onclick="generatePromoterOutreach(${itemJson}, ${i})">
+          <i class="ti ti-mail"></i> Draft Outreach
+        </button>
+        <button class="action-btn ab-crm" onclick="addToPromoterCRM(${itemJson})">
+          <i class="ti ti-plus"></i> Add to CRM
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function showPromoterError(containerId, err) {
+  const container = document.getElementById(containerId);
+  if (err.message === 'web_search_disabled') {
+    container.innerHTML = `<div style="background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.35);border-radius:14px;padding:1.25rem 1.5rem;font-size:13px;line-height:1.7;"><div style="font-family:var(--font-display);font-size:18px;letter-spacing:0.04em;color:#f59e0b;margin-bottom:8px;">Web Search Not Enabled</div><p style="color:var(--muted2);">Enable web search at <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2);">console.anthropic.com</a> → Settings → Capabilities.</p></div>`;
+  } else {
+    container.innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Error: ${esc(err.message)}</div>`;
+  }
+}
+
+// ── PROMOTER OUTREACH DRAFT ──
+async function generatePromoterOutreach(itemJson, idx) {
+  const item    = JSON.parse(itemJson);
+  const profile = getProfile();
+  const mode    = item._mode || 'local';
+  const key     = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  // Show modal with loading state
+  document.getElementById('email-modal-title').textContent = item.promoterName || item.name || item.artistName || 'Promoter';
+  document.getElementById('email-modal-content').innerHTML = `<div class="generating-overlay"><i class="ti ti-loader-2"></i>Drafting outreach...</div>`;
+  document.getElementById('email-modal').classList.add('open');
+
+  const isTour = mode === 'tour';
+  const target = isTour
+    ? `Tour Promoter for ${item.artistName || 'touring act'}`
+    : (item.promoterName || item.name || 'Promoter');
+
+  const context = isTour
+    ? `They promote ${item.artistName} (${item.artistGenre}). Upcoming date near ${item.city || 'target market'}: ${item.marketDate || 'TBC'}.`
+    : `They run ${item.nightName || item.activeEvents || 'regular DJ events'} in ${item.city || 'the area'} — ${item.description || item.genre + ' nights'}.`;
+
+  const ask = isTour
+    ? `pitch Ike as a local opening act for ${item.artistName}'s show — brief, respectful, peer-to-peer`
+    : `express genuine interest in being considered for their events — professional with a touch of recognition for the work they're doing`;
+
+  const prompt = `Write a short outreach message from DJ Ike Dillman to a promoter.
+
+PROMOTER: ${target}
+CONTEXT: ${context}
+PITCH ANGLE: ${item.pitchAngle || ''}
+
+DJ IKE DILLMAN:
+Name: ${profile.name || 'DJ Ike Dillman'}
+Location: ${profile.location || 'Raleigh, NC'}
+Sound: Funky House, UK Garage, Breaks — peak hour focus
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+${profile.booking ? 'Booking page: ' + profile.booking : ''}
+Bio: ${profile.bio || 'Experienced DJ focused on programmed peak-hour sets.'}
+${profile.highlights ? 'Highlights: ' + profile.highlights : ''}
+
+TONE: Professional, scene-aware, peer-to-peer. Open with a specific, genuine acknowledgment of their work — one sentence, not gushing. Then brief intro of Ike and the sound connection. End with a clear, low-pressure ask.
+LENGTH: 150-200 words max.
+FORMAT: Respond ONLY with valid JSON: {"subject":"...","body":"..."}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = (data.content || []).map(b => b.text || '').join('');
+    const draft = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+    const contact = item.promoterContact || item.email || item.contactMethod || '';
+    const emailMatch = contact.match(/[^\s@]+@[^\s@]+\.[^\s@]+/);
+    const mailtoBtn = emailMatch
+      ? `<a href="mailto:${encodeURIComponent(emailMatch[0])}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}" class="btn btn-mailto" style="text-decoration:none;"><i class="ti ti-mail"></i> Open in email client</a>`
+      : '';
+
+    document.getElementById('email-modal-content').innerHTML = `
+      <div class="email-subject">Subject: <span>${esc(draft.subject)}</span></div>
+      <textarea class="email-body" id="promo-email-body" style="width:100%;background:var(--surface2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);color:var(--text);font-size:13px;font-family:var(--font-body);padding:1.25rem;outline:none;resize:vertical;line-height:1.7;min-height:200px;">${esc(draft.body)}</textarea>
+      <div class="btn-row" style="margin-top:0.75rem;">
+        <button class="btn btn-primary" onclick="copyPromoEmail('${esc(draft.subject)}')"><i class="ti ti-copy"></i> Copy</button>
+        ${mailtoBtn}
+        <button class="btn btn-ghost" onclick="addToPromoterCRMFromDraft(${itemJson})"><i class="ti ti-plus"></i> Add to CRM</button>
+      </div>`;
+  } catch(err) {
+    document.getElementById('email-modal-content').innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;">Error: ${esc(err.message)}</div>`;
+  }
+}
+
+function copyPromoEmail(subject) {
+  const body = document.getElementById('promo-email-body')?.value || '';
+  navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`).then(() => {
+    const btns = document.querySelectorAll('#email-modal-content .btn-primary');
+    if (btns[0]) { btns[0].innerHTML = '<i class="ti ti-check"></i> Copied!'; setTimeout(() => btns[0].innerHTML = '<i class="ti ti-copy"></i> Copy', 2000); }
+  });
+}
+
+// ── PROMOTER AGENT LOOP ──
+async function runPromoterAgent(mode) {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  const cfg = {
+    local:  { city: 'ln-city', state: 'ln-state', extra: 'ln-genre', count: 'ln-count', progress: 'ln-agent-progress', status: 'ln-status-label', bar: 'ln-progress-bar', cnt: 'ln-progress-count', btn: 'ln-agent-btn', search: 'ln-btn' },
+    active: { city: 'ap-city', state: 'ap-state', extra: 'ap-genre', count: 'ap-count', progress: 'ap-agent-progress', status: 'ap-status-label', bar: 'ap-progress-bar', cnt: 'ap-progress-count', btn: 'ap-agent-btn', search: 'ap-btn' },
+    tour:   { city: 'ts-market', state: null, extra: 'ts-style', count: 'ts-count', progress: 'ts-agent-progress', status: 'ts-status-label', bar: 'ts-progress-bar', cnt: 'ts-progress-count', btn: 'ts-agent-btn', search: 'ts-btn', artist: 'ts-artist' }
+  }[mode];
+
+  const city   = document.getElementById(cfg.city).value.trim();
+  const state  = cfg.state ? document.getElementById(cfg.state).value.trim() : '';
+  const extra  = document.getElementById(cfg.extra).value.trim();
+  const count  = document.getElementById(cfg.count).value;
+  const artist = cfg.artist ? document.getElementById(cfg.artist).value.trim() : '';
+
+  if (!city || !extra) { alert(mode === 'tour' ? 'Performance style and target market are required.' : 'City and music style are required.'); return; }
+
+  document.getElementById(cfg.btn).disabled    = true;
+  document.getElementById(cfg.search).disabled = true;
+  document.getElementById(cfg.progress).style.display = 'block';
+  setPromoProgress(cfg, 0, 'Finding promoters...', '');
+  promoReviewQueue = [];
+
+  try {
+    // Step 1: find promoters
+    let items = [];
+    if (mode === 'local') {
+      const r = await callPromoterAPI(buildLocalNightsPrompt(city, state, extra, count), webSearchEnabled);
+      items = r.nights || [];
+    } else if (mode === 'active') {
+      const r = await callPromoterAPI(buildActivePromotersPrompt(city, state, extra, count), webSearchEnabled);
+      items = r.promoters || [];
+    } else {
+      const r = await callPromoterAPI(buildTourSupportPrompt(extra, city, artist, count), true);
+      items = r.opportunities || [];
+    }
+
+    if (!items.length) throw new Error('No results found. Try adjusting your search.');
+
+    setPromoProgress(cfg, 10, `Found ${items.length} — drafting outreach...`, `0 / ${items.length}`);
+
+    // Step 2: draft outreach for each
+    const profile = getProfile();
+    for (let i = 0; i < items.length; i++) {
+      const item = { ...items[i], _mode: mode };
+      setPromoProgress(cfg, 10 + Math.round((i / items.length) * 85), `Drafting for ${item.promoterName || item.name || item.artistName || 'promoter'}...`, `${i + 1} / ${items.length}`);
+      promoReviewQueue.push({ item, subject: null, body: null, status: 'pending', id: `prq-${Date.now()}-${i}` });
+      try {
+        const draft = await fetchPromoterDraft(item, profile, mode);
+        promoReviewQueue[promoReviewQueue.length - 1].subject = draft.subject;
+        promoReviewQueue[promoReviewQueue.length - 1].body    = draft.body;
+      } catch(e) {
+        promoReviewQueue[promoReviewQueue.length - 1].subject = 'Draft error';
+        promoReviewQueue[promoReviewQueue.length - 1].body    = e.message;
+      }
+    }
+
+    setPromoProgress(cfg, 100, 'All drafts ready — navigating to review...', `${items.length} / ${items.length}`);
+    setTimeout(() => {
+      document.getElementById(cfg.progress).style.display = 'none';
+      goPage('review');
+      renderReviewQueue();
+    }, 800);
+
+  } catch(err) {
+    document.getElementById(cfg.progress).style.display = 'none';
+    alert('Agent error: ' + err.message);
+  }
+
+  document.getElementById(cfg.btn).disabled    = false;
+  document.getElementById(cfg.search).disabled = false;
+}
+
+function setPromoProgress(cfg, pct, label, count) {
+  document.getElementById(cfg.bar).style.width  = pct + '%';
+  document.getElementById(cfg.status).textContent = label;
+  document.getElementById(cfg.cnt).textContent    = count;
+}
+
+async function fetchPromoterDraft(item, profile, mode) {
+  const key = getKey();
+  const isTour  = mode === 'tour';
+  const target  = item.promoterName || item.name || item.artistName || 'Promoter';
+  const context = isTour
+    ? `They promote ${item.artistName} (${item.artistGenre}). Upcoming: ${item.marketDate || 'TBC'}.`
+    : `They run ${item.nightName || item.activeEvents || 'regular events'} — ${item.description || ''}`;
+  const ask = isTour ? `pitch as local opening act for ${item.artistName}` : `express interest in being considered for their events`;
+
+  const prompt = `Write outreach from DJ Ike Dillman to: ${target}
+Context: ${context}
+Pitch: ${item.pitchAngle || ''}
+DJ: ${profile.name || 'DJ Ike Dillman'}, ${profile.location || 'Raleigh NC'}, plays ${profile.bio ? profile.bio.slice(0,100) : 'Funky House, UK Garage, Breaks'}
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+${profile.booking ? 'Booking: ' + profile.booking : ''}
+Goal: ${ask}
+Tone: professional, scene-aware, peer-to-peer. One genuine opening acknowledgment. 150 words max.
+Respond ONLY with valid JSON: {"subject":"...","body":"..."}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 500, messages: [{ role: 'user', content: prompt }] })
+  });
+  const data = await res.json();
+  const text = (data.content || []).map(b => b.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+function approvePromoItem(idx) {
+  const item = promoReviewQueue[idx];
+  if (!item) return;
+  const bodyEl = document.getElementById(`prq-body-${idx}`);
+  if (bodyEl) item.body = bodyEl.value;
+  item.status = 'approved';
+  addToPromoterCRMFromItem(item.item);
+  updateReviewBadge();
+}
+
+function discardPromoItem(idx) {
+  const item = promoReviewQueue[idx];
+  if (!item) return;
+  item.status = 'discarded';
+  updateReviewBadge();
+}
+
+function copyPromoReviewEmail(idx) {
+  const item = promoReviewQueue[idx];
+  const bodyEl = document.getElementById(`prq-body-${idx}`);
+  const body = bodyEl ? bodyEl.value : (item?.body || '');
+  navigator.clipboard.writeText(`Subject: ${item?.subject || ''}\n\n${body}`);
+}
+
+// ══ PROMOTER CRM ══
+const KEY_PCRM = 'dj_ike_promoter_crm';
+
+function loadPromoterCRM() {
+  promoterData = JSON.parse(localStorage.getItem(KEY_PCRM) || '[]');
+}
+function savePromoterCRM() {
+  localStorage.setItem(KEY_PCRM, JSON.stringify(promoterData));
+}
+
+function addToPromoterCRM(itemJson) {
+  const item = JSON.parse(itemJson);
+  addToPromoterCRMFromItem(item);
+}
+
+function addToPromoterCRMFromDraft(itemJson) {
+  const item = JSON.parse(itemJson);
+  addToPromoterCRMFromItem(item);
+  closeModal('email-modal');
+}
+
+function addToPromoterCRMFromItem(item) {
+  const mode = item._mode || 'local';
+  const name = item.promoterName || item.name || item.artistName || 'Unknown';
+  const existing = promoterData.find(e => e.name.toLowerCase() === name.toLowerCase());
+  if (existing) { alert(`${name} is already in your Promoter CRM!`); return; }
+  const entry = {
+    id: Date.now().toString(),
+    name,
+    city: item.city || '',
+    type: mode === 'tour' ? 'tour' : mode === 'active' ? 'regional' : 'local',
+    status: 'new',
+    instagram: item.instagram || item.promoterInstagram || '',
+    contact: item.promoterContact || item.email || item.contactMethod || '',
+    events: item.nightName || item.activeEvents || item.tourInfo || '',
+    acts: item.artistName || '',
+    engagement: mode === 'tour' ? 'warm' : 'cold',
+    followUpDate: '',
+    notes: item.pitchAngle || '',
+    addedAt: new Date().toISOString()
+  };
+  promoterData.push(entry);
+  savePromoterCRM();
+  renderPromoterCRM();
+  updatePromoterStats();
+  alert(`✓ ${name} added to your Promoter CRM!`);
+}
+
+const PROMO_STATUS_META = {
+  new:       { cls: 'st-new',       label: 'New' },
+  contacted: { cls: 'st-contacted', label: 'Contacted' },
+  responded: { cls: 'st-followup',  label: 'Responded' },
+  met:       { cls: 'st-followup',  label: 'Met' },
+  booked:    { cls: 'st-booked',    label: 'Booked ✓' },
+  ongoing:   { cls: 'st-booked',    label: 'Ongoing' },
+  passed:    { cls: 'st-passed',    label: 'Passed' }
+};
+
+const PTYPE_META = {
+  local:    { cls: 'ptype-local',    label: 'Local Night' },
+  regional: { cls: 'ptype-regional', label: 'Regional' },
+  tour:     { cls: 'ptype-tour',     label: 'Tour Promoter' }
+};
+
+const ENG_META = {
+  cold:     { cls: 'eng-cold',     label: 'Cold' },
+  warm:     { cls: 'eng-warm',     label: 'Warm' },
+  active:   { cls: 'eng-active',   label: 'Active' },
+  priority: { cls: 'eng-priority', label: '⭐ Priority' }
+};
+
+function renderPromoterCRM() {
+  const q    = (document.getElementById('pcrm-search')?.value || '').toLowerCase();
+  const tFil = document.getElementById('pcrm-type-filter')?.value || '';
+  const eFil = document.getElementById('pcrm-engagement-filter')?.value || '';
+
+  const filtered = promoterData.filter(e =>
+    (!q || e.name.toLowerCase().includes(q) || e.city.toLowerCase().includes(q) || (e.events || '').toLowerCase().includes(q)) &&
+    (!tFil || e.type === tFil) &&
+    (!eFil || e.engagement === eFil)
+  );
+
+  const body = document.getElementById('pcrm-body');
+  if (!body) return;
+
+  // Keep review banner if present
+  const banner = document.getElementById('promo-review-banner');
+
+  if (!filtered.length) {
+    body.innerHTML = '';
+    if (banner) body.appendChild(banner);
+    const empty = document.createElement('div');
+    empty.className = 'crm-empty';
+    empty.innerHTML = `<i class="ti ti-speakerphone"></i>${promoterData.length ? 'No promoters match your filters.' : 'No promoters yet. Use Find Promoters to discover contacts!'}`;
+    body.appendChild(empty);
+    return;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const table = document.createElement('div');
+  table.innerHTML = `
+    <table class="crm-table">
+      <thead><tr>
+        <th>Promoter</th><th>Type</th><th>Events / Acts</th>
+        <th>Contact</th><th>Stage</th><th>Engagement</th>
+        <th>Follow-Up</th><th>Notes</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${filtered.map(e => {
+          const sm   = PROMO_STATUS_META[e.status] || PROMO_STATUS_META.new;
+          const pt   = PTYPE_META[e.type] || PTYPE_META.local;
+          const eng  = ENG_META[e.engagement] || ENG_META.cold;
+          const over = e.followUpDate && e.followUpDate < today && !['booked','ongoing','passed'].includes(e.status);
+          const igLink = e.instagram ? `<a href="https://instagram.com/${e.instagram.replace('@','')}" target="_blank" style="color:var(--accent2);font-size:11px;">${esc(e.instagram)}</a>` : '';
+          return `<tr>
+            <td>
+              <div class="crm-venue-name">${esc(e.name)}</div>
+              <div class="crm-venue-city">${esc(e.city)}</div>
+              ${igLink ? `<div style="margin-top:2px;">${igLink}</div>` : ''}
+            </td>
+            <td><span class="status-badge ${pt.cls}">${pt.label}</span></td>
+            <td style="font-size:12px;color:var(--muted2);max-width:140px;">${esc(e.events || e.acts || '—')}</td>
+            <td style="font-size:12px;color:var(--muted2);max-width:120px;word-break:break-all;">${esc(e.contact || '—')}</td>
+            <td><span class="status-badge ${sm.cls}">${sm.label}</span></td>
+            <td><span class="status-badge ${eng.cls}">${eng.label}</span></td>
+            <td style="font-size:12px;font-family:var(--font-mono);color:${over ? 'var(--red)' : 'var(--muted2)'};">${e.followUpDate || '—'}${over ? ' ⚠' : ''}</td>
+            <td style="font-size:12px;color:var(--muted2);max-width:160px;">${esc(e.notes ? e.notes.slice(0,80) + (e.notes.length > 80 ? '…' : '') : '—')}</td>
+            <td>
+              <div class="crm-actions-cell">
+                <button class="crm-icon-btn" onclick="editPromoterEntry('${e.id}')" title="Edit"><i class="ti ti-pencil"></i></button>
+                <button class="crm-icon-btn danger" onclick="deletePromoterEntry('${e.id}')" title="Remove"><i class="ti ti-trash"></i></button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+
+  body.innerHTML = '';
+  if (banner) body.appendChild(banner);
+  body.appendChild(table);
+}
+
+function updatePromoterStats() {
+  document.getElementById('pstat-total').textContent     = promoterData.length;
+  document.getElementById('pstat-contacted').textContent = promoterData.filter(e => ['contacted','responded','met','booked','ongoing'].includes(e.status)).length;
+  document.getElementById('pstat-responded').textContent = promoterData.filter(e => ['responded','met'].includes(e.status)).length;
+  document.getElementById('pstat-booked').textContent    = promoterData.filter(e => ['booked','ongoing'].includes(e.status)).length;
+  document.getElementById('pstat-priority').textContent  = promoterData.filter(e => e.engagement === 'priority').length;
+}
+
+function openAddPromoterModal() {
+  editingPromId = null;
+  document.getElementById('pcrm-modal-title').textContent = 'Add Promoter';
+  ['name','city','instagram','contact','events','acts','notes'].forEach(f => { const el = document.getElementById('pc-' + f); if (el) el.value = ''; });
+  document.getElementById('pc-type').value       = 'local';
+  document.getElementById('pc-status').value     = 'new';
+  document.getElementById('pc-engagement').value = 'cold';
+  document.getElementById('pc-followup').value   = '';
+  document.getElementById('pcrm-edit-id').value  = '';
+  document.getElementById('pcrm-modal').classList.add('open');
+}
+
+function editPromoterEntry(id) {
+  const e = promoterData.find(p => p.id === id);
+  if (!e) return;
+  editingPromId = id;
+  document.getElementById('pcrm-modal-title').textContent = 'Edit Promoter';
+  document.getElementById('pc-name').value       = e.name || '';
+  document.getElementById('pc-city').value       = e.city || '';
+  document.getElementById('pc-type').value       = e.type || 'local';
+  document.getElementById('pc-status').value     = e.status || 'new';
+  document.getElementById('pc-instagram').value  = e.instagram || '';
+  document.getElementById('pc-contact').value    = e.contact || '';
+  document.getElementById('pc-events').value     = e.events || '';
+  document.getElementById('pc-acts').value       = e.acts || '';
+  document.getElementById('pc-engagement').value = e.engagement || 'cold';
+  document.getElementById('pc-followup').value   = e.followUpDate || '';
+  document.getElementById('pc-notes').value      = e.notes || '';
+  document.getElementById('pcrm-edit-id').value  = id;
+  document.getElementById('pcrm-modal').classList.add('open');
+}
+
+function savePromoterEntry() {
+  const name = document.getElementById('pc-name').value.trim();
+  if (!name) { alert('Promoter name is required.'); return; }
+  const id = editingPromId || Date.now().toString();
+  const entry = {
+    id,
+    name,
+    city:          document.getElementById('pc-city').value.trim(),
+    type:          document.getElementById('pc-type').value,
+    status:        document.getElementById('pc-status').value,
+    instagram:     document.getElementById('pc-instagram').value.trim(),
+    contact:       document.getElementById('pc-contact').value.trim(),
+    events:        document.getElementById('pc-events').value.trim(),
+    acts:          document.getElementById('pc-acts').value.trim(),
+    engagement:    document.getElementById('pc-engagement').value,
+    followUpDate:  document.getElementById('pc-followup').value,
+    notes:         document.getElementById('pc-notes').value.trim(),
+    addedAt: editingPromId ? (promoterData.find(e => e.id === editingPromId)?.addedAt || new Date().toISOString()) : new Date().toISOString()
+  };
+  if (editingPromId) {
+    const idx = promoterData.findIndex(e => e.id === editingPromId);
+    if (idx >= 0) promoterData[idx] = entry;
+  } else {
+    promoterData.push(entry);
+  }
+  savePromoterCRM();
+  renderPromoterCRM();
+  updatePromoterStats();
+  closeModal('pcrm-modal');
+  editingPromId = null;
+}
+
+function deletePromoterEntry(id) {
+  const e = promoterData.find(p => p.id === id);
+  if (!e) return;
+  if (!confirm(`Remove "${e.name}" from your Promoter CRM?`)) return;
+  promoterData = promoterData.filter(p => p.id !== id);
+  savePromoterCRM();
+  renderPromoterCRM();
+  updatePromoterStats();
+}
+
+function exportPromoterCSV() {
+  if (!promoterData.length) { alert('No promoters to export.'); return; }
+  const headers = ['Name','City','Type','Status','Instagram','Contact','Events/Acts','Engagement','Follow-Up','Notes','Added'];
+  const rows = promoterData.map(e => [e.name,e.city,e.type,e.status,e.instagram,e.contact,e.events,e.engagement,e.followUpDate,e.notes,e.addedAt?.slice(0,10)].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'dj_ike_promoters.csv'; a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ══ CRM ══
