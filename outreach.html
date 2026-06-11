@@ -1,0 +1,2828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DJ Ike Dillman — Outreach CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080808; --surface: #111; --surface2: #1a1a1a; --surface3: #222;
+      --border: rgba(255,255,255,0.06); --border2: rgba(255,255,255,0.12);
+      --text: #efefef; --muted: #555; --muted2: #888;
+      --accent: #ff4500; --accent2: #ff7733; --accent-glow: rgba(255,69,0,0.2);
+      --green: #22c55e; --green-dim: rgba(34,197,94,0.1);
+      --yellow: #f59e0b; --yellow-dim: rgba(245,158,11,0.1);
+      --blue: #38bdf8; --blue-dim: rgba(56,189,248,0.1);
+      --red: #ef4444; --red-dim: rgba(239,68,68,0.1);
+      --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.1);
+      --radius: 8px; --radius-lg: 14px; --radius-xl: 20px;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; overflow-x: hidden; }
+
+    /* ── SIDEBAR LAYOUT ── */
+    .app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+    .sidebar {
+      background: var(--surface);
+      border-right: 0.5px solid var(--border2);
+      padding: 1.5rem 1rem;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 0.25rem;
+    }
+
+    .sidebar-logo { margin-bottom: 1.5rem; padding: 0 0.5rem; }
+    .sidebar-logo .logo-name { font-family: var(--font-display); font-size: 24px; letter-spacing: 0.05em; color: var(--text); line-height: 1; }
+    .sidebar-logo .logo-name span { color: var(--accent); }
+    .sidebar-logo .logo-sub { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--muted2); text-transform: uppercase; margin-top: 2px; }
+
+    .nav-section { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; padding: 1rem 0.5rem 0.4rem; }
+
+    .nav-btn {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px; border-radius: var(--radius); cursor: pointer;
+      font-size: 13px; font-weight: 500; color: var(--muted2);
+      background: transparent; border: none; width: 100%; text-align: left;
+      transition: all 0.15s;
+    }
+    .nav-btn i { font-size: 16px; flex-shrink: 0; }
+    .nav-btn:hover { background: var(--surface2); color: var(--text); }
+    .nav-btn.active { background: rgba(255,69,0,0.12); color: var(--accent2); border: 0.5px solid rgba(255,69,0,0.2); }
+
+    .sidebar-footer { margin-top: auto; padding: 0.75rem 0.5rem 0; border-top: 0.5px solid var(--border2); font-size: 11px; font-family: var(--font-mono); color: var(--muted); }
+
+    /* ── MAIN ── */
+    .main { padding: 2rem 2rem 4rem; max-width: 960px; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-header { margin-bottom: 1.75rem; }
+    .page-title { font-family: var(--font-display); font-size: 36px; letter-spacing: 0.04em; color: var(--text); line-height: 1; margin-bottom: 4px; }
+    .page-title span { color: var(--accent); }
+    .page-sub { font-size: 13px; color: var(--muted2); font-family: var(--font-mono); }
+
+    /* ── CARDS ── */
+    .card { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-xl); padding: 1.5rem; margin-bottom: 1rem; }
+    .card-title { font-family: var(--font-mono); font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+    .card-title::after { content:''; flex:1; height:0.5px; background:var(--border2); }
+
+    /* ── FORM ── */
+    .field { margin-bottom: 1rem; }
+    .field:last-child { margin-bottom: 0; }
+    .field-label { display: block; font-size: 12px; font-family: var(--font-mono); color: var(--muted2); margin-bottom: 5px; letter-spacing: 0.04em; }
+    input[type="text"], input[type="email"], input[type="url"], input[type="date"], textarea, select {
+      width: 100%; background: var(--surface2); border: 0.5px solid var(--border2);
+      border-radius: var(--radius); color: var(--text); font-size: 14px;
+      font-family: var(--font-body); padding: 9px 12px; outline: none; transition: border-color 0.15s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+    textarea { resize: vertical; line-height: 1.55; }
+    select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius); font-family: var(--font-body); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; white-space: nowrap; }
+    .btn i { font-size: 15px; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent2); box-shadow: 0 0 20px var(--accent-glow); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+    .btn-ghost { background: transparent; color: var(--muted2); border: 0.5px solid var(--border2); }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted2); }
+    .btn-green { background: var(--green); color: #000; }
+    .btn-green:hover { opacity: 0.9; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1rem; }
+
+    /* ── API KEY ── */
+    .api-banner { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-xl); padding: 1rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; transition: border-color 0.3s; }
+    .api-banner.saved { border-color: var(--green); background: var(--green-dim); }
+    .status-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: var(--font-mono); white-space: nowrap; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex-shrink: 0; transition: background 0.3s; }
+    .status-dot.on { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .api-row { display: flex; flex: 1; gap: 8px; min-width: 180px; }
+    .api-row input { flex: 1; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-family: var(--font-mono); font-size: 12px; padding: 7px 10px; outline: none; }
+    .api-row input:focus { border-color: var(--accent); }
+    .api-note { width: 100%; font-size: 11px; color: var(--muted); }
+    .api-note a { color: var(--accent2); text-decoration: none; }
+
+    /* ── SEARCH RESULTS ── */
+    .venue-results { margin-top: 1.25rem; }
+    .venue-card {
+      background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-xl);
+      padding: 1.25rem 1.5rem; margin-bottom: 0.75rem;
+      display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;
+      animation: fadeUp 0.3s ease forwards; opacity: 0;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .venue-card:hover { border-color: rgba(255,69,0,0.3); }
+    .venue-name { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; color: var(--accent2); margin-bottom: 4px; }
+    .venue-meta { font-size: 12px; font-family: var(--font-mono); color: var(--muted2); margin-bottom: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .venue-meta span { display: flex; align-items: center; gap: 4px; }
+    .venue-desc { font-size: 13px; color: var(--muted2); line-height: 1.6; margin-bottom: 10px; }
+    .venue-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { font-size: 11px; font-family: var(--font-mono); padding: 3px 10px; border-radius: 999px; border: 0.5px solid var(--border2); color: var(--muted2); }
+    .tag.hip-hop { border-color: var(--accent); color: var(--accent2); }
+    .tag.edm { border-color: var(--blue); color: var(--blue); }
+    .tag.top40 { border-color: var(--purple); color: var(--purple); }
+    .tag.latin { border-color: var(--yellow); color: var(--yellow); }
+    .tag.open { border-color: var(--green); color: var(--green); }
+
+    .venue-actions { display: flex; flex-direction: column; gap: 6px; }
+    .action-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: var(--radius); font-size: 12px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; white-space: nowrap; }
+    .action-btn i { font-size: 13px; }
+    .ab-email { background: var(--accent); color: #fff; }
+    .ab-email:hover { background: var(--accent2); }
+    .ab-crm { background: var(--surface2); color: var(--muted2); border: 0.5px solid var(--border2); }
+    .ab-crm:hover { color: var(--text); border-color: var(--muted2); }
+
+    /* ── EMAIL MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-xl); width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 1.75rem; position: relative; animation: modalIn 0.2s ease; }
+    @keyframes modalIn { from{opacity:0;transform:scale(0.97)} to{opacity:1;transform:scale(1)} }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius); color: var(--muted2); font-size: 13px; padding: 5px 10px; cursor: pointer; }
+    .modal-close:hover { color: var(--text); }
+    .modal-title { font-family: var(--font-display); font-size: 26px; letter-spacing: 0.04em; color: var(--accent2); margin-bottom: 1rem; padding-right: 3rem; }
+
+    .email-subject { font-family: var(--font-mono); font-size: 12px; color: var(--muted2); margin-bottom: 0.5rem; }
+    .email-subject span { color: var(--text); }
+    .email-body { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius-lg); padding: 1.25rem; font-size: 13px; line-height: 1.75; color: var(--text); white-space: pre-wrap; margin-bottom: 1rem; min-height: 200px; }
+
+    .generating-overlay { text-align: center; padding: 3rem; color: var(--muted2); font-family: var(--font-mono); font-size: 13px; }
+    .generating-overlay i { display: block; font-size: 28px; color: var(--accent); margin-bottom: 10px; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── CRM TABLE ── */
+    .crm-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+    .crm-search { flex: 1; min-width: 180px; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-size: 13px; font-family: var(--font-body); padding: 8px 12px; outline: none; }
+    .crm-search:focus { border-color: var(--accent); }
+
+    .crm-empty { text-align: center; padding: 4rem 2rem; color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+    .crm-empty i { display: block; font-size: 36px; margin-bottom: 12px; color: var(--muted); }
+
+    .crm-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .crm-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 8px 12px; border-bottom: 0.5px solid var(--border2); text-align: left; white-space: nowrap; }
+    .crm-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); vertical-align: top; }
+    .crm-table tr:last-child td { border-bottom: none; }
+    .crm-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .status-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-family: var(--font-mono); padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+    .st-new { background: var(--blue-dim); color: var(--blue); border: 0.5px solid var(--blue); }
+    .st-contacted { background: var(--yellow-dim); color: var(--yellow); border: 0.5px solid var(--yellow); }
+    .st-followup { background: var(--purple-dim); color: var(--purple); border: 0.5px solid var(--purple); }
+    .st-booked { background: var(--green-dim); color: var(--green); border: 0.5px solid var(--green); }
+    .st-passed { background: var(--red-dim); color: var(--red); border: 0.5px solid var(--red); }
+
+    .crm-venue-name { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .crm-venue-city { font-size: 11px; font-family: var(--font-mono); color: var(--muted2); }
+
+    .crm-actions-cell { display: flex; gap: 5px; }
+    .crm-icon-btn { background: transparent; border: 0.5px solid var(--border2); border-radius: var(--radius); color: var(--muted2); padding: 4px 8px; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+    .crm-icon-btn:hover { color: var(--text); border-color: var(--muted2); }
+    .crm-icon-btn.danger:hover { color: var(--red); border-color: var(--red); }
+
+    /* ── STATS ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-xl); padding: 1.25rem; text-align: center; }
+    .stat-num { font-family: var(--font-display); font-size: 40px; letter-spacing: 0.04em; color: var(--accent2); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+
+    /* ── PROFILE PAGE ── */
+    .profile-preview { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius-lg); padding: 1.25rem; font-size: 13px; line-height: 1.7; color: var(--muted2); white-space: pre-wrap; margin-top: 1rem; font-family: var(--font-mono); }
+
+    /* ── LOADING ── */
+    .search-loading { display: none; text-align: center; padding: 3rem; color: var(--muted2); font-family: var(--font-mono); font-size: 13px; }
+    .search-loading i { display: block; font-size: 28px; color: var(--accent); margin-bottom: 10px; animation: spin 1s linear infinite; }
+
+    /* ── EDIT CRM MODAL ── */
+    .crm-notes-input { width: 100%; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius); color: var(--text); font-size: 13px; font-family: var(--font-body); padding: 9px 12px; outline: none; resize: vertical; line-height: 1.5; }
+    .crm-notes-input:focus { border-color: var(--accent); }
+
+    /* ── WEB SEARCH TOGGLE ── */
+    .ws-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding-top: 12px; border-top: 0.5px solid var(--border2); }
+    .ws-toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .ws-toggle-label { font-size: 13px; font-weight: 500; color: var(--text); }
+    .toggle-track { position: relative; width: 36px; height: 20px; background: var(--surface3); border: 0.5px solid var(--border2); border-radius: 999px; cursor: pointer; transition: background 0.2s, border-color 0.2s; flex-shrink: 0; }
+    .toggle-track.on { background: rgba(255,69,0,0.3); border-color: var(--accent); }
+    .toggle-track input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; margin: 0; }
+    .toggle-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: var(--muted2); border-radius: 50%; transition: transform 0.2s, background 0.2s; pointer-events: none; }
+    .toggle-track.on .toggle-thumb { transform: translateX(16px); background: var(--accent2); }
+    .ws-badge { font-size: 11px; font-family: var(--font-mono); color: var(--muted); }
+    .ws-badge.on { color: var(--green); }
+    .ws-note { width: 100%; font-size: 11px; font-family: var(--font-mono); color: var(--muted); line-height: 1.5; }
+    .ws-note a { color: var(--accent2); text-decoration: none; }
+    .ws-note a:hover { text-decoration: underline; }
+
+    /* ── SOCIAL LINKS ── */
+    .venue-social { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; margin-bottom: 6px; }
+    .social-link { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: var(--font-mono); color: var(--muted2); background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 999px; padding: 3px 10px; text-decoration: none; transition: all 0.15s; }
+    .social-link:hover { color: var(--accent2); border-color: var(--accent); }
+    .social-link i { font-size: 12px; }
+
+    /* ── AGENT BUTTON ── */
+    .btn-agent { background: rgba(167,139,250,0.15); color: var(--purple); border: 0.5px solid rgba(167,139,250,0.4); }
+    .btn-agent:hover { background: rgba(167,139,250,0.25); border-color: var(--purple); }
+    .btn-agent:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── REVIEW BADGE (sidebar) ── */
+    .review-badge { display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-size:10px;font-family:var(--font-mono);border-radius:999px;min-width:18px;height:18px;padding:0 5px;margin-left:auto; }
+
+    /* ── REVIEW QUEUE CARDS ── */
+    .review-card { background:var(--surface);border:0.5px solid var(--border2);border-radius:var(--radius-xl);margin-bottom:1.25rem;overflow:hidden;animation:fadeUp 0.3s ease forwards;opacity:0; }
+    .review-card.approved { border-color:var(--green); }
+    .review-card.discarded { opacity:0.35;border-color:var(--border); }
+
+    .review-card-header { display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem 1rem;gap:1rem;flex-wrap:wrap; }
+    .review-venue-name { font-family:var(--font-display);font-size:22px;letter-spacing:0.04em;color:var(--accent2); }
+    .review-venue-meta { font-size:11px;font-family:var(--font-mono);color:var(--muted2);margin-top:2px; }
+
+    .review-status-badge { font-size:11px;font-family:var(--font-mono);padding:3px 12px;border-radius:999px;white-space:nowrap; }
+    .rsb-pending { background:var(--surface2);color:var(--muted2);border:0.5px solid var(--border2); }
+    .rsb-approved { background:var(--green-dim);color:var(--green);border:0.5px solid var(--green); }
+    .rsb-discarded { background:var(--red-dim);color:var(--red);border:0.5px solid var(--red); }
+
+    .review-email-section { padding:0 1.5rem 1rem; }
+    .review-email-label { font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:8px; }
+    .review-subject { font-family:var(--font-mono);font-size:12px;color:var(--muted2);margin-bottom:8px; }
+    .review-subject span { color:var(--text); }
+    .review-body-edit { width:100%;background:var(--surface2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);color:var(--text);font-size:13px;font-family:var(--font-body);padding:1rem;outline:none;resize:vertical;line-height:1.7;min-height:180px; }
+    .review-body-edit:focus { border-color:var(--accent); }
+
+    .review-actions { display:flex;gap:8px;padding:1rem 1.5rem 1.25rem;border-top:0.5px solid var(--border);flex-wrap:wrap; }
+    .btn-approve { background:var(--green);color:#000;font-weight:600; }
+    .btn-approve:hover { opacity:0.9; }
+    .btn-discard { background:transparent;color:var(--muted2);border:0.5px solid var(--border2); }
+    .btn-discard:hover { color:var(--red);border-color:var(--red); }
+    .btn-mailto { background:transparent;color:var(--accent2);border:0.5px solid rgba(255,119,51,0.35); }
+    .btn-mailto:hover { background:rgba(255,119,51,0.08);border-color:var(--accent2); }
+
+    /* ── REVIEW CARD GENERATING STATE ── */
+    .review-generating { padding:1.25rem 1.5rem;font-size:12px;font-family:var(--font-mono);color:var(--muted2);display:flex;align-items:center;gap:8px; }
+    .review-generating i { font-size:16px;color:var(--purple);animation:spin 1s linear infinite; }
+
+    .ab-verify { background: var(--surface2); color: var(--blue); border: 0.5px solid rgba(56,189,248,0.3); }
+    .ab-verify:hover { border-color: var(--blue); background: var(--blue-dim); }
+    .ab-verify:disabled { opacity: 0.5; cursor: not-allowed; }
+    .verify-result { font-size:11px;font-family:var(--font-mono);color:var(--muted2);margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:var(--radius);border:0.5px solid var(--border2);line-height:1.6; }
+    .verify-result.success { border-color:rgba(56,189,248,0.3);color:var(--blue); }
+    .verify-result.error { border-color:rgba(239,68,68,0.3);color:var(--red); }
+
+    /* ── PROMOTER MODE TABS ── */
+    .promo-mode-tabs { display:flex; gap:6px; margin-bottom:1.25rem; flex-wrap:wrap; }
+    .promo-tab { display:inline-flex; align-items:center; gap:7px; padding:8px 18px; border-radius:999px; font-size:13px; font-weight:500; font-family:var(--font-body); cursor:pointer; border:0.5px solid var(--border2); background:var(--surface); color:var(--muted2); transition:all 0.15s; }
+    .promo-tab i { font-size:15px; }
+    .promo-tab:hover { color:var(--text); border-color:var(--muted2); }
+    .promo-tab.active { background:rgba(167,139,250,0.15); color:var(--purple); border-color:rgba(167,139,250,0.4); }
+
+    /* ── PROMOTER RESULT CARDS ── */
+    .promoter-card {
+      background:var(--surface); border:0.5px solid var(--border2); border-radius:var(--radius-xl);
+      padding:1.25rem 1.5rem; margin-bottom:0.75rem;
+      display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start;
+      animation:fadeUp 0.3s ease forwards; opacity:0;
+    }
+    .promoter-card:hover { border-color:rgba(167,139,250,0.3); }
+    .promoter-name { font-family:var(--font-display); font-size:20px; letter-spacing:0.04em; color:var(--purple); margin-bottom:4px; }
+    .promoter-meta { font-size:12px; font-family:var(--font-mono); color:var(--muted2); margin-bottom:8px; display:flex; gap:12px; flex-wrap:wrap; }
+    .promoter-meta span { display:flex; align-items:center; gap:4px; }
+    .promoter-desc { font-size:13px; color:var(--muted2); line-height:1.6; margin-bottom:8px; }
+    .promoter-fit { font-size:12px; font-family:var(--font-mono); color:var(--purple); margin-bottom:8px; }
+
+    /* Tour card accent */
+    .promoter-card.tour { border-color:rgba(245,158,11,0.2); }
+    .promoter-card.tour:hover { border-color:rgba(245,158,11,0.4); }
+    .promoter-card.tour .promoter-name { color:var(--yellow); }
+    .promoter-card.tour .promoter-fit { color:var(--yellow); }
+
+    /* ── ENGAGEMENT BADGES ── */
+    .eng-cold     { background:var(--surface2);color:var(--muted2);border:0.5px solid var(--border2); }
+    .eng-warm     { background:var(--yellow-dim);color:var(--yellow);border:0.5px solid var(--yellow); }
+    .eng-active   { background:var(--blue-dim);color:var(--blue);border:0.5px solid var(--blue); }
+    .eng-priority { background:rgba(167,139,250,0.15);color:var(--purple);border:0.5px solid var(--purple); }
+
+    /* Promoter type badge */
+    .ptype-local    { background:var(--green-dim);color:var(--green);border:0.5px solid var(--green); }
+    .ptype-regional { background:var(--blue-dim);color:var(--blue);border:0.5px solid var(--blue); }
+    .ptype-tour     { background:var(--yellow-dim);color:var(--yellow);border:0.5px solid var(--yellow); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:700px){
+      .app{grid-template-columns:1fr;}
+      .sidebar{display:none;}
+      .stats-grid{grid-template-columns:1fr 1fr;}
+      .grid-2,.grid-3{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-name">DJ <span>IKE</span><br>DILLMAN</div>
+      <div class="logo-sub">Outreach CRM</div>
+    </div>
+
+    <div class="nav-section">Review</div>
+    <button class="nav-btn" onclick="goPage('review')" id="nav-review"><i class="ti ti-check"></i> Review Queue <span class="review-badge" id="nav-review-badge" style="display:none;"></span></button>
+
+    <div class="nav-section">Venues</div>
+    <button class="nav-btn active" onclick="goPage('search')" id="nav-search"><i class="ti ti-search"></i> Find Venues</button>
+    <button class="nav-btn" onclick="goPage('crm')" id="nav-crm"><i class="ti ti-layout-list"></i> Venue CRM</button>
+
+    <div class="nav-section">Promoters</div>
+    <button class="nav-btn" onclick="goPage('promoter-search')" id="nav-promoter-search"><i class="ti ti-speakerphone"></i> Find Promoters</button>
+    <button class="nav-btn" onclick="goPage('promoter-crm')" id="nav-promoter-crm"><i class="ti ti-address-book"></i> Promoter CRM</button>
+
+    <div class="nav-section">Settings</div>
+    <button class="nav-btn" onclick="goPage('profile')" id="nav-profile"><i class="ti ti-user"></i> DJ Profile</button>
+    <button class="nav-btn" onclick="goPage('apikey')" id="nav-apikey"><i class="ti ti-key"></i> API Key</button>
+
+    <div class="sidebar-footer">
+      <div>Raleigh, NC</div>
+      <div style="margin-top:3px;"><a href="https://soundcloud.com/ike_dillman" target="_blank" style="color:var(--accent2);text-decoration:none;">soundcloud.com/ike_dillman</a></div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- ══ PAGE: SEARCH ══ -->
+    <div class="page active" id="page-search">
+      <div class="page-header">
+        <div class="page-title">Find <span>Venues</span></div>
+        <div class="page-sub">Research nightclubs and generate personalized booking pitches</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Search Criteria</div>
+        <div class="grid-3">
+          <div class="field">
+            <label class="field-label">City</label>
+            <input type="text" id="search-city" placeholder="e.g. Raleigh, Charlotte..." value="Raleigh" />
+          </div>
+          <div class="field">
+            <label class="field-label">State</label>
+            <input type="text" id="search-state" placeholder="e.g. NC, NY, FL..." value="NC" />
+          </div>
+          <div class="field">
+            <label class="field-label">Venue Type</label>
+            <select id="search-type">
+              <option value="nightclub">Nightclub</option>
+              <option value="bar with DJ">Bar with DJ Nights</option>
+              <option value="lounge">Lounge</option>
+              <option value="rooftop bar">Rooftop Bar</option>
+              <option value="dance club">Dance Club</option>
+              <option value="all">All venue types</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:12px;">
+          <div class="field">
+            <label class="field-label">Music Genre Focus</label>
+            <select id="search-genre" onchange="handleGenreChange(this.value)">
+              <option value="any">Any / Open Format</option>
+              <option value="hip-hop and r&b">Hip-Hop & R&B</option>
+              <option value="top 40">Top 40</option>
+              <option value="EDM and electronic">EDM / Electronic</option>
+              <option value="Latin">Latin</option>
+              <option value="throwbacks and old school">Throwbacks</option>
+            </select>
+            <!-- EDM sub-genre — shown only when EDM is selected -->
+            <div id="edm-subgenre-wrap" style="display:none;margin-top:8px;">
+              <label class="field-label" style="margin-bottom:5px;">EDM Sub-Genre <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+              <select id="search-subgenre">
+                <option value="">— All Electronic / No preference —</option>
+                <optgroup label="Dance Floor / Club">
+                  <option value="Drum &amp; Bass / DnB">Drum &amp; Bass / DnB</option>
+                  <option value="Breaks / Breakbeat">Breaks / Breakbeat</option>
+                  <option value="Jungle">Jungle</option>
+                  <option value="Tech House">Tech House</option>
+                  <option value="Deep House">Deep House</option>
+                  <option value="Progressive House">Progressive House</option>
+                  <option value="Trance / Psytrance">Trance / Psytrance</option>
+                  <option value="Techno">Techno</option>
+                  <option value="Hardstyle / Hard Dance">Hardstyle / Hard Dance</option>
+                </optgroup>
+                <optgroup label="Festival / Rave">
+                  <option value="Dubstep / Bass Music">Dubstep / Bass Music</option>
+                  <option value="Riddim">Riddim</option>
+                  <option value="Trap (Electronic)">Trap (Electronic)</option>
+                  <option value="Future Bass">Future Bass</option>
+                  <option value="Liquid DnB">Liquid DnB</option>
+                </optgroup>
+                <optgroup label="Crossover / Hybrid">
+                  <option value="Open Format Electronic">Open Format Electronic</option>
+                  <option value="Electro / Big Room">Electro / Big Room</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field-label">Number of Venues to Find</label>
+            <select id="search-count">
+              <option value="5">5 venues</option>
+              <option value="8" selected>8 venues</option>
+              <option value="10">10 venues</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="search-btn" onclick="searchVenues()">
+            <i class="ti ti-search"></i> Research Venues
+          </button>
+          <button class="btn btn-agent" id="agent-btn" onclick="runAgent()">
+            <i class="ti ti-robot"></i> Run Agent
+          </button>
+        </div>
+
+        <!-- Agent progress bar (hidden until agent runs) -->
+        <div id="agent-progress" style="display:none;margin-top:1rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="agent-status-label">Starting...</span>
+            <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="agent-progress-count"></span>
+          </div>
+          <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+            <div id="agent-progress-bar" style="height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Web Search Toggle -->
+        <div class="ws-row">
+          <div class="ws-toggle-wrap">
+            <label class="toggle-track" id="ws-track">
+              <input type="checkbox" id="ws-toggle" onchange="toggleWebSearch(this.checked); document.getElementById('ws-track').classList.toggle('on', this.checked);" />
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="ws-toggle-label">Real-time web search</span>
+          </div>
+          <span class="ws-badge" id="ws-badge">Web search off — AI knowledge only</span>
+          <div class="ws-note">
+            When on, Claude searches the web for real venues with verified contacts and social handles. Requires web search to be enabled in your <a href="https://console.anthropic.com" target="_blank">Anthropic Console</a>. Adds ~$0.01 per search.
+          </div>
+        </div>
+      </div>
+
+      <div class="search-loading" id="search-loading">
+        <i class="ti ti-loader-2"></i>
+        Researching venues... this may take a moment
+      </div>
+
+      <div class="venue-results" id="venue-results"></div>
+    </div>
+
+    <!-- ══ PAGE: REVIEW QUEUE ══ -->
+    <div class="page" id="page-review">
+      <div class="page-header">
+        <div class="page-title">Review <span>Queue</span></div>
+        <div class="page-sub">Venue and promoter drafts — approve, edit, or discard before anything goes out</div>
+      </div>
+
+      <div id="review-empty" style="text-align:center;padding:4rem 2rem;color:var(--muted);font-family:var(--font-mono);font-size:13px;">
+        <i class="ti ti-robot" style="display:block;font-size:36px;margin-bottom:12px;color:var(--muted);"></i>
+        No drafts yet. Use <strong style="color:var(--text);">Run Agent</strong> on the Find Venues page to generate a full batch.
+      </div>
+
+      <div id="review-summary" style="display:none;margin-bottom:1.25rem;">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);letter-spacing:0.06em;" id="review-count-label"></span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="clearReviewQueue()">
+            <i class="ti ti-trash"></i> Clear queue
+          </button>
+        </div>
+      </div>
+
+      <div id="review-list"></div>
+    </div>
+
+    <!-- ══ PAGE: CRM ══ -->
+    <div class="page" id="page-crm">
+      <div class="page-header">
+        <div class="page-title">Outreach <span>Tracker</span></div>
+        <div class="page-sub">Track every venue, status, and follow-up</div>
+      </div>
+
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total Venues</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-contacted">0</div><div class="stat-label">Contacted</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-followup">0</div><div class="stat-label">Follow-Up Due</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-booked">0</div><div class="stat-label">Booked 🔥</div></div>
+      </div>
+
+      <div class="card" style="padding:1rem 1.5rem;">
+        <div class="crm-toolbar">
+          <input type="text" class="crm-search" id="crm-search" placeholder="Search venues..." oninput="renderCRM()" />
+          <button class="btn btn-ghost" onclick="exportCSV()"><i class="ti ti-download"></i> Export CSV</button>
+          <button class="btn btn-primary" onclick="openAddModal()"><i class="ti ti-plus"></i> Add Venue</button>
+        </div>
+        <div id="crm-body"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PROFILE ══ -->
+    <div class="page" id="page-profile">
+      <div class="page-header">
+        <div class="page-title">DJ <span>Profile</span></div>
+        <div class="page-sub">Your info used in every outreach email — keep it sharp</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Your Details</div>
+        <div class="grid-2">
+          <div class="field"><label class="field-label">DJ Name</label><input type="text" id="p-name" value="DJ Ike Dillman" /></div>
+          <div class="field"><label class="field-label">Your Email</label><input type="email" id="p-email" placeholder="your@email.com" /></div>
+          <div class="field"><label class="field-label">Phone (optional)</label><input type="text" id="p-phone" placeholder="+1 (555) 000-0000" /></div>
+          <div class="field"><label class="field-label">Location</label><input type="text" id="p-location" value="Raleigh, NC" /></div>
+        </div>
+        <div class="field" style="margin-top:12px;"><label class="field-label">SoundCloud URL</label><input type="url" id="p-soundcloud" value="https://soundcloud.com/ike_dillman" /></div>
+        <div class="field"><label class="field-label">Website (optional)</label><input type="url" id="p-website" placeholder="https://..." /></div>
+        <div class="field">
+          <label class="field-label">Booking Page URL</label>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="url" id="p-booking" placeholder="https://ikedillman-web.github.io/booking.html" />
+            <a id="p-booking-preview" href="#" target="_blank" title="Preview booking page"
+               style="display:none;color:var(--accent2);font-size:18px;flex-shrink:0;">
+              <i class="ti ti-external-link"></i>
+            </a>
+          </div>
+          <div style="font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-top:4px;">
+            Included in outreach emails so venues can learn more and enquire directly.
+          </div>
+        </div>
+        <div class="field"><label class="field-label">Instagram Handle</label><input type="text" id="p-instagram" placeholder="@ikeDillman" /></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Bio &amp; Highlights</div>
+        <div class="field">
+          <label class="field-label">Short Bio (used in emails)</label>
+          <textarea id="p-bio" rows="4" placeholder="e.g. DJ Ike Dillman is a Raleigh-based open format DJ with 10+ years of experience spinning for high school events, private parties, and clubs. Known for reading the room and keeping energy high all night."></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">Performance Highlights (one per line)</label>
+          <textarea id="p-highlights" rows="4" placeholder="e.g.&#10;10+ years DJing in the Raleigh-Durham area&#10;Resident DJ at [Venue Name]&#10;Available for nightclub residencies and special events&#10;Open format: Hip-Hop, R&B, Top 40, EDM, Throwbacks"></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label">Booking Rate Info (optional — Claude will adapt tone)</label>
+          <input type="text" id="p-rate" placeholder="e.g. Starting at $X per night, negotiable for residencies" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveProfile()"><i class="ti ti-check"></i> Save Profile</button>
+          <button class="btn btn-ghost" onclick="previewProfile()"><i class="ti ti-eye"></i> Preview</button>
+        </div>
+        <div class="profile-preview" id="profile-preview" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: API KEY ══ -->
+    <div class="page" id="page-apikey">
+      <div class="page-header">
+        <div class="page-title">API <span>Key</span></div>
+        <div class="page-sub">Required for AI venue research and email generation</div>
+      </div>
+      <div class="api-banner" id="api-banner">
+        <div class="status-pill">
+          <div class="status-dot" id="status-dot"></div>
+          <span id="status-label">No API key saved</span>
+        </div>
+        <div class="api-row" id="api-row">
+          <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off" onkeydown="if(event.key==='Enter')saveKey()" />
+          <button class="btn btn-primary" onclick="saveKey()" style="padding:7px 14px;font-size:12px;">Save</button>
+        </div>
+        <button class="btn btn-ghost" id="clear-btn" onclick="clearKey()" style="display:none;padding:7px 14px;font-size:12px;">
+          <i class="ti ti-trash" style="font-size:13px;"></i> Remove
+        </button>
+        <div class="api-note" style="width:100%;font-size:11px;">
+          Your key is stored only in your browser and never shared. Get one free at
+          <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">How this tool uses the API</div>
+        <div style="font-size:13px;color:var(--muted2);line-height:1.7;">
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search off)</strong> — Claude uses its training knowledge to suggest nightclubs, bars, and lounges in your target city. Fast and free beyond standard token cost, but venues may not be current.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Venue Research (web search on)</strong> — Claude performs at most 2 web searches to find a full batch of real venues. Costs ~$0.02–0.05 per batch search. For deeper contact details on a specific venue, use the <strong style="color:var(--text);">Verify</strong> button on any card — that fires one targeted search for that venue only (~$0.01).</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Outreach Email</strong> — Claude generates a personalized pitch for each venue, matching your DJ profile to their specific vibe and format.</p>
+          <p style="margin-bottom:8px;">• <strong style="color:var(--text);">Model</strong> — Currently using <span style="font-family:var(--font-mono);color:var(--accent2);">claude-sonnet-4-6</span>. To update the model, change the <span style="font-family:var(--font-mono);color:var(--accent2);">CLAUDE_MODEL</span> constant at the top of this file's script.</p>
+          <p>• <strong style="color:var(--text);">Cost</strong> — Each venue search uses roughly 2,000–4,000 tokens (~$0.01–0.02 at current Claude Sonnet pricing). Very affordable.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PROMOTER SEARCH ══ -->
+    <div class="page" id="page-promoter-search">
+      <div class="page-header">
+        <div class="page-title">Find <span>Promoters</span></div>
+        <div class="page-sub">Discover active promoters, local nights, and tour opportunities that match your sound</div>
+      </div>
+
+      <!-- Mode selector -->
+      <div class="promo-mode-tabs">
+        <button class="promo-tab active" id="ptab-local" onclick="switchPromoMode('local')">
+          <i class="ti ti-map-pin"></i> Local Nights
+        </button>
+        <button class="promo-tab" id="ptab-active" onclick="switchPromoMode('active')">
+          <i class="ti ti-speakerphone"></i> Active Promoters
+        </button>
+        <button class="promo-tab" id="ptab-tour" onclick="switchPromoMode('tour')">
+          <i class="ti ti-route"></i> Tour Support
+        </button>
+      </div>
+
+      <!-- LOCAL NIGHTS mode -->
+      <div class="promo-mode" id="mode-local">
+        <div class="card">
+          <div class="card-title">Local Nights Search</div>
+          <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:1rem;">Find active DJ nights in a city — then surface the promoter behind each one.</p>
+          <div class="grid-3">
+            <div class="field"><label class="field-label">City *</label><input type="text" id="ln-city" placeholder="e.g. Charlotte" /></div>
+            <div class="field"><label class="field-label">State</label><input type="text" id="ln-state" placeholder="e.g. NC" /></div>
+            <div class="field"><label class="field-label">Number of Nights</label>
+              <select id="ln-count"><option value="5">5</option><option value="8" selected>8</option><option value="10">10</option></select>
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Music Style / Genre *</label>
+            <input type="text" id="ln-genre" placeholder="e.g. Breaks, UK Garage, Funky House, DnB..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="ln-btn" onclick="searchLocalNights()"><i class="ti ti-search"></i> Find Nights</button>
+            <button class="btn btn-agent" id="ln-agent-btn" onclick="runPromoterAgent('local')"><i class="ti ti-robot"></i> Run Agent</button>
+          </div>
+          <!-- Agent progress -->
+          <div id="ln-agent-progress" style="display:none;margin-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="ln-status-label">Starting...</span>
+              <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="ln-progress-count"></span>
+            </div>
+            <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+              <div id="ln-progress-bar" style="height:100%;background:var(--purple);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search-loading" id="ln-loading"><i class="ti ti-loader-2"></i>Searching for nights...</div>
+        <div id="ln-results"></div>
+      </div>
+
+      <!-- ACTIVE PROMOTERS mode -->
+      <div class="promo-mode" id="mode-active" style="display:none;">
+        <div class="card">
+          <div class="card-title">Active Promoters Search</div>
+          <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:1rem;">Find people actively throwing events — via Resident Advisor, Eventbrite, Facebook Events, and social media.</p>
+          <div class="grid-3">
+            <div class="field"><label class="field-label">City *</label><input type="text" id="ap-city" placeholder="e.g. Raleigh" /></div>
+            <div class="field"><label class="field-label">State</label><input type="text" id="ap-state" placeholder="e.g. NC" /></div>
+            <div class="field"><label class="field-label">Number of Promoters</label>
+              <select id="ap-count"><option value="5">5</option><option value="8" selected>8</option><option value="10">10</option></select>
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Music Style / Genre *</label>
+            <input type="text" id="ap-genre" placeholder="e.g. Breaks, UK Garage, Funky House..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="ap-btn" onclick="searchActivePromoters()"><i class="ti ti-search"></i> Find Promoters</button>
+            <button class="btn btn-agent" id="ap-agent-btn" onclick="runPromoterAgent('active')"><i class="ti ti-robot"></i> Run Agent</button>
+          </div>
+          <div id="ap-agent-progress" style="display:none;margin-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="ap-status-label">Starting...</span>
+              <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="ap-progress-count"></span>
+            </div>
+            <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+              <div id="ap-progress-bar" style="height:100%;background:var(--purple);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search-loading" id="ap-loading"><i class="ti ti-loader-2"></i>Searching for promoters...</div>
+        <div id="ap-results"></div>
+      </div>
+
+      <!-- TOUR SUPPORT mode -->
+      <div class="promo-mode" id="mode-tour" style="display:none;">
+        <div class="card">
+          <div class="card-title">Tour Support Search</div>
+          <p style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:1rem;">Find touring acts with a compatible sound — then identify their regional promoter for your target market to pitch yourself as a local opening act.</p>
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label">Your Performance Style *</label>
+              <input type="text" id="ts-style" placeholder="e.g. Funky House, UK Garage, Breaks — peak hour" />
+            </div>
+            <div class="field">
+              <label class="field-label">Target Market / City *</label>
+              <input type="text" id="ts-market" placeholder="e.g. Charlotte NC, Raleigh NC" />
+            </div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Specific Touring Artist <span style="color:var(--muted);font-weight:400;">(optional — for targeted search)</span></label>
+            <input type="text" id="ts-artist" placeholder="e.g. DJ Zinc, Goldie, Shy FX, Kenny Dope..." />
+            <div style="font-size:11px;font-family:var(--font-mono);color:var(--muted);margin-top:4px;">If you know a specific touring act, enter them here for a direct promoter lookup. Otherwise leave blank and we'll find compatible acts currently on tour.</div>
+          </div>
+          <div class="field" style="margin-top:12px;">
+            <label class="field-label">Number of Results</label>
+            <select id="ts-count"><option value="3">3 acts</option><option value="5" selected>5 acts</option><option value="8">8 acts</option></select>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="ts-btn" onclick="searchTourSupport()"><i class="ti ti-search"></i> Find Tour Opportunities</button>
+            <button class="btn btn-agent" id="ts-agent-btn" onclick="runPromoterAgent('tour')"><i class="ti ti-robot"></i> Run Agent</button>
+          </div>
+          <div id="ts-agent-progress" style="display:none;margin-top:1rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);" id="ts-status-label">Starting...</span>
+              <span style="font-size:11px;font-family:var(--font-mono);color:var(--muted2);" id="ts-progress-count"></span>
+            </div>
+            <div style="background:var(--surface3);border-radius:999px;height:4px;overflow:hidden;">
+              <div id="ts-progress-bar" style="height:100%;background:var(--purple);border-radius:999px;width:0%;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="search-loading" id="ts-loading"><i class="ti ti-loader-2"></i>Searching for tour opportunities...</div>
+        <div id="ts-results"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: PROMOTER CRM ══ -->
+    <div class="page" id="page-promoter-crm">
+      <div class="page-header">
+        <div class="page-title">Promoter <span>CRM</span></div>
+        <div class="page-sub">Track relationships with promoters — local nights, regional bookers, and tour contacts</div>
+      </div>
+
+      <!-- Promoter Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
+        <div class="stat-card"><div class="stat-num" id="pstat-total">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-contacted">0</div><div class="stat-label">Contacted</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-responded">0</div><div class="stat-label">Responded</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-booked">0</div><div class="stat-label">Booked</div></div>
+        <div class="stat-card"><div class="stat-num" id="pstat-priority">0</div><div class="stat-label">Priority</div></div>
+      </div>
+
+      <div class="crm-toolbar">
+        <input class="crm-search" id="pcrm-search" placeholder="Search promoters..." oninput="renderPromoterCRM()" />
+        <select id="pcrm-type-filter" onchange="renderPromoterCRM()" style="width:auto;min-width:160px;">
+          <option value="">All Types</option>
+          <option value="local">Local Night</option>
+          <option value="regional">Regional Promoter</option>
+          <option value="tour">Tour Promoter</option>
+        </select>
+        <select id="pcrm-engagement-filter" onchange="renderPromoterCRM()" style="width:auto;min-width:160px;">
+          <option value="">All Engagement</option>
+          <option value="cold">Cold</option>
+          <option value="warm">Warm</option>
+          <option value="active">Active</option>
+          <option value="priority">Priority</option>
+        </select>
+        <button class="btn btn-ghost" onclick="openAddPromoterModal()"><i class="ti ti-plus"></i> Add</button>
+        <button class="btn btn-ghost" onclick="exportPromoterCSV()"><i class="ti ti-download"></i> CSV</button>
+      </div>
+
+      <div id="pcrm-body"></div>
+    </div>
+
+    <!-- Promoter CRM Edit Modal -->
+    <div class="modal-overlay" id="pcrm-modal">
+      <div class="modal" style="max-width:640px;">
+        <button class="modal-close" onclick="closeModal('pcrm-modal')"><i class="ti ti-x"></i></button>
+        <div class="modal-title" id="pcrm-modal-title">Add Promoter</div>
+        <input type="hidden" id="pcrm-edit-id" />
+        <div class="grid-2">
+          <div class="field"><label class="field-label">Name / Handle *</label><input type="text" id="pc-name" placeholder="Promoter name or @handle" /></div>
+          <div class="field"><label class="field-label">City / Markets</label><input type="text" id="pc-city" placeholder="Charlotte NC, Raleigh NC" /></div>
+          <div class="field"><label class="field-label">Type</label>
+            <select id="pc-type">
+              <option value="local">Local Night</option>
+              <option value="regional">Regional Promoter</option>
+              <option value="tour">Tour Promoter</option>
+            </select>
+          </div>
+          <div class="field"><label class="field-label">Relationship Stage</label>
+            <select id="pc-status">
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="responded">Responded</option>
+              <option value="met">Met</option>
+              <option value="booked">Booked</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="passed">Passed</option>
+            </select>
+          </div>
+          <div class="field"><label class="field-label">Instagram / Social</label><input type="text" id="pc-instagram" placeholder="@handle" /></div>
+          <div class="field"><label class="field-label">Contact Email</label><input type="email" id="pc-contact" placeholder="email or DM" /></div>
+          <div class="field"><label class="field-label">Active Events / Nights</label><input type="text" id="pc-events" placeholder="e.g. Fabric Room 2 resident, monthly at Club X" /></div>
+          <div class="field"><label class="field-label">Associated Acts / DJs</label><input type="text" id="pc-acts" placeholder="e.g. DJ Zinc, Goldie (for tour contacts)" /></div>
+          <div class="field"><label class="field-label">Engagement Score</label>
+            <select id="pc-engagement">
+              <option value="cold">Cold</option>
+              <option value="warm">Warm</option>
+              <option value="active">Active</option>
+              <option value="priority">Priority — long-term relationship</option>
+            </select>
+          </div>
+          <div class="field"><label class="field-label">Follow-Up Date</label><input type="date" id="pc-followup" /></div>
+        </div>
+        <div class="field" style="margin-top:4px;"><label class="field-label">Notes</label>
+          <textarea class="crm-notes-input" id="pc-notes" rows="3" placeholder="Context, conversation history, gig details..."></textarea>
+        </div>
+        <div class="btn-row" style="margin-top:1.25rem;">
+          <button class="btn btn-primary" onclick="savePromoterEntry()"><i class="ti ti-check"></i> Save</button>
+          <button class="btn btn-ghost" onclick="closeModal('pcrm-modal')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ EMAIL MODAL ══ -->
+<div class="modal-overlay" id="email-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('email-modal')"><i class="ti ti-x"></i> Close</button>
+    <div class="modal-title" id="email-modal-title">Outreach Email</div>
+    <div id="email-modal-body">
+      <div class="generating-overlay">
+        <i class="ti ti-loader-2"></i>
+        Generating personalized pitch...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD/EDIT CRM MODAL ══ -->
+<div class="modal-overlay" id="crm-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('crm-modal')"><i class="ti ti-x"></i> Close</button>
+    <div class="modal-title" id="crm-modal-title">Add Venue</div>
+    <input type="hidden" id="crm-edit-id" />
+    <div class="grid-2" style="margin-bottom:12px;">
+      <div class="field"><label class="field-label">Venue Name *</label><input type="text" id="crm-vname" placeholder="The Disco Ball" /></div>
+      <div class="field"><label class="field-label">City, State</label><input type="text" id="crm-vcity" placeholder="Raleigh, NC" /></div>
+      <div class="field"><label class="field-label">Booking Contact</label><input type="text" id="crm-vcontact" placeholder="Name or email" /></div>
+      <div class="field"><label class="field-label">Genre / Vibe</label><input type="text" id="crm-vgenre" placeholder="Hip-Hop, Top 40..." /></div>
+    </div>
+    <div class="field"><label class="field-label">Status</label>
+      <select id="crm-vstatus">
+        <option value="new">New — not contacted</option>
+        <option value="contacted">Contacted</option>
+        <option value="followup">Follow-Up Needed</option>
+        <option value="booked">Booked ✓</option>
+        <option value="passed">Passed / Not interested</option>
+      </select>
+    </div>
+    <div class="field"><label class="field-label">Follow-Up Date</label><input type="date" id="crm-vdate" /></div>
+    <div class="field"><label class="field-label">Notes</label><textarea class="crm-notes-input" id="crm-vnotes" rows="3" placeholder="Any notes about this venue, contact, or conversation..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveCRMEntry()"><i class="ti ti-check"></i> Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('crm-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ CONFIG ══
+const CLAUDE_MODEL = 'claude-sonnet-4-6';   // ← update this one line when Anthropic releases a new model
+
+// ══ STORAGE KEYS ══
+const KEY_API       = 'dj_ike_api_key';
+const KEY_CRM       = 'dj_ike_crm';
+const KEY_PROF      = 'dj_ike_profile';
+const KEY_WEB_SEARCH = 'dj_ike_web_search';
+
+// ══ STATE ══
+let crmData        = [];
+let promoterData   = [];   // Promoter CRM — separate from venue CRM
+let editingId      = null;
+let editingPromId  = null;
+let webSearchEnabled = false;
+let reviewQueue    = [];
+let promoReviewQueue = [];  // Separate review queue for promoter agent drafts
+
+// ══ INIT ══
+document.addEventListener('DOMContentLoaded', () => {
+  loadKey();
+  loadCRM();
+  loadPromoterCRM();
+  loadProfile();
+  loadWebSearchPref();
+  renderCRM();
+  renderPromoterCRM();
+  updateStats();
+  updatePromoterStats();
+});
+
+// ══ NAVIGATION ══
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  if (id === 'crm')          { renderCRM(); updateStats(); }
+  if (id === 'review')       { renderReviewQueue(); }
+  if (id === 'promoter-crm') { renderPromoterCRM(); updatePromoterStats(); }
+}
+
+// ══ API KEY ══
+function loadKey() {
+  const k = localStorage.getItem(KEY_API);
+  if (k) {
+    document.getElementById('status-dot').classList.add('on');
+    document.getElementById('status-label').textContent = 'API key saved ✓';
+    document.getElementById('api-banner').classList.add('saved');
+    document.getElementById('api-row').style.display = 'none';
+    document.getElementById('clear-btn').style.display = 'inline-flex';
+  }
+}
+function saveKey() {
+  const v = document.getElementById('api-key-input').value.trim();
+  if (!v.startsWith('sk-ant-')) { alert('Key should start with "sk-ant-"'); return; }
+  localStorage.setItem(KEY_API, v);
+  document.getElementById('api-key-input').value = '';
+  loadKey();
+}
+function clearKey() {
+  if (!confirm('Remove saved API key?')) return;
+  localStorage.removeItem(KEY_API);
+  document.getElementById('status-dot').classList.remove('on');
+  document.getElementById('status-label').textContent = 'No API key saved';
+  document.getElementById('api-banner').classList.remove('saved');
+  document.getElementById('api-row').style.display = 'flex';
+  document.getElementById('clear-btn').style.display = 'none';
+}
+function getKey() { return localStorage.getItem(KEY_API); }
+
+// ══ WEB SEARCH PREFERENCE ══
+function loadWebSearchPref() {
+  webSearchEnabled = localStorage.getItem(KEY_WEB_SEARCH) === 'true';
+  const toggle = document.getElementById('ws-toggle');
+  const track  = document.getElementById('ws-track');
+  if (toggle) toggle.checked = webSearchEnabled;
+  if (track)  track.classList.toggle('on', webSearchEnabled);
+  updateWebSearchBadge();
+}
+function toggleWebSearch(checked) {
+  webSearchEnabled = checked;
+  localStorage.setItem(KEY_WEB_SEARCH, String(checked));
+  updateWebSearchBadge();
+}
+function updateWebSearchBadge() {
+  const badge = document.getElementById('ws-badge');
+  if (!badge) return;
+  if (webSearchEnabled) {
+    badge.textContent = 'Web search on — real venues';
+    badge.className = 'ws-badge on';
+  } else {
+    badge.textContent = 'Web search off — AI knowledge only';
+    badge.className = 'ws-badge';
+  }
+}
+
+// ══ GENRE / SUB-GENRE ══
+function handleGenreChange(val) {
+  const wrap = document.getElementById('edm-subgenre-wrap');
+  if (val === 'EDM and electronic') {
+    wrap.style.display = 'block';
+  } else {
+    wrap.style.display = 'none';
+    document.getElementById('search-subgenre').value = '';
+  }
+}
+
+function getGenreClause() {
+  const genre    = document.getElementById('search-genre').value;
+  const subgenre = document.getElementById('search-subgenre')?.value || '';
+  if (genre === 'any') return '';
+  if (genre === 'EDM and electronic' && subgenre) {
+    return ` that book ${subgenre} DJs`;
+  }
+  return ` that book ${genre} DJs`;
+}
+
+
+function loadProfile() {
+  const p = JSON.parse(localStorage.getItem(KEY_PROF) || '{}');
+  ['name','email','phone','location','soundcloud','website','booking','instagram','bio','highlights','rate'].forEach(f => {
+    const el = document.getElementById('p-' + f);
+    if (el && p[f]) el.value = p[f];
+  });
+  // Show preview link if booking URL is saved
+  const bookingEl = document.getElementById('p-booking');
+  const previewLink = document.getElementById('p-booking-preview');
+  if (bookingEl && previewLink && p.booking) {
+    previewLink.href = p.booking;
+    previewLink.style.display = 'inline';
+  }
+}
+function saveProfile() {
+  const p = {};
+  ['name','email','phone','location','soundcloud','website','booking','instagram','bio','highlights','rate'].forEach(f => {
+    const el = document.getElementById('p-' + f);
+    if (el) p[f] = el.value;
+  });
+  localStorage.setItem(KEY_PROF, JSON.stringify(p));
+  // Update preview link
+  const previewLink = document.getElementById('p-booking-preview');
+  if (previewLink && p.booking) {
+    previewLink.href = p.booking;
+    previewLink.style.display = 'inline';
+  }
+  alert('Profile saved!');
+}
+function getProfile() {
+  return JSON.parse(localStorage.getItem(KEY_PROF) || '{}');
+}
+function previewProfile() {
+  const p = getProfile();
+  const prev = document.getElementById('profile-preview');
+  prev.style.display = 'block';
+  prev.textContent = `Name: ${p.name || '—'}\nEmail: ${p.email || '—'}\nPhone: ${p.phone || '—'}\nLocation: ${p.location || '—'}\nSoundCloud: ${p.soundcloud || '—'}\nWebsite: ${p.website || '—'}\nBooking Page: ${p.booking || '—'}\nInstagram: ${p.instagram || '—'}\n\nBio:\n${p.bio || '—'}\n\nHighlights:\n${p.highlights || '—'}`;
+}
+
+// ══ VENUE SEARCH ══
+async function searchVenues() {
+  const key = getKey();
+  if (!key) { alert('Please add your Anthropic API key first (Settings → API Key).'); return; }
+
+  const city  = document.getElementById('search-city').value.trim();
+  const state = document.getElementById('search-state').value.trim();
+  const type  = document.getElementById('search-type').value;
+  const genre = document.getElementById('search-genre').value;
+  const count = document.getElementById('search-count').value;
+
+  if (!city) { alert('Please enter a city.'); return; }
+
+  document.getElementById('search-loading').style.display = 'block';
+  document.getElementById('venue-results').innerHTML = '';
+  document.getElementById('search-btn').disabled = true;
+
+  const genreClause = getGenreClause();
+
+  const prompt = webSearchEnabled
+    ? `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+
+IMPORTANT — search budget: you may use web search AT MOST 2 times total. Do not search venue by venue.
+
+Step 1 — Do ONE broad search: "${count} ${type} venues ${city} ${state}${genreClause} DJ nights"
+Step 2 — Do ONE follow-up search if needed: "${city} ${state} nightclub DJ booking contact instagram"
+
+From those results, compile a list of ${count} real, currently operating venues. Extract whatever website, Instagram handle, Facebook page, and booking contact you can find from the search results. Leave fields null if not found — do not search again per venue.
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "venues": [
+    {
+      "name": "Venue Name",
+      "address": "Street address or neighborhood",
+      "city": "${city}, ${state}",
+      "type": "nightclub|bar|lounge|etc",
+      "vibe": "One sentence describing the venue atmosphere",
+      "musicFormats": ["hip-hop", "top40"],
+      "capacity": "estimated capacity e.g. ~300",
+      "bookingContact": "booking@venue.com or 'DM on Instagram' or 'Contact via website'",
+      "website": "https://... or null",
+      "instagram": "@handle or null",
+      "facebook": "https://facebook.com/... or null",
+      "tiktok": "@handle or null",
+      "tags": ["hip-hop", "bottle service", "18+"],
+      "djNightInfo": "Brief description of their DJ nights, residency opportunities, or event formats",
+      "pitchAngle": "One sentence on why DJ Ike Dillman would be a great fit for THIS specific venue",
+      "verified": true
+    }
+  ]
+}`
+    : `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+
+List ${count} ${type} venues in ${city}, ${state}${genreClause} that feature DJ performances. Use your knowledge of the local scene — real venues where you know them, typical venues for the area otherwise.
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{
+  "venues": [
+    {
+      "name": "Venue Name",
+      "address": "Street address or neighborhood",
+      "city": "${city}, ${state}",
+      "type": "nightclub|bar|lounge|etc",
+      "vibe": "One sentence describing the venue atmosphere",
+      "musicFormats": ["hip-hop", "top40"],
+      "capacity": "estimated capacity e.g. ~300",
+      "bookingContact": "booking@venue.com or 'Contact via website' or 'Call venue directly'",
+      "website": "https://... or null",
+      "instagram": "@handle or null",
+      "facebook": null,
+      "tiktok": null,
+      "tags": ["hip-hop", "bottle service", "18+"],
+      "djNightInfo": "Brief description of their DJ nights, residency opportunities, or event formats",
+      "pitchAngle": "One sentence on why DJ Ike Dillman would be a great fit for THIS specific venue",
+      "verified": false
+    }
+  ]
+}`;
+
+  const requestBody = {
+    model: CLAUDE_MODEL,
+    max_tokens: 4000,
+    messages: [{ role: 'user', content: prompt }]
+  };
+
+  if (webSearchEnabled) {
+    requestBody.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+  }
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || `API error ${res.status}`;
+      // Surface a friendly message if web search isn't enabled on the account
+      if (webSearchEnabled && (msg.includes('web_search') || msg.includes('tool') || res.status === 400)) {
+        throw new Error('web_search_disabled');
+      }
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    // Extract text blocks only (skip tool_use / tool_result blocks)
+    const text = (data.content || [])
+      .filter(b => b.type === 'text')
+      .map(b => b.text || '')
+      .join('');
+
+    const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+    renderVenues(parsed.venues || []);
+  } catch (err) {
+    if (err.message === 'web_search_disabled') {
+      document.getElementById('venue-results').innerHTML = `
+        <div style="background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.35);border-radius:14px;padding:1.25rem 1.5rem;font-size:13px;line-height:1.7;">
+          <div style="font-family:var(--font-display);font-size:18px;letter-spacing:0.04em;color:#f59e0b;margin-bottom:8px;">Web Search Not Enabled</div>
+          <p style="color:var(--muted2);margin-bottom:10px;">Your Anthropic account doesn't have web search activated yet. To use real-time venue research:</p>
+          <ol style="color:var(--muted2);padding-left:1.2rem;margin-bottom:12px;">
+            <li style="margin-bottom:4px;">Go to <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2);">console.anthropic.com</a></li>
+            <li style="margin-bottom:4px;">Navigate to <strong style="color:var(--text);">Settings → Capabilities</strong></li>
+            <li>Enable <strong style="color:var(--text);">Web Search</strong> for your account</li>
+          </ol>
+          <p style="color:var(--muted);font-size:12px;font-family:var(--font-mono);">In the meantime, turn off the web search toggle above to search using AI knowledge only.</p>
+        </div>`;
+    } else {
+      document.getElementById('venue-results').innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Error: ${err.message}</div>`;
+    }
+  }
+
+  document.getElementById('search-loading').style.display = 'none';
+  document.getElementById('search-btn').disabled = false;
+}
+
+function renderVenues(venues) {
+  const container = document.getElementById('venue-results');
+  const verifiedNote = webSearchEnabled
+    ? `<span style="color:var(--green);font-size:11px;font-family:var(--font-mono);"><i class="ti ti-world-search" style="font-size:12px;vertical-align:-2px;"></i> Live web results</span>`
+    : `<span style="color:var(--muted);font-size:11px;font-family:var(--font-mono);">AI knowledge — enable web search for verified venues</span>`;
+  container.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;"><span style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);letter-spacing:0.06em;">${venues.length} VENUES FOUND</span>${verifiedNote}</div>`;
+
+  venues.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'venue-card';
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    const tagHTML = (v.tags || []).map(t => {
+      let cls = '';
+      if (/hip.hop|r.b/i.test(t)) cls = 'hip-hop';
+      else if (/edm|electron/i.test(t)) cls = 'edm';
+      else if (/top.40/i.test(t)) cls = 'top40';
+      else if (/latin/i.test(t)) cls = 'latin';
+      else if (/open/i.test(t)) cls = 'open';
+      return `<span class="tag ${cls}">${esc(t)}</span>`;
+    }).join('');
+
+    // Social links row
+    const socialLinks = [];
+    if (v.website) socialLinks.push(`<a href="${esc(v.website)}" target="_blank" class="social-link"><i class="ti ti-world"></i> Website</a>`);
+    if (v.instagram) socialLinks.push(`<a href="https://instagram.com/${v.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(v.instagram)}</a>`);
+    if (v.facebook) socialLinks.push(`<a href="${esc(v.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+    if (v.tiktok) socialLinks.push(`<a href="https://tiktok.com/@${v.tiktok.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-tiktok"></i> ${esc(v.tiktok)}</a>`);
+    const socialHTML = socialLinks.length ? `<div class="venue-social">${socialLinks.join('')}</div>` : '';
+
+    const verifiedBadge = v.verified
+      ? `<span style="font-size:10px;font-family:var(--font-mono);color:var(--green);border:0.5px solid var(--green);border-radius:999px;padding:2px 8px;"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px;"></i> Verified</span>`
+      : '';
+
+    card.innerHTML = `
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="venue-name">${esc(v.name)}</div>
+          ${verifiedBadge}
+        </div>
+        <div class="venue-meta">
+          <span><i class="ti ti-map-pin"></i>${esc(v.city)}</span>
+          ${v.capacity ? `<span><i class="ti ti-users"></i>${esc(v.capacity)}</span>` : ''}
+          ${v.type ? `<span><i class="ti ti-building"></i>${esc(v.type)}</span>` : ''}
+        </div>
+        <div class="venue-desc">${esc(v.vibe || '')}</div>
+        ${v.djNightInfo ? `<div class="venue-desc" style="color:var(--muted2);font-style:italic;">${esc(v.djNightInfo)}</div>` : ''}
+        ${v.pitchAngle ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--accent2);margin-bottom:8px;">💡 ${esc(v.pitchAngle)}</div>` : ''}
+        <div class="venue-tags">${tagHTML}</div>
+        ${socialHTML}
+        ${v.bookingContact ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-top:8px;"><i class="ti ti-mail" style="vertical-align:-2px;"></i> ${esc(v.bookingContact)}</div>` : ''}
+      </div>
+      <div class="venue-actions">
+        <button class="action-btn ab-email" onclick="generateEmail(${JSON.stringify(JSON.stringify(v))})">
+          <i class="ti ti-mail"></i> Generate Pitch
+        </button>
+        <button class="action-btn ab-crm" onclick="addToCRM(${JSON.stringify(JSON.stringify(v))})">
+          <i class="ti ti-plus"></i> Add to CRM
+        </button>
+        <button class="action-btn ab-verify" id="verify-btn-${i}" onclick="verifyVenue(${JSON.stringify(JSON.stringify(v))}, ${i}, 'card')">
+          <i class="ti ti-world-search"></i> Verify
+        </button>
+      </div>
+      <div class="verify-result" id="verify-result-${i}" style="display:none;"></div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ══ EMAIL GENERATION ══
+async function generateEmail(venueJson) {
+  const venue = JSON.parse(venueJson);
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const profile = getProfile();
+
+  document.getElementById('email-modal').classList.add('open');
+  document.getElementById('email-modal-title').textContent = venue.name;
+  document.getElementById('email-modal-body').innerHTML = `<div class="generating-overlay"><i class="ti ti-loader-2"></i>Crafting your pitch for ${esc(venue.name)}...</div>`;
+
+  const highlights = profile.highlights ? profile.highlights.split('\n').filter(Boolean).map(h => `• ${h}`).join('\n') : '• Available for nightclub residencies and events';
+
+  const prompt = `You are helping DJ Ike Dillman write a personalized booking outreach email to a nightclub/venue.
+
+VENUE INFO:
+Name: ${venue.name}
+Location: ${venue.city}
+Vibe: ${venue.vibe}
+Music Format: ${(venue.musicFormats || []).join(', ')}
+DJ Night Info: ${venue.djNightInfo || 'Regular DJ events'}
+Pitch Angle: ${venue.pitchAngle || 'Great fit for open format DJ'}
+
+DJ PROFILE:
+Name: ${profile.name || 'DJ Ike Dillman'}
+Location: ${profile.location || 'Raleigh, NC'}
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+Website: ${profile.website || ''}
+Booking Page: ${profile.booking || ''}
+Instagram: ${profile.instagram || ''}
+Email: ${profile.email || ''}
+Phone: ${profile.phone || ''}
+Bio: ${profile.bio || 'Raleigh-based open format DJ with years of experience.'}
+Highlights:
+${highlights}
+Rate Info: ${profile.rate || ''}
+
+Write a professional, personalized booking outreach email from DJ Ike Dillman to this venue. The email should:
+- Have a compelling subject line
+- Open with something specific about THIS venue (not generic)
+- Briefly introduce DJ Ike Dillman and why he's a great fit for THEIR specific vibe and format
+- Mention the SoundCloud link naturally as a way to hear his work
+- Include 2-3 performance highlights
+- End with a clear call to action (schedule a call, meet for a demo night, etc.)
+- Be confident but not pushy — genuine enthusiasm
+- Tone: professional but with personality. NOT stiff or corporate.
+- Length: 200-280 words for the body
+
+Respond ONLY with valid JSON:
+{
+  "subject": "Email subject line",
+  "body": "Full email body text (no salutation line needed, start with Dear/Hi [Booking Manager])"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: CLAUDE_MODEL,
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content.map(i => i.text || '').join('');
+    const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+    const fullEmail = `Subject: ${parsed.subject}\n\n${parsed.body}`;
+
+    document.getElementById('email-modal-body').innerHTML = `
+      <div class="email-subject">Subject: <span>${esc(parsed.subject)}</span></div>
+      <div class="email-body">${esc(parsed.body)}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="copyEmail(${JSON.stringify(fullEmail)})">
+          <i class="ti ti-copy"></i> Copy Full Email
+        </button>
+        <button class="btn btn-ghost" onclick="regenerateEmail(${JSON.stringify(JSON.stringify(venue))})">
+          <i class="ti ti-refresh"></i> Regenerate
+        </button>
+        <button class="btn btn-ghost" onclick="addToCRM(${JSON.stringify(JSON.stringify(venue))});closeModal('email-modal')">
+          <i class="ti ti-plus"></i> Add to CRM
+        </button>
+      </div>
+    `;
+  } catch(err) {
+    document.getElementById('email-modal-body').innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;">Error: ${err.message}</div>`;
+  }
+}
+
+function regenerateEmail(venueJson) {
+  generateEmail(venueJson);
+}
+
+function copyEmail(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btns = document.querySelectorAll('#email-modal-body .btn');
+    if (btns[0]) { btns[0].innerHTML = '<i class="ti ti-check"></i> Copied!'; setTimeout(() => btns[0].innerHTML = '<i class="ti ti-copy"></i> Copy Full Email', 2000); }
+  });
+}
+
+// ══ AGENT LOOP ══
+async function runAgent() {
+  const key = getKey();
+  if (!key) { alert('Please add your Anthropic API key first (Settings → API Key).'); return; }
+
+  const city  = document.getElementById('search-city').value.trim();
+  const state = document.getElementById('search-state').value.trim();
+  if (!city) { alert('Please enter a city first.'); return; }
+
+  // Lock UI
+  document.getElementById('agent-btn').disabled = true;
+  document.getElementById('search-btn').disabled = true;
+  document.getElementById('agent-progress').style.display = 'block';
+  setAgentProgress(0, 'Searching for venues...', '');
+
+  // Clear previous queue
+  reviewQueue = [];
+  updateReviewBadge();
+
+  try {
+    // ── STEP 1: find venues (reuses existing search logic) ──
+    const venues = await fetchVenues(city, state);
+    if (!venues || !venues.length) throw new Error('No venues returned. Try again.');
+
+    const total = venues.length;
+    setAgentProgress(10, `Found ${total} venues — drafting emails...`, `0 / ${total}`);
+
+    // ── STEP 2: for each venue, generate a draft email ──
+    for (let i = 0; i < venues.length; i++) {
+      const venue = venues[i];
+      const pct = 10 + Math.round((i / total) * 85);
+      setAgentProgress(pct, `Drafting pitch for ${venue.name}...`, `${i + 1} / ${total}`);
+
+      // Add a placeholder card to the queue immediately so user sees progress
+      reviewQueue.push({ venue, subject: null, body: null, status: 'pending', id: `rq-${Date.now()}-${i}` });
+      updateReviewBadge();
+
+      try {
+        const draft = await fetchEmailDraft(venue, key);
+        reviewQueue[reviewQueue.length - 1].subject = draft.subject;
+        reviewQueue[reviewQueue.length - 1].body    = draft.body;
+      } catch (emailErr) {
+        reviewQueue[reviewQueue.length - 1].subject = 'Error generating draft';
+        reviewQueue[reviewQueue.length - 1].body    = `Could not generate email: ${emailErr.message}`;
+      }
+    }
+
+    setAgentProgress(100, 'All drafts ready — review your queue', `${total} / ${total}`);
+
+    // Auto-navigate to review queue
+    setTimeout(() => {
+      goPage('review');
+      document.getElementById('agent-progress').style.display = 'none';
+    }, 800);
+
+  } catch (err) {
+    setAgentProgress(0, '', '');
+    document.getElementById('agent-progress').style.display = 'none';
+    document.getElementById('venue-results').innerHTML =
+      `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Agent error: ${esc(err.message)}</div>`;
+  }
+
+  document.getElementById('agent-btn').disabled = false;
+  document.getElementById('search-btn').disabled = false;
+}
+
+function setAgentProgress(pct, label, count) {
+  document.getElementById('agent-progress-bar').style.width = pct + '%';
+  document.getElementById('agent-status-label').textContent = label;
+  document.getElementById('agent-progress-count').textContent = count;
+}
+
+// Shared venue fetcher — same logic as searchVenues but returns the array instead of rendering
+async function fetchVenues(city, state) {
+  const key   = getKey();
+  const type  = document.getElementById('search-type').value;
+  const genre = document.getElementById('search-genre').value;
+  const count = document.getElementById('search-count').value;
+
+  const genreClause = getGenreClause();
+
+  const prompt = webSearchEnabled
+    ? `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+
+IMPORTANT — search budget: you may use web search AT MOST 2 times total. Do not search venue by venue.
+
+Step 1 — Do ONE broad search: "${count} ${type} venues ${city} ${state}${genreClause} DJ nights"
+Step 2 — Do ONE follow-up search if needed: "${city} ${state} nightclub DJ booking contact instagram"
+
+From those results, compile a list of ${count} real, currently operating venues. Extract website, Instagram handle, Facebook page, and booking contact from search results. Leave fields null if not found.
+
+Respond ONLY with valid JSON, no markdown, no backticks:
+{"venues":[{"name":"Venue Name","address":"Street or neighborhood","city":"${city}, ${state}","type":"nightclub|bar|lounge|etc","vibe":"One sentence atmosphere","musicFormats":["hip-hop"],"capacity":"~300","bookingContact":"email or DM on Instagram","website":"https://... or null","instagram":"@handle or null","facebook":"https://... or null","tiktok":"@handle or null","tags":["hip-hop"],"djNightInfo":"Brief DJ night description","pitchAngle":"Why Ike is a fit","verified":true}]}`
+    : `You are a music industry researcher helping DJ Ike Dillman find nightclub and bar booking opportunities.
+List ${count} ${type} venues in ${city}, ${state}${genreClause} that feature DJ performances.
+Respond ONLY with valid JSON, no markdown, no backticks:
+{"venues":[{"name":"Venue Name","address":"Street or neighborhood","city":"${city}, ${state}","type":"nightclub|bar|lounge|etc","vibe":"One sentence atmosphere","musicFormats":["hip-hop"],"capacity":"~300","bookingContact":"email or contact via website","website":"https://... or null","instagram":null,"facebook":null,"tiktok":null,"tags":["hip-hop"],"djNightInfo":"Brief DJ night description","pitchAngle":"Why Ike is a fit","verified":false}]}`;
+
+  const requestBody = {
+    model: CLAUDE_MODEL,
+    max_tokens: 4000,
+    messages: [{ role: 'user', content: prompt }]
+  };
+  if (webSearchEnabled) {
+    requestBody.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+  }
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(requestBody)
+  });
+
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    const msg = e.error?.message || `API error ${res.status}`;
+    if (webSearchEnabled && (msg.includes('web_search') || msg.includes('tool') || res.status === 400)) {
+      throw new Error('Web search is not enabled on your account. Turn off the web search toggle or enable it at console.anthropic.com.');
+    }
+    throw new Error(msg);
+  }
+
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text || '').join('');
+  const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+  return parsed.venues || [];
+}
+
+// Shared email drafter — same logic as generateEmail but returns {subject, body} instead of rendering
+async function fetchEmailDraft(venue, key) {
+  const profile    = getProfile();
+  const highlights = profile.highlights
+    ? profile.highlights.split('\n').filter(Boolean).map(h => `• ${h}`).join('\n')
+    : '• Available for nightclub residencies and events';
+
+  const prompt = `You are helping DJ Ike Dillman write a personalized booking outreach email to a nightclub/venue.
+
+VENUE INFO:
+Name: ${venue.name}
+Location: ${venue.city}
+Vibe: ${venue.vibe}
+Music Format: ${(venue.musicFormats || []).join(', ')}
+DJ Night Info: ${venue.djNightInfo || 'Regular DJ events'}
+Pitch Angle: ${venue.pitchAngle || 'Great fit for open format DJ'}
+
+DJ PROFILE:
+Name: ${profile.name || 'DJ Ike Dillman'}
+Location: ${profile.location || 'Raleigh, NC'}
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+Website: ${profile.website || ''}
+Booking Page: ${profile.booking || ''}
+Instagram: ${profile.instagram || ''}
+Email: ${profile.email || ''}
+Phone: ${profile.phone || ''}
+Bio: ${profile.bio || 'Raleigh-based open format DJ with years of experience.'}
+Highlights:
+${highlights}
+Rate Info: ${profile.rate || ''}
+
+Write a professional, personalized booking outreach email. It should:
+- Have a compelling subject line
+- Open with something specific about THIS venue
+- Briefly introduce DJ Ike Dillman and why he fits THEIR vibe
+- Mention the SoundCloud link naturally
+- Include 2-3 performance highlights
+- End with a clear call to action
+- Tone: professional but with personality, not stiff
+- Length: 200-280 words
+
+Respond ONLY with valid JSON:
+{"subject":"Email subject line","body":"Full email body starting with Dear/Hi [Booking Manager]"}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+  });
+
+  const data = await res.json();
+  const text = (data.content || []).map(b => b.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+// ══ REVIEW QUEUE ══
+function updateReviewBadge() {
+  const venuePending    = reviewQueue.filter(r => r.status === 'pending').length;
+  const promoterPending = promoReviewQueue.filter(r => r.status === 'pending').length;
+  const total = venuePending + promoterPending;
+  const badge = document.getElementById('nav-review-badge');
+  if (!badge) return;
+  if (total > 0) {
+    badge.textContent = total;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function renderReviewQueue() {
+  const list    = document.getElementById('review-list');
+  const empty   = document.getElementById('review-empty');
+  const summary = document.getElementById('review-summary');
+
+  const totalVenue    = reviewQueue.length;
+  const totalPromoter = promoReviewQueue.length;
+  const total         = totalVenue + totalPromoter;
+
+  if (!total) {
+    empty.style.display   = 'block';
+    summary.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+
+  empty.style.display   = 'none';
+  summary.style.display = 'block';
+
+  const approvedV   = reviewQueue.filter(r => r.status === 'approved').length;
+  const approvedP   = promoReviewQueue.filter(r => r.status === 'approved').length;
+  const pendingV    = reviewQueue.filter(r => r.status === 'pending').length;
+  const pendingP    = promoReviewQueue.filter(r => r.status === 'pending').length;
+
+  document.getElementById('review-count-label').textContent =
+    `${total} drafts — ${approvedV + approvedP} approved · ${pendingV + pendingP} pending`;
+
+  list.innerHTML = '';
+
+  // ── VENUE DRAFTS ──
+  if (totalVenue) {
+    const vLabel = document.createElement('div');
+    vLabel.style.cssText = 'font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:var(--accent);margin-bottom:0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--border2);display:flex;align-items:center;gap:8px;';
+    vLabel.innerHTML = `<i class="ti ti-building-store" style="font-size:13px;"></i> Venue Drafts <span style="color:var(--muted2);font-size:10px;">${totalVenue} total</span>`;
+    list.appendChild(vLabel);
+
+    reviewQueue.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'review-card' + (item.status === 'approved' ? ' approved' : item.status === 'discarded' ? ' discarded' : '');
+      card.id = `review-card-${idx}`;
+      card.style.animationDelay = (idx * 0.04) + 's';
+
+      const statusCls   = { pending: 'rsb-pending', approved: 'rsb-approved', discarded: 'rsb-discarded' }[item.status];
+      const statusLabel = { pending: 'Pending review', approved: 'Approved', discarded: 'Discarded' }[item.status];
+
+      const v = item.venue;
+      const socialLinks = [];
+      if (v.website)   socialLinks.push(`<a href="${esc(v.website)}" target="_blank" class="social-link"><i class="ti ti-world"></i> Website</a>`);
+      if (v.instagram) socialLinks.push(`<a href="https://instagram.com/${v.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(v.instagram)}</a>`);
+      if (v.facebook)  socialLinks.push(`<a href="${esc(v.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+      const socialHTML = socialLinks.length ? `<div class="venue-social" style="margin-top:6px;">${socialLinks.join('')}</div>` : '';
+
+      const isGenerating = item.subject === null;
+      const emailSection = isGenerating
+        ? `<div class="review-generating"><i class="ti ti-loader-2"></i> Drafting email...</div>`
+        : `<div class="review-email-section">
+            <div class="review-email-label">Drafted email</div>
+            <div class="review-subject">Subject: <span id="subj-${idx}">${esc(item.subject || '')}</span></div>
+            <textarea class="review-body-edit" id="body-${idx}" rows="8">${esc(item.body || '')}</textarea>
+          </div>`;
+
+      const actionButtons = isGenerating ? '' : item.status === 'approved'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="copyReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy email</button>
+            ${buildMailtoBtn(idx, item)}
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+          </div>`
+        : item.status === 'discarded'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="restoreReviewItem(${idx})"><i class="ti ti-arrow-back-up"></i> Restore</button>
+          </div>`
+        : `<div class="review-actions">
+            <button class="btn btn-approve" style="font-size:12px;" onclick="approveReviewItem(${idx})"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
+            <button class="btn btn-ghost btn-mailto" style="font-size:12px;" onclick="approveAndMailto(${idx})"><i class="ti ti-send"></i> Approve &amp; open email</button>
+            <button class="action-btn ab-verify" id="verify-btn-rq-${idx}" style="font-size:12px;" onclick="verifyVenue(${JSON.stringify(JSON.stringify(item.venue))}, ${idx}, 'queue')"><i class="ti ti-world-search"></i> Verify venue</button>
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardReviewItem(${idx})"><i class="ti ti-x"></i> Discard</button>
+          </div>
+          <div class="verify-result" id="verify-result-rq-${idx}" style="display:none;margin:0 1.5rem 1rem;"></div>`;
+
+      card.innerHTML = `
+        <div class="review-card-header">
+          <div>
+            <div class="review-venue-name">${esc(v.name)}</div>
+            <div class="review-venue-meta">${esc(v.city)} · ${esc(v.type || '')} ${v.capacity ? '· ' + esc(v.capacity) : ''}</div>
+            ${socialHTML}
+          </div>
+          <span class="review-status-badge ${statusCls}">${statusLabel}</span>
+        </div>
+        ${emailSection}
+        ${actionButtons}
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  // ── PROMOTER DRAFTS ──
+  if (totalPromoter) {
+    const pLabel = document.createElement('div');
+    pLabel.style.cssText = 'font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.16em;color:var(--purple);margin-top:1.5rem;margin-bottom:0.75rem;padding-bottom:6px;border-bottom:0.5px solid var(--border2);display:flex;align-items:center;gap:8px;';
+    pLabel.innerHTML = `<i class="ti ti-speakerphone" style="font-size:13px;"></i> Promoter Drafts <span style="color:var(--muted2);font-size:10px;">${totalPromoter} total</span>`;
+    list.appendChild(pLabel);
+
+    promoReviewQueue.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = 'review-card' + (item.status === 'approved' ? ' approved' : item.status === 'discarded' ? ' discarded' : '');
+      card.id = `prq-card-${idx}`;
+      card.style.cssText += 'border-color:rgba(167,139,250,0.2);';
+      card.style.animationDelay = (idx * 0.04) + 's';
+
+      const statusCls   = { pending: 'rsb-pending', approved: 'rsb-approved', discarded: 'rsb-discarded' }[item.status];
+      const statusLabel = { pending: 'Pending review', approved: 'Approved', discarded: 'Discarded' }[item.status];
+      const name = item.item.promoterName || item.item.name || item.item.artistName || 'Promoter';
+      const isLoading = item.subject === null;
+
+      const emailSection = isLoading
+        ? `<div class="review-generating"><i class="ti ti-loader-2"></i> Drafting outreach...</div>`
+        : `<div class="review-email-section">
+            <div class="review-email-label">Drafted outreach</div>
+            <div class="review-subject">Subject: <span>${esc(item.subject || '')}</span></div>
+            <textarea class="review-body-edit" id="prq-body-${idx}" rows="7">${esc(item.body || '')}</textarea>
+          </div>`;
+
+      const actionButtons = isLoading ? '' : item.status === 'approved'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="copyPromoReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy</button>
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardPromoItem(${idx}); renderReviewQueue()"><i class="ti ti-x"></i> Discard</button>
+          </div>`
+        : item.status === 'discarded'
+        ? `<div class="review-actions">
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="promoReviewQueue[${idx}].status='pending'; renderReviewQueue(); updateReviewBadge();"><i class="ti ti-arrow-back-up"></i> Restore</button>
+          </div>`
+        : `<div class="review-actions">
+            <button class="btn btn-approve" style="font-size:12px;" onclick="approvePromoItem(${idx}); renderReviewQueue();"><i class="ti ti-check"></i> Approve &amp; add to CRM</button>
+            <button class="btn btn-ghost" style="font-size:12px;" onclick="copyPromoReviewEmail(${idx})"><i class="ti ti-copy"></i> Copy</button>
+            <button class="btn btn-discard" style="font-size:12px;" onclick="discardPromoItem(${idx}); renderReviewQueue();"><i class="ti ti-x"></i> Discard</button>
+          </div>`;
+
+      card.innerHTML = `
+        <div class="review-card-header">
+          <div>
+            <div class="review-venue-name" style="color:var(--purple);">${esc(name)}</div>
+            <div class="review-venue-meta">${esc(item.item.city || '')} · ${esc(item.item._mode || '')} promoter</div>
+          </div>
+          <span class="review-status-badge ${statusCls}">${statusLabel}</span>
+        </div>
+        ${emailSection}
+        ${actionButtons}
+      `;
+      list.appendChild(card);
+    });
+  }
+}
+
+function buildMailtoBtn(idx, item) {
+  const contact = item.venue?.bookingContact || '';
+  const emailMatch = contact.match(/[^\s@]+@[^\s@]+\.[^\s@]+/);
+  if (!emailMatch) return '';
+  const to      = encodeURIComponent(emailMatch[0]);
+  const subject = encodeURIComponent(item.subject || '');
+  const body    = encodeURIComponent(item.body || '');
+  return `<a href="mailto:${to}?subject=${subject}&body=${body}" class="btn btn-mailto" style="font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;"><i class="ti ti-mail"></i> Open in email client</a>`;
+}
+
+function approveReviewItem(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  // Capture any edits the user made to the body textarea
+  const bodyEl = document.getElementById(`body-${idx}`);
+  if (bodyEl) item.body = bodyEl.value;
+  item.status = 'approved';
+  // Commit to CRM
+  const existing = crmData.find(e => e.name.toLowerCase() === item.venue.name.toLowerCase());
+  if (!existing) {
+    crmData.push({
+      id: Date.now().toString() + idx,
+      name: item.venue.name,
+      city: item.venue.city || '',
+      contact: item.venue.bookingContact || '',
+      genre: (item.venue.musicFormats || []).join(', '),
+      status: 'new',
+      followUpDate: '',
+      notes: `[Agent draft] ${item.venue.pitchAngle || ''}`,
+      addedAt: new Date().toISOString()
+    });
+    saveCRM();
+    updateStats();
+  }
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+function approveAndMailto(idx) {
+  approveReviewItem(idx);
+  // Small delay so the card re-renders with the mailto button before we auto-click it
+  setTimeout(() => {
+    const mailBtn = document.querySelector(`#review-card-${idx} a[href^="mailto:"]`);
+    if (mailBtn) mailBtn.click();
+  }, 120);
+}
+
+function discardReviewItem(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  item.status = 'discarded';
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+function restoreReviewItem(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  item.status = 'pending';
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+function copyReviewEmail(idx) {
+  const item = reviewQueue[idx];
+  if (!item) return;
+  const bodyEl = document.getElementById(`body-${idx}`);
+  const body   = bodyEl ? bodyEl.value : (item.body || '');
+  const full   = `Subject: ${item.subject}\n\n${body}`;
+  navigator.clipboard.writeText(full).then(() => {
+    const btn = document.querySelector(`#review-card-${idx} .btn-ghost`);
+    if (btn) { btn.innerHTML = '<i class="ti ti-check"></i> Copied!'; setTimeout(() => btn.innerHTML = '<i class="ti ti-copy"></i> Copy email', 2000); }
+  });
+}
+
+function clearReviewQueue() {
+  if (!confirm('Clear all drafts from the review queue?')) return;
+  reviewQueue = [];
+  updateReviewBadge();
+  renderReviewQueue();
+}
+
+// ══ VERIFY VENUE (single targeted web search) ══
+async function verifyVenue(venueJson, idx, context) {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  const venue   = JSON.parse(venueJson);
+  const btnId   = context === 'queue' ? `verify-btn-rq-${idx}` : `verify-btn-${idx}`;
+  const resultId = context === 'queue' ? `verify-result-rq-${idx}` : `verify-result-${idx}`;
+  const btn     = document.getElementById(btnId);
+  const result  = document.getElementById(resultId);
+
+  if (!btn || !result) return;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ti ti-loader-2" style="animation:spin 1s linear infinite;"></i> Verifying...';
+  result.style.display = 'none';
+  result.className = 'verify-result';
+
+  const prompt = `You are verifying a specific nightclub/venue for DJ booking research. Use ONE web search only.
+
+Search for: "${venue.name} ${venue.city} booking contact instagram"
+
+From the results, extract:
+- Is the venue currently operating? (yes/no/unknown)
+- Website URL (if found)
+- Instagram handle (if found)
+- Facebook page (if found)
+- Booking contact email or process (if found)
+- Any other relevant booking info
+
+Respond ONLY with valid JSON, no markdown:
+{"operating":"yes|no|unknown","website":"https://... or null","instagram":"@handle or null","facebook":"https://... or null","bookingContact":"contact info or null","notes":"Any useful booking detail in one sentence or null"}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: CLAUDE_MODEL,
+        max_tokens: 500,
+        tools: [{ type: 'web_search_20260209', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || `API error ${res.status}`;
+      if (msg.includes('web_search') || msg.includes('tool') || res.status === 400) {
+        throw new Error('Web search not enabled on your account. Enable it at console.anthropic.com.');
+      }
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text || '').join('');
+    const info = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+    // Build a readable summary of what was found
+    const found = [];
+    if (info.operating === 'no')       found.push('⚠ May not be operating');
+    if (info.website)                  found.push(`Website: ${info.website}`);
+    if (info.instagram)                found.push(`Instagram: ${info.instagram}`);
+    if (info.facebook)                 found.push(`Facebook: found`);
+    if (info.bookingContact)           found.push(`Contact: ${info.bookingContact}`);
+    if (info.notes)                    found.push(info.notes);
+
+    result.innerHTML = found.length
+      ? found.map(f => `<div>${esc(f)}</div>`).join('')
+      : 'No additional info found.';
+    result.className = 'verify-result success';
+    result.style.display = 'block';
+
+    // If in review queue, patch the venue data in the queue so Approve captures updated info
+    if (context === 'queue' && reviewQueue[idx]) {
+      if (info.website)        reviewQueue[idx].venue.website        = info.website;
+      if (info.instagram)      reviewQueue[idx].venue.instagram      = info.instagram;
+      if (info.facebook)       reviewQueue[idx].venue.facebook       = info.facebook;
+      if (info.bookingContact) reviewQueue[idx].venue.bookingContact = info.bookingContact;
+    }
+
+  } catch (err) {
+    result.innerHTML = `Error: ${esc(err.message)}`;
+    result.className = 'verify-result error';
+    result.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-world-search"></i> Verify';
+}
+
+// ══ PROMOTER SEARCH — MODE SWITCHER ══
+function switchPromoMode(mode) {
+  ['local','active','tour'].forEach(m => {
+    document.getElementById('mode-' + m).style.display  = m === mode ? 'block' : 'none';
+    document.getElementById('ptab-' + m).classList.toggle('active', m === mode);
+  });
+}
+
+// ══ PROMOTER SEARCH — SHARED API CALL ══
+async function callPromoterAPI(prompt, useWebSearch) {
+  const key = getKey();
+  const body = {
+    model: CLAUDE_MODEL,
+    max_tokens: 4000,
+    messages: [{ role: 'user', content: prompt }]
+  };
+  if (useWebSearch) body.tools = [{ type: 'web_search_20260209', name: 'web_search' }];
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    const msg = e.error?.message || `API error ${res.status}`;
+    if (useWebSearch && (msg.includes('web_search') || res.status === 400)) throw new Error('web_search_disabled');
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+// ── LOCAL NIGHTS ──
+async function searchLocalNights() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const city  = document.getElementById('ln-city').value.trim();
+  const state = document.getElementById('ln-state').value.trim();
+  const genre = document.getElementById('ln-genre').value.trim();
+  const count = document.getElementById('ln-count').value;
+  if (!city || !genre) { alert('City and music style are required.'); return; }
+
+  document.getElementById('ln-loading').style.display = 'block';
+  document.getElementById('ln-results').innerHTML = '';
+  document.getElementById('ln-btn').disabled = true;
+
+  try {
+    const parsed = await callPromoterAPI(buildLocalNightsPrompt(city, state, genre, count), webSearchEnabled);
+    renderPromoterResults(parsed.nights || [], 'ln-results', 'local');
+  } catch(err) { showPromoterError('ln-results', err); }
+
+  document.getElementById('ln-loading').style.display = 'none';
+  document.getElementById('ln-btn').disabled = false;
+}
+
+function buildLocalNightsPrompt(city, state, genre, count) {
+  const search = webSearchEnabled
+    ? `SEARCH BUDGET: AT MOST 2 web searches.
+Search 1: "${genre} night ${city} ${state} promoter DJ event"
+Search 2 (if needed): "${city} ${state} ${genre} club night instagram promoter"
+From results, find ${count} active DJ nights. For each, identify the promoter behind it.`
+    : `Using your knowledge of the local scene,`;
+
+  return `You are a music industry researcher helping DJ Ike Dillman find booking opportunities.
+
+${search} find ${count} active ${genre} DJ nights in ${city}${state ? ', ' + state : ''}.
+
+For each night, identify the PROMOTER behind it — not the venue, the person or collective running the event.
+
+Respond ONLY with valid JSON, no markdown:
+{"nights":[{
+  "nightName":"The night/event name",
+  "promoterName":"Person or collective name",
+  "venue":"Where it's held",
+  "city":"${city}${state ? ', ' + state : ''}",
+  "frequency":"Weekly / Monthly / etc",
+  "genre":"${genre}",
+  "description":"One sentence about the night's vibe and crowd",
+  "instagram":"@handle or null",
+  "facebook":"URL or null",
+  "residentAdvisor":"RA URL or null",
+  "contactMethod":"How to reach them — DM on Instagram, email, etc",
+  "pitchAngle":"One sentence on why Ike is a fit for this night",
+  "verified":${webSearchEnabled}
+}]}`;
+}
+
+// ── ACTIVE PROMOTERS ──
+async function searchActivePromoters() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const city  = document.getElementById('ap-city').value.trim();
+  const state = document.getElementById('ap-state').value.trim();
+  const genre = document.getElementById('ap-genre').value.trim();
+  const count = document.getElementById('ap-count').value;
+  if (!city || !genre) { alert('City and music style are required.'); return; }
+
+  document.getElementById('ap-loading').style.display = 'block';
+  document.getElementById('ap-results').innerHTML = '';
+  document.getElementById('ap-btn').disabled = true;
+
+  try {
+    const parsed = await callPromoterAPI(buildActivePromotersPrompt(city, state, genre, count), webSearchEnabled);
+    renderPromoterResults(parsed.promoters || [], 'ap-results', 'active');
+  } catch(err) { showPromoterError('ap-results', err); }
+
+  document.getElementById('ap-loading').style.display = 'none';
+  document.getElementById('ap-btn').disabled = false;
+}
+
+function buildActivePromotersPrompt(city, state, genre, count) {
+  const search = webSearchEnabled
+    ? `SEARCH BUDGET: AT MOST 2 web searches.
+Search 1: "${genre} promoter ${city} ${state} events 2025 instagram"
+Search 2 (if needed): "site:ra.co ${genre} ${city} OR site:eventbrite.com ${genre} ${city} promoter"
+Surface real, currently active promoters.`
+    : `Using your knowledge,`;
+
+  return `You are a music industry researcher helping DJ Ike Dillman find promoters actively booking DJs.
+
+${search} find ${count} people or collectives actively promoting ${genre} events in ${city}${state ? ', ' + state : ''}.
+
+Focus on promoters who regularly throw hosted events and book DJs — not venue staff.
+
+Respond ONLY with valid JSON, no markdown:
+{"promoters":[{
+  "name":"Promoter or collective name",
+  "city":"${city}${state ? ', ' + state : ''}",
+  "type":"individual or collective",
+  "activeEvents":"Their current or recurring events",
+  "genre":"${genre}",
+  "description":"One sentence on their reputation and style in the scene",
+  "instagram":"@handle or null",
+  "facebook":"URL or null",
+  "residentAdvisor":"RA profile URL or null",
+  "email":"if publicly available or null",
+  "contactMethod":"Best way to reach them",
+  "pitchAngle":"One sentence on why Ike is a fit for their events",
+  "verified":${webSearchEnabled}
+}]}`;
+}
+
+// ── TOUR SUPPORT ──
+async function searchTourSupport() {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+  const style  = document.getElementById('ts-style').value.trim();
+  const market = document.getElementById('ts-market').value.trim();
+  const artist = document.getElementById('ts-artist').value.trim();
+  const count  = document.getElementById('ts-count').value;
+  if (!style || !market) { alert('Performance style and target market are required.'); return; }
+
+  document.getElementById('ts-loading').style.display = 'block';
+  document.getElementById('ts-results').innerHTML = '';
+  document.getElementById('ts-btn').disabled = true;
+
+  try {
+    const parsed = await callPromoterAPI(buildTourSupportPrompt(style, market, artist, count), true); // always web search for tour
+    renderPromoterResults(parsed.opportunities || [], 'ts-results', 'tour');
+  } catch(err) { showPromoterError('ts-results', err); }
+
+  document.getElementById('ts-loading').style.display = 'none';
+  document.getElementById('ts-btn').disabled = false;
+}
+
+function buildTourSupportPrompt(style, market, artist, count) {
+  const artistClause = artist
+    ? `PRIORITY: The user has specified "${artist}" as a known touring act. Search specifically for their current or upcoming tour dates near ${market} and identify the regional promoter or booking agent handling their shows in that area.`
+    : `Find ${count} DJs or acts currently touring whose sound is compatible with: ${style}`;
+
+  return `You are a music industry researcher helping DJ Ike Dillman find tour support opportunities as an opening act.
+
+DJ IKE DILLMAN plays: ${style}
+Target market: ${market}
+
+${artistClause}
+
+SEARCH BUDGET: AT MOST 2 web searches.
+Search 1: "${artist || style + ' DJ'} tour 2025 ${market} ${artist ? 'promoter booking' : 'opening act'}"
+Search 2 (if needed): "${artist || style} ${market} concert event promoter instagram"
+
+For each opportunity found, identify:
+1. The touring act and their sound
+2. Whether their sound is genuinely compatible with ${style}
+3. The PROMOTER or BOOKING AGENT handling their regional dates near ${market}
+4. How to reach that promoter to pitch Ike as a local support act
+
+Respond ONLY with valid JSON, no markdown:
+{"opportunities":[{
+  "artistName":"Touring DJ / act name",
+  "artistGenre":"Their sound / genre",
+  "compatibility":"Why their sound and Ike's ${style} are a good fit on the same bill",
+  "tourInfo":"Current tour name or dates if known",
+  "marketDate":"Any known date near ${market} or 'TBC'",
+  "promoterName":"Regional promoter or booking agent name",
+  "promoterInstagram":"@handle or null",
+  "promoterContact":"Email, DM, or agency contact if found",
+  "contactMethod":"Best approach to pitch Ike as support",
+  "pitchAngle":"One sentence pitch — why Ike as opener makes sense for this act's crowd",
+  "verified":true
+}]}`;
+}
+
+// ── RENDER PROMOTER RESULTS ──
+function renderPromoterResults(items, containerId, mode) {
+  const container = document.getElementById(containerId);
+  if (!items.length) {
+    container.innerHTML = `<div style="font-family:var(--font-mono);font-size:12px;color:var(--muted2);padding:1rem;">No results found — try adjusting your search or enabling web search.</div>`;
+    return;
+  }
+
+  const verifiedNote = webSearchEnabled || mode === 'tour'
+    ? `<span style="color:var(--green);font-size:11px;font-family:var(--font-mono);"><i class="ti ti-world-search" style="font-size:12px;vertical-align:-2px;"></i> Live web results</span>`
+    : `<span style="color:var(--muted);font-size:11px;font-family:var(--font-mono);">AI knowledge — enable web search for verified results</span>`;
+
+  container.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px;"><span style="font-family:var(--font-mono);font-size:11px;color:var(--muted2);letter-spacing:0.06em;">${items.length} RESULTS</span>${verifiedNote}</div>`;
+
+  items.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = `promoter-card${mode === 'tour' ? ' tour' : ''}`;
+    card.style.animationDelay = (i * 0.06) + 's';
+
+    // Build name and meta depending on mode
+    const name = item.promoterName || item.name || item.artistName || '—';
+    const metaParts = [item.city, item.frequency, item.type, item.tourInfo].filter(Boolean);
+    const desc = item.description || item.compatibility || item.activeEvents || '';
+    const pitch = item.pitchAngle || '';
+    const nightLabel = item.nightName ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:6px;">Night: <span style="color:var(--text);">${esc(item.nightName)}</span></div>` : '';
+    const artistLabel = item.artistName && mode === 'tour' ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-bottom:6px;">Act: <span style="color:var(--text);">${esc(item.artistName)}</span> · ${esc(item.artistGenre || '')}</div>` : '';
+    const marketDate = item.marketDate ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--yellow);margin-bottom:6px;"><i class="ti ti-calendar" style="vertical-align:-2px;"></i> ${esc(item.marketDate)}</div>` : '';
+
+    // Social links
+    const socialLinks = [];
+    if (item.instagram) socialLinks.push(`<a href="https://instagram.com/${item.instagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(item.instagram)}</a>`);
+    if (item.promoterInstagram) socialLinks.push(`<a href="https://instagram.com/${item.promoterInstagram.replace('@','')}" target="_blank" class="social-link"><i class="ti ti-brand-instagram"></i> ${esc(item.promoterInstagram)}</a>`);
+    if (item.facebook) socialLinks.push(`<a href="${esc(item.facebook)}" target="_blank" class="social-link"><i class="ti ti-brand-facebook"></i> Facebook</a>`);
+    if (item.residentAdvisor) socialLinks.push(`<a href="${esc(item.residentAdvisor)}" target="_blank" class="social-link"><i class="ti ti-vinyl"></i> RA</a>`);
+    const socialHTML = socialLinks.length ? `<div class="venue-social">${socialLinks.join('')}</div>` : '';
+
+    const contact = item.contactMethod || item.promoterContact || item.email || '';
+    const verifiedBadge = item.verified ? `<span style="font-size:10px;font-family:var(--font-mono);color:var(--green);border:0.5px solid var(--green);border-radius:999px;padding:2px 8px;"><i class="ti ti-check" style="font-size:10px;vertical-align:-1px;"></i> Verified</span>` : '';
+
+    const itemJson = JSON.stringify(JSON.stringify({ ...item, _mode: mode }));
+
+    card.innerHTML = `
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="promoter-name">${esc(name)}</div>
+          ${verifiedBadge}
+        </div>
+        <div class="promoter-meta">
+          ${metaParts.map(p => `<span>${esc(p)}</span>`).join('')}
+        </div>
+        ${nightLabel}${artistLabel}${marketDate}
+        <div class="promoter-desc">${esc(desc)}</div>
+        ${pitch ? `<div class="promoter-fit">💡 ${esc(pitch)}</div>` : ''}
+        ${socialHTML}
+        ${contact ? `<div style="font-size:12px;font-family:var(--font-mono);color:var(--muted2);margin-top:6px;"><i class="ti ti-send" style="vertical-align:-2px;"></i> ${esc(contact)}</div>` : ''}
+      </div>
+      <div class="venue-actions">
+        <button class="action-btn" style="background:var(--purple);color:#fff;" onclick="generatePromoterOutreach(${itemJson}, ${i})">
+          <i class="ti ti-mail"></i> Draft Outreach
+        </button>
+        <button class="action-btn ab-crm" onclick="addToPromoterCRM(${itemJson})">
+          <i class="ti ti-plus"></i> Add to CRM
+        </button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function showPromoterError(containerId, err) {
+  const container = document.getElementById(containerId);
+  if (err.message === 'web_search_disabled') {
+    container.innerHTML = `<div style="background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.35);border-radius:14px;padding:1.25rem 1.5rem;font-size:13px;line-height:1.7;"><div style="font-family:var(--font-display);font-size:18px;letter-spacing:0.04em;color:#f59e0b;margin-bottom:8px;">Web Search Not Enabled</div><p style="color:var(--muted2);">Enable web search at <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2);">console.anthropic.com</a> → Settings → Capabilities.</p></div>`;
+  } else {
+    container.innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;padding:1rem;">Error: ${esc(err.message)}</div>`;
+  }
+}
+
+// ── PROMOTER OUTREACH DRAFT ──
+async function generatePromoterOutreach(itemJson, idx) {
+  const item    = JSON.parse(itemJson);
+  const profile = getProfile();
+  const mode    = item._mode || 'local';
+  const key     = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  // Show modal with loading state
+  document.getElementById('email-modal-title').textContent = item.promoterName || item.name || item.artistName || 'Promoter';
+  document.getElementById('email-modal-content').innerHTML = `<div class="generating-overlay"><i class="ti ti-loader-2"></i>Drafting outreach...</div>`;
+  document.getElementById('email-modal').classList.add('open');
+
+  const isTour = mode === 'tour';
+  const target = isTour
+    ? `Tour Promoter for ${item.artistName || 'touring act'}`
+    : (item.promoterName || item.name || 'Promoter');
+
+  const context = isTour
+    ? `They promote ${item.artistName} (${item.artistGenre}). Upcoming date near ${item.city || 'target market'}: ${item.marketDate || 'TBC'}.`
+    : `They run ${item.nightName || item.activeEvents || 'regular DJ events'} in ${item.city || 'the area'} — ${item.description || item.genre + ' nights'}.`;
+
+  const ask = isTour
+    ? `pitch Ike as a local opening act for ${item.artistName}'s show — brief, respectful, peer-to-peer`
+    : `express genuine interest in being considered for their events — professional with a touch of recognition for the work they're doing`;
+
+  const prompt = `Write a short outreach message from DJ Ike Dillman to a promoter.
+
+PROMOTER: ${target}
+CONTEXT: ${context}
+PITCH ANGLE: ${item.pitchAngle || ''}
+
+DJ IKE DILLMAN:
+Name: ${profile.name || 'DJ Ike Dillman'}
+Location: ${profile.location || 'Raleigh, NC'}
+Sound: Funky House, UK Garage, Breaks — peak hour focus
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+${profile.booking ? 'Booking page: ' + profile.booking : ''}
+Bio: ${profile.bio || 'Experienced DJ focused on programmed peak-hour sets.'}
+${profile.highlights ? 'Highlights: ' + profile.highlights : ''}
+
+TONE: Professional, scene-aware, peer-to-peer. Open with a specific, genuine acknowledgment of their work — one sentence, not gushing. Then brief intro of Ike and the sound connection. End with a clear, low-pressure ask.
+LENGTH: 150-200 words max.
+FORMAT: Respond ONLY with valid JSON: {"subject":"...","body":"..."}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = (data.content || []).map(b => b.text || '').join('');
+    const draft = JSON.parse(text.replace(/```json|```/g, '').trim());
+
+    const contact = item.promoterContact || item.email || item.contactMethod || '';
+    const emailMatch = contact.match(/[^\s@]+@[^\s@]+\.[^\s@]+/);
+    const mailtoBtn = emailMatch
+      ? `<a href="mailto:${encodeURIComponent(emailMatch[0])}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}" class="btn btn-mailto" style="text-decoration:none;"><i class="ti ti-mail"></i> Open in email client</a>`
+      : '';
+
+    document.getElementById('email-modal-content').innerHTML = `
+      <div class="email-subject">Subject: <span>${esc(draft.subject)}</span></div>
+      <textarea class="email-body" id="promo-email-body" style="width:100%;background:var(--surface2);border:0.5px solid var(--border2);border-radius:var(--radius-lg);color:var(--text);font-size:13px;font-family:var(--font-body);padding:1.25rem;outline:none;resize:vertical;line-height:1.7;min-height:200px;">${esc(draft.body)}</textarea>
+      <div class="btn-row" style="margin-top:0.75rem;">
+        <button class="btn btn-primary" onclick="copyPromoEmail('${esc(draft.subject)}')"><i class="ti ti-copy"></i> Copy</button>
+        ${mailtoBtn}
+        <button class="btn btn-ghost" onclick="addToPromoterCRMFromDraft(${itemJson})"><i class="ti ti-plus"></i> Add to CRM</button>
+      </div>`;
+  } catch(err) {
+    document.getElementById('email-modal-content').innerHTML = `<div style="color:#f87171;font-family:var(--font-mono);font-size:13px;">Error: ${esc(err.message)}</div>`;
+  }
+}
+
+function copyPromoEmail(subject) {
+  const body = document.getElementById('promo-email-body')?.value || '';
+  navigator.clipboard.writeText(`Subject: ${subject}\n\n${body}`).then(() => {
+    const btns = document.querySelectorAll('#email-modal-content .btn-primary');
+    if (btns[0]) { btns[0].innerHTML = '<i class="ti ti-check"></i> Copied!'; setTimeout(() => btns[0].innerHTML = '<i class="ti ti-copy"></i> Copy', 2000); }
+  });
+}
+
+// ── PROMOTER AGENT LOOP ──
+async function runPromoterAgent(mode) {
+  const key = getKey();
+  if (!key) { alert('Add your API key first.'); return; }
+
+  const cfg = {
+    local:  { city: 'ln-city', state: 'ln-state', extra: 'ln-genre', count: 'ln-count', progress: 'ln-agent-progress', status: 'ln-status-label', bar: 'ln-progress-bar', cnt: 'ln-progress-count', btn: 'ln-agent-btn', search: 'ln-btn' },
+    active: { city: 'ap-city', state: 'ap-state', extra: 'ap-genre', count: 'ap-count', progress: 'ap-agent-progress', status: 'ap-status-label', bar: 'ap-progress-bar', cnt: 'ap-progress-count', btn: 'ap-agent-btn', search: 'ap-btn' },
+    tour:   { city: 'ts-market', state: null, extra: 'ts-style', count: 'ts-count', progress: 'ts-agent-progress', status: 'ts-status-label', bar: 'ts-progress-bar', cnt: 'ts-progress-count', btn: 'ts-agent-btn', search: 'ts-btn', artist: 'ts-artist' }
+  }[mode];
+
+  const city   = document.getElementById(cfg.city).value.trim();
+  const state  = cfg.state ? document.getElementById(cfg.state).value.trim() : '';
+  const extra  = document.getElementById(cfg.extra).value.trim();
+  const count  = document.getElementById(cfg.count).value;
+  const artist = cfg.artist ? document.getElementById(cfg.artist).value.trim() : '';
+
+  if (!city || !extra) { alert(mode === 'tour' ? 'Performance style and target market are required.' : 'City and music style are required.'); return; }
+
+  document.getElementById(cfg.btn).disabled    = true;
+  document.getElementById(cfg.search).disabled = true;
+  document.getElementById(cfg.progress).style.display = 'block';
+  setPromoProgress(cfg, 0, 'Finding promoters...', '');
+  promoReviewQueue = [];
+
+  try {
+    // Step 1: find promoters
+    let items = [];
+    if (mode === 'local') {
+      const r = await callPromoterAPI(buildLocalNightsPrompt(city, state, extra, count), webSearchEnabled);
+      items = r.nights || [];
+    } else if (mode === 'active') {
+      const r = await callPromoterAPI(buildActivePromotersPrompt(city, state, extra, count), webSearchEnabled);
+      items = r.promoters || [];
+    } else {
+      const r = await callPromoterAPI(buildTourSupportPrompt(extra, city, artist, count), true);
+      items = r.opportunities || [];
+    }
+
+    if (!items.length) throw new Error('No results found. Try adjusting your search.');
+
+    setPromoProgress(cfg, 10, `Found ${items.length} — drafting outreach...`, `0 / ${items.length}`);
+
+    // Step 2: draft outreach for each
+    const profile = getProfile();
+    for (let i = 0; i < items.length; i++) {
+      const item = { ...items[i], _mode: mode };
+      setPromoProgress(cfg, 10 + Math.round((i / items.length) * 85), `Drafting for ${item.promoterName || item.name || item.artistName || 'promoter'}...`, `${i + 1} / ${items.length}`);
+      promoReviewQueue.push({ item, subject: null, body: null, status: 'pending', id: `prq-${Date.now()}-${i}` });
+      try {
+        const draft = await fetchPromoterDraft(item, profile, mode);
+        promoReviewQueue[promoReviewQueue.length - 1].subject = draft.subject;
+        promoReviewQueue[promoReviewQueue.length - 1].body    = draft.body;
+      } catch(e) {
+        promoReviewQueue[promoReviewQueue.length - 1].subject = 'Draft error';
+        promoReviewQueue[promoReviewQueue.length - 1].body    = e.message;
+      }
+    }
+
+    setPromoProgress(cfg, 100, 'All drafts ready — navigating to review...', `${items.length} / ${items.length}`);
+    setTimeout(() => {
+      document.getElementById(cfg.progress).style.display = 'none';
+      goPage('review');
+      renderReviewQueue();
+    }, 800);
+
+  } catch(err) {
+    document.getElementById(cfg.progress).style.display = 'none';
+    alert('Agent error: ' + err.message);
+  }
+
+  document.getElementById(cfg.btn).disabled    = false;
+  document.getElementById(cfg.search).disabled = false;
+}
+
+function setPromoProgress(cfg, pct, label, count) {
+  document.getElementById(cfg.bar).style.width  = pct + '%';
+  document.getElementById(cfg.status).textContent = label;
+  document.getElementById(cfg.cnt).textContent    = count;
+}
+
+async function fetchPromoterDraft(item, profile, mode) {
+  const key = getKey();
+  const isTour  = mode === 'tour';
+  const target  = item.promoterName || item.name || item.artistName || 'Promoter';
+  const context = isTour
+    ? `They promote ${item.artistName} (${item.artistGenre}). Upcoming: ${item.marketDate || 'TBC'}.`
+    : `They run ${item.nightName || item.activeEvents || 'regular events'} — ${item.description || ''}`;
+  const ask = isTour ? `pitch as local opening act for ${item.artistName}` : `express interest in being considered for their events`;
+
+  const prompt = `Write outreach from DJ Ike Dillman to: ${target}
+Context: ${context}
+Pitch: ${item.pitchAngle || ''}
+DJ: ${profile.name || 'DJ Ike Dillman'}, ${profile.location || 'Raleigh NC'}, plays ${profile.bio ? profile.bio.slice(0,100) : 'Funky House, UK Garage, Breaks'}
+SoundCloud: ${profile.soundcloud || 'https://soundcloud.com/ike_dillman'}
+${profile.booking ? 'Booking: ' + profile.booking : ''}
+Goal: ${ask}
+Tone: professional, scene-aware, peer-to-peer. One genuine opening acknowledgment. 150 words max.
+Respond ONLY with valid JSON: {"subject":"...","body":"..."}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model: CLAUDE_MODEL, max_tokens: 500, messages: [{ role: 'user', content: prompt }] })
+  });
+  const data = await res.json();
+  const text = (data.content || []).map(b => b.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+function approvePromoItem(idx) {
+  const item = promoReviewQueue[idx];
+  if (!item) return;
+  const bodyEl = document.getElementById(`prq-body-${idx}`);
+  if (bodyEl) item.body = bodyEl.value;
+  item.status = 'approved';
+  addToPromoterCRMFromItem(item.item);
+  updateReviewBadge();
+}
+
+function discardPromoItem(idx) {
+  const item = promoReviewQueue[idx];
+  if (!item) return;
+  item.status = 'discarded';
+  updateReviewBadge();
+}
+
+function copyPromoReviewEmail(idx) {
+  const item = promoReviewQueue[idx];
+  const bodyEl = document.getElementById(`prq-body-${idx}`);
+  const body = bodyEl ? bodyEl.value : (item?.body || '');
+  navigator.clipboard.writeText(`Subject: ${item?.subject || ''}\n\n${body}`);
+}
+
+// ══ PROMOTER CRM ══
+const KEY_PCRM = 'dj_ike_promoter_crm';
+
+function loadPromoterCRM() {
+  promoterData = JSON.parse(localStorage.getItem(KEY_PCRM) || '[]');
+}
+function savePromoterCRM() {
+  localStorage.setItem(KEY_PCRM, JSON.stringify(promoterData));
+}
+
+function addToPromoterCRM(itemJson) {
+  const item = JSON.parse(itemJson);
+  addToPromoterCRMFromItem(item);
+}
+
+function addToPromoterCRMFromDraft(itemJson) {
+  const item = JSON.parse(itemJson);
+  addToPromoterCRMFromItem(item);
+  closeModal('email-modal');
+}
+
+function addToPromoterCRMFromItem(item) {
+  const mode = item._mode || 'local';
+  const name = item.promoterName || item.name || item.artistName || 'Unknown';
+  const existing = promoterData.find(e => e.name.toLowerCase() === name.toLowerCase());
+  if (existing) { alert(`${name} is already in your Promoter CRM!`); return; }
+  const entry = {
+    id: Date.now().toString(),
+    name,
+    city: item.city || '',
+    type: mode === 'tour' ? 'tour' : mode === 'active' ? 'regional' : 'local',
+    status: 'new',
+    instagram: item.instagram || item.promoterInstagram || '',
+    contact: item.promoterContact || item.email || item.contactMethod || '',
+    events: item.nightName || item.activeEvents || item.tourInfo || '',
+    acts: item.artistName || '',
+    engagement: mode === 'tour' ? 'warm' : 'cold',
+    followUpDate: '',
+    notes: item.pitchAngle || '',
+    addedAt: new Date().toISOString()
+  };
+  promoterData.push(entry);
+  savePromoterCRM();
+  renderPromoterCRM();
+  updatePromoterStats();
+  alert(`✓ ${name} added to your Promoter CRM!`);
+}
+
+const PROMO_STATUS_META = {
+  new:       { cls: 'st-new',       label: 'New' },
+  contacted: { cls: 'st-contacted', label: 'Contacted' },
+  responded: { cls: 'st-followup',  label: 'Responded' },
+  met:       { cls: 'st-followup',  label: 'Met' },
+  booked:    { cls: 'st-booked',    label: 'Booked ✓' },
+  ongoing:   { cls: 'st-booked',    label: 'Ongoing' },
+  passed:    { cls: 'st-passed',    label: 'Passed' }
+};
+
+const PTYPE_META = {
+  local:    { cls: 'ptype-local',    label: 'Local Night' },
+  regional: { cls: 'ptype-regional', label: 'Regional' },
+  tour:     { cls: 'ptype-tour',     label: 'Tour Promoter' }
+};
+
+const ENG_META = {
+  cold:     { cls: 'eng-cold',     label: 'Cold' },
+  warm:     { cls: 'eng-warm',     label: 'Warm' },
+  active:   { cls: 'eng-active',   label: 'Active' },
+  priority: { cls: 'eng-priority', label: '⭐ Priority' }
+};
+
+function renderPromoterCRM() {
+  const q    = (document.getElementById('pcrm-search')?.value || '').toLowerCase();
+  const tFil = document.getElementById('pcrm-type-filter')?.value || '';
+  const eFil = document.getElementById('pcrm-engagement-filter')?.value || '';
+
+  const filtered = promoterData.filter(e =>
+    (!q || e.name.toLowerCase().includes(q) || e.city.toLowerCase().includes(q) || (e.events || '').toLowerCase().includes(q)) &&
+    (!tFil || e.type === tFil) &&
+    (!eFil || e.engagement === eFil)
+  );
+
+  const body = document.getElementById('pcrm-body');
+  if (!body) return;
+
+  // Keep review banner if present
+  const banner = document.getElementById('promo-review-banner');
+
+  if (!filtered.length) {
+    body.innerHTML = '';
+    if (banner) body.appendChild(banner);
+    const empty = document.createElement('div');
+    empty.className = 'crm-empty';
+    empty.innerHTML = `<i class="ti ti-speakerphone"></i>${promoterData.length ? 'No promoters match your filters.' : 'No promoters yet. Use Find Promoters to discover contacts!'}`;
+    body.appendChild(empty);
+    return;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const table = document.createElement('div');
+  table.innerHTML = `
+    <table class="crm-table">
+      <thead><tr>
+        <th>Promoter</th><th>Type</th><th>Events / Acts</th>
+        <th>Contact</th><th>Stage</th><th>Engagement</th>
+        <th>Follow-Up</th><th>Notes</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${filtered.map(e => {
+          const sm   = PROMO_STATUS_META[e.status] || PROMO_STATUS_META.new;
+          const pt   = PTYPE_META[e.type] || PTYPE_META.local;
+          const eng  = ENG_META[e.engagement] || ENG_META.cold;
+          const over = e.followUpDate && e.followUpDate < today && !['booked','ongoing','passed'].includes(e.status);
+          const igLink = e.instagram ? `<a href="https://instagram.com/${e.instagram.replace('@','')}" target="_blank" style="color:var(--accent2);font-size:11px;">${esc(e.instagram)}</a>` : '';
+          return `<tr>
+            <td>
+              <div class="crm-venue-name">${esc(e.name)}</div>
+              <div class="crm-venue-city">${esc(e.city)}</div>
+              ${igLink ? `<div style="margin-top:2px;">${igLink}</div>` : ''}
+            </td>
+            <td><span class="status-badge ${pt.cls}">${pt.label}</span></td>
+            <td style="font-size:12px;color:var(--muted2);max-width:140px;">${esc(e.events || e.acts || '—')}</td>
+            <td style="font-size:12px;color:var(--muted2);max-width:120px;word-break:break-all;">${esc(e.contact || '—')}</td>
+            <td><span class="status-badge ${sm.cls}">${sm.label}</span></td>
+            <td><span class="status-badge ${eng.cls}">${eng.label}</span></td>
+            <td style="font-size:12px;font-family:var(--font-mono);color:${over ? 'var(--red)' : 'var(--muted2)'};">${e.followUpDate || '—'}${over ? ' ⚠' : ''}</td>
+            <td style="font-size:12px;color:var(--muted2);max-width:160px;">${esc(e.notes ? e.notes.slice(0,80) + (e.notes.length > 80 ? '…' : '') : '—')}</td>
+            <td>
+              <div class="crm-actions-cell">
+                <button class="crm-icon-btn" onclick="editPromoterEntry('${e.id}')" title="Edit"><i class="ti ti-pencil"></i></button>
+                <button class="crm-icon-btn danger" onclick="deletePromoterEntry('${e.id}')" title="Remove"><i class="ti ti-trash"></i></button>
+              </div>
+            </td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+
+  body.innerHTML = '';
+  if (banner) body.appendChild(banner);
+  body.appendChild(table);
+}
+
+function updatePromoterStats() {
+  document.getElementById('pstat-total').textContent     = promoterData.length;
+  document.getElementById('pstat-contacted').textContent = promoterData.filter(e => ['contacted','responded','met','booked','ongoing'].includes(e.status)).length;
+  document.getElementById('pstat-responded').textContent = promoterData.filter(e => ['responded','met'].includes(e.status)).length;
+  document.getElementById('pstat-booked').textContent    = promoterData.filter(e => ['booked','ongoing'].includes(e.status)).length;
+  document.getElementById('pstat-priority').textContent  = promoterData.filter(e => e.engagement === 'priority').length;
+}
+
+function openAddPromoterModal() {
+  editingPromId = null;
+  document.getElementById('pcrm-modal-title').textContent = 'Add Promoter';
+  ['name','city','instagram','contact','events','acts','notes'].forEach(f => { const el = document.getElementById('pc-' + f); if (el) el.value = ''; });
+  document.getElementById('pc-type').value       = 'local';
+  document.getElementById('pc-status').value     = 'new';
+  document.getElementById('pc-engagement').value = 'cold';
+  document.getElementById('pc-followup').value   = '';
+  document.getElementById('pcrm-edit-id').value  = '';
+  document.getElementById('pcrm-modal').classList.add('open');
+}
+
+function editPromoterEntry(id) {
+  const e = promoterData.find(p => p.id === id);
+  if (!e) return;
+  editingPromId = id;
+  document.getElementById('pcrm-modal-title').textContent = 'Edit Promoter';
+  document.getElementById('pc-name').value       = e.name || '';
+  document.getElementById('pc-city').value       = e.city || '';
+  document.getElementById('pc-type').value       = e.type || 'local';
+  document.getElementById('pc-status').value     = e.status || 'new';
+  document.getElementById('pc-instagram').value  = e.instagram || '';
+  document.getElementById('pc-contact').value    = e.contact || '';
+  document.getElementById('pc-events').value     = e.events || '';
+  document.getElementById('pc-acts').value       = e.acts || '';
+  document.getElementById('pc-engagement').value = e.engagement || 'cold';
+  document.getElementById('pc-followup').value   = e.followUpDate || '';
+  document.getElementById('pc-notes').value      = e.notes || '';
+  document.getElementById('pcrm-edit-id').value  = id;
+  document.getElementById('pcrm-modal').classList.add('open');
+}
+
+function savePromoterEntry() {
+  const name = document.getElementById('pc-name').value.trim();
+  if (!name) { alert('Promoter name is required.'); return; }
+  const id = editingPromId || Date.now().toString();
+  const entry = {
+    id,
+    name,
+    city:          document.getElementById('pc-city').value.trim(),
+    type:          document.getElementById('pc-type').value,
+    status:        document.getElementById('pc-status').value,
+    instagram:     document.getElementById('pc-instagram').value.trim(),
+    contact:       document.getElementById('pc-contact').value.trim(),
+    events:        document.getElementById('pc-events').value.trim(),
+    acts:          document.getElementById('pc-acts').value.trim(),
+    engagement:    document.getElementById('pc-engagement').value,
+    followUpDate:  document.getElementById('pc-followup').value,
+    notes:         document.getElementById('pc-notes').value.trim(),
+    addedAt: editingPromId ? (promoterData.find(e => e.id === editingPromId)?.addedAt || new Date().toISOString()) : new Date().toISOString()
+  };
+  if (editingPromId) {
+    const idx = promoterData.findIndex(e => e.id === editingPromId);
+    if (idx >= 0) promoterData[idx] = entry;
+  } else {
+    promoterData.push(entry);
+  }
+  savePromoterCRM();
+  renderPromoterCRM();
+  updatePromoterStats();
+  closeModal('pcrm-modal');
+  editingPromId = null;
+}
+
+function deletePromoterEntry(id) {
+  const e = promoterData.find(p => p.id === id);
+  if (!e) return;
+  if (!confirm(`Remove "${e.name}" from your Promoter CRM?`)) return;
+  promoterData = promoterData.filter(p => p.id !== id);
+  savePromoterCRM();
+  renderPromoterCRM();
+  updatePromoterStats();
+}
+
+function exportPromoterCSV() {
+  if (!promoterData.length) { alert('No promoters to export.'); return; }
+  const headers = ['Name','City','Type','Status','Instagram','Contact','Events/Acts','Engagement','Follow-Up','Notes','Added'];
+  const rows = promoterData.map(e => [e.name,e.city,e.type,e.status,e.instagram,e.contact,e.events,e.engagement,e.followUpDate,e.notes,e.addedAt?.slice(0,10)].map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'dj_ike_promoters.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ══ CRM ══
+function loadCRM() {
+  crmData = JSON.parse(localStorage.getItem(KEY_CRM) || '[]');
+}
+function saveCRM() {
+  localStorage.setItem(KEY_CRM, JSON.stringify(crmData));
+}
+
+function addToCRM(venueJson) {
+  const venue = JSON.parse(venueJson);
+  const existing = crmData.find(e => e.name.toLowerCase() === venue.name.toLowerCase());
+  if (existing) { alert(`${venue.name} is already in your CRM tracker!`); return; }
+  const entry = {
+    id: Date.now().toString(),
+    name: venue.name,
+    city: venue.city || '',
+    contact: venue.bookingContact || '',
+    genre: (venue.musicFormats || []).join(', '),
+    status: 'new',
+    followUpDate: '',
+    notes: venue.pitchAngle || '',
+    addedAt: new Date().toISOString()
+  };
+  crmData.push(entry);
+  saveCRM();
+  updateStats();
+  alert(`✓ ${venue.name} added to your Outreach Tracker!`);
+}
+
+function openAddModal() {
+  editingId = null;
+  document.getElementById('crm-modal-title').textContent = 'Add Venue';
+  ['vname','vcity','vcontact','vgenre','vnotes'].forEach(f => document.getElementById('crm-' + f).value = '');
+  document.getElementById('crm-vstatus').value = 'new';
+  document.getElementById('crm-vdate').value = '';
+  document.getElementById('crm-edit-id').value = '';
+  document.getElementById('crm-modal').classList.add('open');
+}
+
+function editCRMEntry(id) {
+  const entry = crmData.find(e => e.id === id);
+  if (!entry) return;
+  editingId = id;
+  document.getElementById('crm-modal-title').textContent = 'Edit Venue';
+  document.getElementById('crm-vname').value = entry.name || '';
+  document.getElementById('crm-vcity').value = entry.city || '';
+  document.getElementById('crm-vcontact').value = entry.contact || '';
+  document.getElementById('crm-vgenre').value = entry.genre || '';
+  document.getElementById('crm-vstatus').value = entry.status || 'new';
+  document.getElementById('crm-vdate').value = entry.followUpDate || '';
+  document.getElementById('crm-vnotes').value = entry.notes || '';
+  document.getElementById('crm-edit-id').value = id;
+  document.getElementById('crm-modal').classList.add('open');
+}
+
+function saveCRMEntry() {
+  const name = document.getElementById('crm-vname').value.trim();
+  if (!name) { alert('Venue name is required.'); return; }
+  const id = editingId || Date.now().toString();
+  const entry = {
+    id,
+    name,
+    city: document.getElementById('crm-vcity').value.trim(),
+    contact: document.getElementById('crm-vcontact').value.trim(),
+    genre: document.getElementById('crm-vgenre').value.trim(),
+    status: document.getElementById('crm-vstatus').value,
+    followUpDate: document.getElementById('crm-vdate').value,
+    notes: document.getElementById('crm-vnotes').value.trim(),
+    addedAt: editingId ? (crmData.find(e => e.id === editingId)?.addedAt || new Date().toISOString()) : new Date().toISOString()
+  };
+  if (editingId) {
+    const idx = crmData.findIndex(e => e.id === editingId);
+    if (idx >= 0) crmData[idx] = entry;
+  } else {
+    crmData.push(entry);
+  }
+  saveCRM();
+  renderCRM();
+  updateStats();
+  closeModal('crm-modal');
+  editingId = null;
+}
+
+function deleteCRMEntry(id) {
+  const entry = crmData.find(e => e.id === id);
+  if (!entry) return;
+  if (!confirm(`Remove "${entry.name}" from your tracker?`)) return;
+  crmData = crmData.filter(e => e.id !== id);
+  saveCRM();
+  renderCRM();
+  updateStats();
+}
+
+const STATUS_META = {
+  new:       { cls: 'st-new',       label: 'New' },
+  contacted: { cls: 'st-contacted', label: 'Contacted' },
+  followup:  { cls: 'st-followup',  label: 'Follow-Up' },
+  booked:    { cls: 'st-booked',    label: 'Booked ✓' },
+  passed:    { cls: 'st-passed',    label: 'Passed' }
+};
+
+function renderCRM() {
+  const q = (document.getElementById('crm-search')?.value || '').toLowerCase();
+  const filtered = crmData.filter(e =>
+    !q || e.name.toLowerCase().includes(q) || e.city.toLowerCase().includes(q) || e.genre.toLowerCase().includes(q)
+  );
+
+  const body = document.getElementById('crm-body');
+  if (!body) return;
+
+  if (!filtered.length) {
+    body.innerHTML = `<div class="crm-empty"><i class="ti ti-building-store"></i>${crmData.length ? 'No venues match your search.' : 'No venues yet. Search for venues and add them here!'}</div>`;
+    return;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  body.innerHTML = `
+    <table class="crm-table">
+      <thead>
+        <tr>
+          <th>Venue</th>
+          <th>Genre</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th>Follow-Up</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filtered.map(e => {
+          const sm = STATUS_META[e.status] || STATUS_META.new;
+          const overdue = e.followUpDate && e.followUpDate < today && e.status !== 'booked' && e.status !== 'passed';
+          return `
+            <tr>
+              <td>
+                <div class="crm-venue-name">${esc(e.name)}</div>
+                <div class="crm-venue-city">${esc(e.city)}</div>
+              </td>
+              <td style="font-size:12px;color:var(--muted2);font-family:var(--font-mono);">${esc(e.genre || '—')}</td>
+              <td style="font-size:12px;color:var(--muted2);max-width:140px;word-break:break-all;">${esc(e.contact || '—')}</td>
+              <td><span class="status-badge ${sm.cls}">${sm.label}</span></td>
+              <td style="font-size:12px;font-family:var(--font-mono);color:${overdue ? 'var(--red)' : 'var(--muted2)'};">${e.followUpDate || '—'}${overdue ? ' ⚠' : ''}</td>
+              <td style="font-size:12px;color:var(--muted2);max-width:160px;">${esc(e.notes ? e.notes.slice(0, 80) + (e.notes.length > 80 ? '…' : '') : '—')}</td>
+              <td>
+                <div class="crm-actions-cell">
+                  <button class="crm-icon-btn" onclick="editCRMEntry('${e.id}')" title="Edit"><i class="ti ti-pencil"></i></button>
+                  <button class="crm-icon-btn danger" onclick="deleteCRMEntry('${e.id}')" title="Remove"><i class="ti ti-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = crmData.length;
+  document.getElementById('stat-contacted').textContent = crmData.filter(e => ['contacted','followup','booked'].includes(e.status)).length;
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('stat-followup').textContent = crmData.filter(e => e.followUpDate && e.followUpDate <= today && !['booked','passed'].includes(e.status)).length;
+  document.getElementById('stat-booked').textContent = crmData.filter(e => e.status === 'booked').length;
+}
+
+function exportCSV() {
+  if (!crmData.length) { alert('No venues to export.'); return; }
+  const headers = ['Name','City','Contact','Genre','Status','Follow-Up Date','Notes','Added'];
+  const rows = crmData.map(e => [e.name, e.city, e.contact, e.genre, e.status, e.followUpDate, e.notes, e.addedAt?.slice(0,10)].map(v => `"${(v||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'dj_ike_outreach.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ══ MODAL ══
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }));
+
+// ══ UTILS ══
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
